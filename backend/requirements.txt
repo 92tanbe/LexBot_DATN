@@ -1,0 +1,6 @@
+fastapi[standard]
+motor
+python-jose[cryptography]
+passlib[bcrypt]
+python-dotenv
+email-validator
