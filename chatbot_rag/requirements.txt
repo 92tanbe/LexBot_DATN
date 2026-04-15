@@ -1,0 +1,7 @@
+fastapi[standard]
+uvicorn
+neo4j
+python-dotenv
+langchain
+langchain-openai
+pydantic

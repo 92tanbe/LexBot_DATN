@@ -1,0 +1,2837 @@
+{
+  "parts": [
+    {
+      "part": {
+        "part_id": 1,
+        "name": "Những quy định chung"
+      },
+      "chapters": [
+        {
+          "chapter_id": "I",
+          "name": "Điều khoản cơ bản",
+          "articles": [
+            {
+              "crime": { "id": "1", "name": "Nhiệm vụ của Bộ luật hình sự", "article": 1 },
+              "rules": [
+                {
+                  "rule_id": "1_r1",
+                  "clause": null,
+                  "logic": "DEFINITION",
+                  "priority": 1,
+                  "conditions": [],
+                  "penalty": {
+                    "note": "Bộ luật hình sự có nhiệm vụ bảo vệ chủ quyền quốc gia, an ninh đất nước, bảo vệ chế độ xã hội chủ nghĩa, quyền con người, quyền công dân, bảo vệ lợi ích Nhà nước, tổ chức, trật tự pháp luật; giáo dục ý thức tuân theo pháp luật, phòng ngừa và đấu tranh chống tội phạm. Bộ luật này quy định về tội phạm và hình phạt."
+                  }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "2", "name": "Cơ sở của trách nhiệm hình sự", "article": 2 },
+              "rules": [
+                {
+                  "rule_id": "2_r1",
+                  "clause": 1,
+                  "logic": "BASE",
+                  "priority": 1,
+                  "conditions": [ { "type": "scope", "text": "Chỉ người nào phạm một tội đã được Bộ luật hình sự quy định mới phải chịu trách nhiệm hình sự" } ],
+                  "penalty": { "note": "Quy định cơ sở trách nhiệm hình sự đối với cá nhân" }
+                },
+                {
+                  "rule_id": "2_r2",
+                  "clause": 2,
+                  "logic": "BASE",
+                  "priority": 2,
+                  "conditions": [ { "type": "scope", "text": "Chỉ pháp nhân thương mại nào phạm một tội đã được quy định tại Điều 76 của Bộ luật này mới phải chịu trách nhiệm hình sự" } ],
+                  "penalty": { "note": "Quy định cơ sở trách nhiệm hình sự đối với pháp nhân thương mại" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "3", "name": "Nguyên tắc xử lý", "article": 3 },
+              "rules": [
+                {
+                  "rule_id": "3_r1",
+                  "clause": 1,
+                  "logic": "PRINCIPLE",
+                  "priority": 1,
+                  "conditions": [
+                    { "type": "principle", "point": "a", "text": "Mọi hành vi phạm tội do người thực hiện phải được phát hiện kịp thời, xử lý nhanh chóng, công minh theo đúng pháp luật" },
+                    { "type": "principle", "point": "b", "text": "Mọi người phạm tội đều bình đẳng trước pháp luật, không phân biệt giới tính, dân tộc, tín ngưỡng, tôn giáo, thành phần, địa vị xã hội" },
+                    { "type": "principle", "point": "c", "text": "Nghiêm trị người chủ mưu, cầm đầu, chỉ huy, ngoan cố chống đối, côn đồ, tái phạm nguy hiểm, lợi dụng chức vụ, quyền hạn để phạm tội" },
+                    { "type": "principle", "point": "d", "text": "Nghiêm trị người phạm tội dùng thủ đoạn xảo quyệt, có tổ chức, có tính chất chuyên nghiệp, cố ý gây hậu quả đặc biệt nghiêm trọng. Khoan hồng đối với người tự thú, đầu thú, thành khẩn khai báo, tố giác đồng phạm, lập công chuộc tội, tích cực hợp tác với cơ quan có trách nhiệm trong việc phát hiện tội phạm hoặc trong quá trình giải quyết vụ án, ăn năn hối cải, tự nguyện sửa chữa hoặc bồi thường thiệt hại gây ra" },
+                    { "type": "principle", "point": "đ", "text": "Đối với người lần đầu phạm tội ít nghiêm trọng, thì có thể áp dụng hình phạt nhẹ hơn hình phạt tù, giao họ cho cơ quan, tổ chức hoặc gia đình giám sát, giáo dục" },
+                    { "type": "principle", "point": "e", "text": "Đối với người bị phạt tù thì buộc họ phải chấp hành hình phạt tại các cơ sở giam giữ, phải lao động, học tập để trở thành người có ích cho xã hội; nếu có đủ điều kiện do Bộ luật này quy định thì có thể được xét giảm thời hạn chấp hành hình phạt, tha tù trước thời hạn có điều kiện" },
+                    { "type": "principle", "point": "g", "text": "Người đã chấp hành xong hình phạt được tạo điều kiện làm ăn, sinh sống lương thiện, hòa nhập với cộng đồng, khi có đủ điều kiện do luật định thì được xóa án tích" }
+                  ],
+                  "penalty": { "note": "Áp dụng đối với người phạm tội" }
+                },
+                {
+                  "rule_id": "3_r2",
+                  "clause": 2,
+                  "logic": "PRINCIPLE",
+                  "priority": 2,
+                  "conditions": [
+                    { "type": "principle", "point": "a", "text": "Mọi hành vi phạm tội do pháp nhân thương mại thực hiện phải được phát hiện kịp thời, xử lý nhanh chóng, công minh theo đúng pháp luật" },
+                    { "type": "principle", "point": "b", "text": "Mọi pháp nhân thương mại phạm tội đều bình đẳng trước pháp luật, không phân biệt hình thức sở hữu và thành phần kinh tế" },
+                    { "type": "principle", "point": "c", "text": "Nghiêm trị pháp nhân thương mại phạm tội dùng thủ đoạn tinh vi, có tính chất chuyên nghiệp, cố ý gây hậu quả đặc biệt nghiêm trọng" },
+                    { "type": "principle", "point": "d", "text": "Khoan hồng đối với pháp nhân thương mại tích cực hợp tác với cơ quan có trách nhiệm trong việc phát hiện tội phạm hoặc trong quá trình giải quyết vụ án, tự nguyện sửa chữa, bồi thường thiệt hại gây ra, chủ động ngăn chặn hoặc khắc phục hậu quả xảy ra" }
+                  ],
+                  "penalty": { "note": "Áp dụng đối với pháp nhân thương mại phạm tội" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "4", "name": "Trách nhiệm phòng ngừa và đấu tranh chống tội phạm", "article": 4 },
+              "rules": [
+                {
+                  "rule_id": "4_r1",
+                  "clause": 1,
+                  "logic": "BASE",
+                  "priority": 1,
+                  "conditions": [ { "type": "duty", "text": "Cơ quan Công an, Viện kiểm sát nhân dân, Tòa án nhân dân và các cơ quan hữu quan khác có trách nhiệm thực hiện đầy đủ chức năng, nhiệm vụ, quyền hạn của mình, đồng thời hướng dẫn, giúp đỡ các cơ quan khác của Nhà nước, tổ chức, cá nhân phòng ngừa và đấu tranh chống tội phạm, giám sát và giáo dục người phạm tội tại cộng đồng" } ],
+                  "penalty": { "note": "Quy định trách nhiệm của cơ quan nhà nước" }
+                },
+                {
+                  "rule_id": "4_r2",
+                  "clause": 2,
+                  "logic": "BASE",
+                  "priority": 2,
+                  "conditions": [ { "type": "duty", "text": "Cơ quan, tổ chức có nhiệm vụ giáo dục những người thuộc quyền quản lý của mình nâng cao cảnh giác, ý thức bảo vệ và tuân theo pháp luật, tôn trọng các quy tắc của cuộc sống xã hội chủ nghĩa; kịp thời có biện pháp loại trừ nguyên nhân và điều kiện gây ra tội phạm trong cơ quan, tổ chức của mình" } ],
+                  "penalty": { "note": "Trách nhiệm của cơ quan, tổ chức" }
+                },
+                {
+                  "rule_id": "4_r3",
+                  "clause": 3,
+                  "logic": "BASE",
+                  "priority": 3,
+                  "conditions": [ { "type": "duty", "text": "Mọi công dân có nghĩa vụ tích cực tham gia phòng, chống tội phạm" } ],
+                  "penalty": { "note": "Nghĩa vụ của công dân" }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "chapter_id": "II",
+          "name": "Hiệu lực của Bộ luật Hình sự",
+          "articles": [
+            {
+              "crime": { "id": "5", "name": "Hiệu lực của Bộ luật hình sự đối với những hành vi phạm tội trên lãnh thổ nước Cộng hòa xã hội chủ nghĩa Việt Nam", "article": 5 },
+              "rules": [
+                {
+                  "rule_id": "5_r1",
+                  "clause": 1,
+                  "logic": "BASE",
+                  "priority": 1,
+                  "conditions": [ { "type": "scope", "text": "Bộ luật hình sự được áp dụng đối với mọi hành vi phạm tội thực hiện trên lãnh thổ nước Cộng hòa xã hội chủ nghĩa Việt Nam. Quy định này cũng được áp dụng đối với hành vi phạm tội hoặc hậu quả của hành vi phạm tội xảy ra trên tàu bay, tàu biển mang quốc tịch Việt Nam hoặc tại vùng đặc quyền kinh tế, thềm lục địa của Việt Nam" } ],
+                  "penalty": { "note": "Nguyên tắc lãnh thổ" }
+                },
+                {
+                  "rule_id": "5_r2",
+                  "clause": 2,
+                  "logic": "EXCEPTION",
+                  "priority": 2,
+                  "conditions": [ { "type": "exception", "text": "Đối với người nước ngoài phạm tội trên lãnh thổ Việt Nam thuộc đối tượng được hưởng quyền miễn trừ ngoại giao hoặc lãnh sự theo pháp luật Việt Nam, theo điều ước quốc tế hoặc tập quán quốc tế, thì trách nhiệm hình sự được giải quyết theo điều ước quốc tế hoặc tập quán quốc tế đó; trường hợp không quy định thì giải quyết bằng con đường ngoại giao" } ],
+                  "penalty": { "note": "Miễn trừ ngoại giao" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "6", "name": "Hiệu lực của Bộ luật hình sự đối với những hành vi phạm tội ở ngoài lãnh thổ nước Cộng hòa xã hội chủ nghĩa Việt Nam", "article": 6 },
+              "rules": [
+                {
+                  "rule_id": "6_r1",
+                  "clause": 1,
+                  "logic": "BASE",
+                  "priority": 1,
+                  "conditions": [ { "type": "scope", "text": "Công dân Việt Nam hoặc pháp nhân thương mại Việt Nam có hành vi phạm tội ở ngoài lãnh thổ Việt Nam mà Bộ luật này quy định là tội phạm, thì có thể bị truy cứu trách nhiệm hình sự tại Việt Nam. Quy định này cũng được áp dụng đối với người không quốc tịch thường trú ở Việt Nam" } ],
+                  "penalty": { "note": "Nguyên tắc quốc tịch" }
+                },
+                {
+                  "rule_id": "6_r2",
+                  "clause": 2,
+                  "logic": "BASE",
+                  "priority": 2,
+                  "conditions": [ { "type": "scope", "text": "Người nước ngoài, pháp nhân thương mại nước ngoài phạm tội ở ngoài lãnh thổ Việt Nam có thể bị truy cứu trách nhiệm hình sự nếu hành vi phạm tội xâm hại quyền, lợi ích hợp pháp của công dân Việt Nam hoặc xâm hại lợi ích của nước Cộng hòa xã hội chủ nghĩa Việt Nam hoặc theo quy định của điều ước quốc tế mà Việt Nam là thành viên" } ],
+                  "penalty": { "note": "Nguyên tắc bảo vệ và phổ cập" }
+                },
+                {
+                  "rule_id": "6_r3",
+                  "clause": 3,
+                  "logic": "BASE",
+                  "priority": 3,
+                  "conditions": [ { "type": "scope", "text": "Đối với hành vi phạm tội hoặc hậu quả của hành vi phạm tội xảy ra trên tàu bay, tàu biển không mang quốc tịch Việt Nam đang ở tại biển cả hoặc tại giới hạn vùng trời nằm ngoài lãnh thổ Việt Nam, thì người phạm tội có thể bị truy cứu trách nhiệm hình sự theo quy định của Bộ luật này trong trường hợp điều ước quốc tế mà Việt Nam là thành viên có quy định" } ],
+                  "penalty": { "note": "Tàu bay, tàu biển không quốc tịch Việt Nam" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "7", "name": "Hiệu lực của Bộ luật hình sự về thời gian", "article": 7 },
+              "rules": [
+                {
+                  "rule_id": "7_r1",
+                  "clause": 1,
+                  "logic": "BASE",
+                  "priority": 1,
+                  "conditions": [ { "type": "principle", "text": "Điều luật được áp dụng đối với một hành vi phạm tội là điều luật đang có hiệu lực thi hành tại thời điểm mà hành vi phạm tội được thực hiện" } ],
+                  "penalty": { "note": "Hiệu lực về thời gian" }
+                },
+                {
+                  "rule_id": "7_r2",
+                  "clause": 2,
+                  "logic": "NON_RETROACTIVE",
+                  "priority": 2,
+                  "conditions": [ { "type": "principle", "text": "Điều luật quy định một tội phạm mới, một hình phạt nặng hơn, một tình tiết tăng nặng mới hoặc hạn chế phạm vi áp dụng án treo, miễn trách nhiệm hình sự, loại trừ trách nhiệm hình sự, miễn hình phạt, giảm hình phạt, xóa án tích và quy định khác không có lợi cho người phạm tội, thì không được áp dụng đối với hành vi phạm tội đã thực hiện trước khi điều luật đó có hiệu lực thi hành" } ],
+                  "penalty": { "note": "Không hồi tố bất lợi" }
+                },
+                {
+                  "rule_id": "7_r3",
+                  "clause": 3,
+                  "logic": "RETROACTIVE_FAVORABLE",
+                  "priority": 3,
+                  "conditions": [ { "type": "principle", "text": "Điều luật xóa bỏ một tội phạm, một hình phạt, một tình tiết tăng nặng, quy định một hình phạt nhẹ hơn, một tình tiết giảm nhẹ mới hoặc mở rộng phạm vi áp dụng án treo, miễn trách nhiệm hình sự, loại trừ trách nhiệm hình sự, miễn hình phạt, giảm hình phạt, tha tù trước thời hạn có điều kiện, xóa án tích và quy định khác có lợi cho người phạm tội, thì được áp dụng đối với hành vi phạm tội đã thực hiện trước khi điều luật đó có hiệu lực thi hành" } ],
+                  "penalty": { "note": "Hồi tố có lợi" }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "chapter_id": "III",
+          "name": "Tội phạm",
+          "articles": [
+            {
+              "crime": { "id": "8", "name": "Khái niệm tội phạm", "article": 8 },
+              "rules": [
+                {
+                  "rule_id": "8_r1",
+                  "clause": 1,
+                  "logic": "DEFINITION",
+                  "priority": 1,
+                  "conditions": [ { "type": "definition", "text": "Tội phạm là hành vi nguy hiểm cho xã hội được quy định trong Bộ luật hình sự, do người có năng lực trách nhiệm hình sự hoặc pháp nhân thương mại thực hiện một cách cố ý hoặc vô ý, xâm phạm độc lập, chủ quyền, thống nhất, toàn vẹn lãnh thổ Tổ quốc, xâm phạm chế độ chính trị, chế độ kinh tế, nền văn hóa, quốc phòng, an ninh, trật tự, an toàn xã hội, quyền, lợi ích hợp pháp của tổ chức, xâm phạm quyền con người, quyền, lợi ích hợp pháp của công dân, xâm phạm những lĩnh vực khác của trật tự pháp luật xã hội chủ nghĩa mà theo quy định của Bộ luật này phải bị xử lý hình sự" } ],
+                  "penalty": { "note": "Định nghĩa tội phạm" }
+                },
+                {
+                  "rule_id": "8_r2",
+                  "clause": 2,
+                  "logic": "EXCEPTION",
+                  "priority": 2,
+                  "conditions": [ { "type": "exception", "text": "Những hành vi tuy có dấu hiệu của tội phạm nhưng tính chất nguy hiểm cho xã hội không đáng kể thì không phải là tội phạm và được xử lý bằng các biện pháp khác" } ],
+                  "penalty": { "note": "Hành vi nguy hiểm không đáng kể" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "9", "name": "Phân loại tội phạm", "article": 9 },
+              "rules": [
+                {
+                  "rule_id": "9_r1",
+                  "clause": 1,
+                  "logic": "CLASSIFICATION",
+                  "priority": 1,
+                  "conditions": [
+                    { "type": "category", "point": "a", "text": "Tội phạm ít nghiêm trọng là tội phạm có tính chất và mức độ nguy hiểm cho xã hội không lớn mà mức cao nhất của khung hình phạt là phạt tiền, phạt cải tạo không giam giữ hoặc phạt tù đến 03 năm" },
+                    { "type": "category", "point": "b", "text": "Tội phạm nghiêm trọng là tội phạm có tính chất và mức độ nguy hiểm cho xã hội lớn mà mức cao nhất của khung hình phạt là từ trên 03 năm tù đến 07 năm tù" },
+                    { "type": "category", "point": "c", "text": "Tội phạm rất nghiêm trọng là tội phạm có tính chất và mức độ nguy hiểm cho xã hội rất lớn mà mức cao nhất của khung hình phạt là từ trên 07 năm tù đến 15 năm tù" },
+                    { "type": "category", "point": "d", "text": "Tội phạm đặc biệt nghiêm trọng là tội phạm có tính chất và mức độ nguy hiểm cho xã hội đặc biệt lớn mà mức cao nhất của khung hình phạt là từ trên 15 năm tù đến 20 năm tù, tù chung thân hoặc tử hình" }
+                  ],
+                  "penalty": { "note": "Phân loại tội phạm đối với cá nhân" }
+                },
+                {
+                  "rule_id": "9_r2",
+                  "clause": 2,
+                  "logic": "CLASSIFICATION",
+                  "priority": 2,
+                  "conditions": [ { "type": "scope", "text": "Tội phạm do pháp nhân thương mại thực hiện được phân loại căn cứ vào tính chất và mức độ nguy hiểm cho xã hội của hành vi phạm tội theo quy định tại khoản 1 Điều này và quy định tương ứng đối với các tội phạm được quy định tại Điều 76 của Bộ luật này" } ],
+                  "penalty": { "note": "Phân loại tội phạm đối với pháp nhân thương mại" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "10", "name": "Cố ý phạm tội", "article": 10 },
+              "rules": [
+                {
+                  "rule_id": "10_r1",
+                  "clause": 1,
+                  "logic": "DEFINITION",
+                  "priority": 1,
+                  "conditions": [ { "type": "intent", "text": "Người phạm tội nhận thức rõ hành vi của mình là nguy hiểm cho xã hội, thấy trước hậu quả của hành vi đó và mong muốn hậu quả xảy ra" } ],
+                  "penalty": { "note": "Cố ý trực tiếp" }
+                },
+                {
+                  "rule_id": "10_r2",
+                  "clause": 2,
+                  "logic": "DEFINITION",
+                  "priority": 2,
+                  "conditions": [ { "type": "intent", "text": "Người phạm tội nhận thức rõ hành vi của mình là nguy hiểm cho xã hội, thấy trước hậu quả của hành vi đó có thể xảy ra, tuy không mong muốn nhưng vẫn có ý thức để mặc cho hậu quả xảy ra" } ],
+                  "penalty": { "note": "Cố ý gián tiếp" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "11", "name": "Vô ý phạm tội", "article": 11 },
+              "rules": [
+                {
+                  "rule_id": "11_r1",
+                  "clause": 1,
+                  "logic": "DEFINITION",
+                  "priority": 1,
+                  "conditions": [ { "type": "negligence", "text": "Người phạm tội tuy thấy trước hành vi của mình có thể gây ra hậu quả nguy hại cho xã hội nhưng cho rằng hậu quả đó sẽ không xảy ra hoặc có thể ngăn ngừa được" } ],
+                  "penalty": { "note": "Vô ý do quá tự tin" }
+                },
+                {
+                  "rule_id": "11_r2",
+                  "clause": 2,
+                  "logic": "DEFINITION",
+                  "priority": 2,
+                  "conditions": [ { "type": "negligence", "text": "Người phạm tội không thấy trước hành vi của mình có thể gây ra hậu quả nguy hại cho xã hội, mặc dù phải thấy trước và có thể thấy trước hậu quả đó" } ],
+                  "penalty": { "note": "Vô ý do cẩu thả" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "12", "name": "Tuổi chịu trách nhiệm hình sự", "article": 12 },
+              "rules": [
+                {
+                  "rule_id": "12_r1",
+                  "clause": 1,
+                  "logic": "BASE",
+                  "priority": 1,
+                  "conditions": [ { "type": "age", "text": "Người từ đủ 16 tuổi trở lên phải chịu trách nhiệm hình sự về mọi tội phạm, trừ những tội phạm mà Bộ luật này có quy định khác" } ],
+                  "penalty": { "note": "Trách nhiệm hình sự đầy đủ" }
+                },
+                {
+                  "rule_id": "12_r2",
+                  "clause": 2,
+                  "logic": "LIMITED",
+                  "priority": 2,
+                  "conditions": [ { "type": "age", "text": "Người từ đủ 14 tuổi đến dưới 16 tuổi phải chịu trách nhiệm hình sự về tội phạm rất nghiêm trọng, tội phạm đặc biệt nghiêm trọng quy định tại một trong các điều 123, 134, 141, 142, 143, 144, 150, 151, 168, 169, 170, 171, 173, 178, 248, 249, 250, 251, 252, 265, 266, 286, 287, 289, 290, 299, 303 và 304 của Bộ luật này" } ],
+                  "penalty": { "note": "Trách nhiệm hình sự hạn chế" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "13", "name": "Phạm tội do dùng rượu, bia hoặc chất kích thích mạnh khác", "article": 13 },
+              "rules": [
+                {
+                  "rule_id": "13_r1",
+                  "clause": null,
+                  "logic": "BASE",
+                  "priority": 1,
+                  "conditions": [ { "type": "intoxication", "text": "Người phạm tội trong tình trạng mất khả năng nhận thức hoặc khả năng điều khiển hành vi của mình do dùng rượu, bia hoặc chất kích thích mạnh khác, thì vẫn phải chịu trách nhiệm hình sự" } ],
+                  "penalty": { "note": "Không loại trừ trách nhiệm hình sự" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "14", "name": "Chuẩn bị phạm tội", "article": 14 },
+              "rules": [
+                {
+                  "rule_id": "14_r1",
+                  "clause": 1,
+                  "logic": "DEFINITION",
+                  "priority": 1,
+                  "conditions": [ { "type": "definition", "text": "Chuẩn bị phạm tội là tìm kiếm, sửa soạn công cụ, phương tiện hoặc tạo ra những điều kiện khác để thực hiện tội phạm hoặc thành lập, tham gia nhóm tội phạm, trừ trường hợp thành lập hoặc tham gia nhóm tội phạm quy định tại Điều 109, điểm a khoản 2 Điều 113 hoặc điểm a khoản 2 Điều 299 của Bộ luật này" } ],
+                  "penalty": { "note": "Định nghĩa chuẩn bị phạm tội" }
+                },
+                {
+                  "rule_id": "14_r2",
+                  "clause": 2,
+                  "logic": "BASE",
+                  "priority": 2,
+                  "conditions": [ { "type": "scope", "text": "Người chuẩn bị phạm tội quy định tại một trong các điều 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 123, 134, 168, 169, 207, 299, 300, 301, 302, 303 và 324 của Bộ luật này thì phải chịu trách nhiệm hình sự" } ],
+                  "penalty": { "note": "Các tội phải chịu TNHS ở giai đoạn chuẩn bị" }
+                },
+                {
+                  "rule_id": "14_r3",
+                  "clause": 3,
+                  "logic": "BASE",
+                  "priority": 3,
+                  "conditions": [ { "type": "age", "text": "Người từ đủ 14 tuổi đến dưới 16 tuổi chuẩn bị phạm tội quy định tại Điều 123, Điều 168 của Bộ luật này thì phải chịu trách nhiệm hình sự" } ],
+                  "penalty": { "note": "Trách nhiệm hình sự của người chưa thành niên đối với chuẩn bị phạm tội" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "15", "name": "Phạm tội chưa đạt", "article": 15 },
+              "rules": [
+                {
+                  "rule_id": "15_r1",
+                  "clause": null,
+                  "logic": "DEFINITION",
+                  "priority": 1,
+                  "conditions": [ { "type": "definition", "text": "Phạm tội chưa đạt là cố ý thực hiện tội phạm nhưng không thực hiện được đến cùng vì những nguyên nhân ngoài ý muốn của người phạm tội. Người phạm tội chưa đạt phải chịu trách nhiệm hình sự về tội phạm chưa đạt" } ],
+                  "penalty": { "note": "Định nghĩa và trách nhiệm hình sự" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "16", "name": "Tự ý nửa chừng chấm dứt việc phạm tội", "article": 16 },
+              "rules": [
+                {
+                  "rule_id": "16_r1",
+                  "clause": null,
+                  "logic": "IMMUNITY",
+                  "priority": 1,
+                  "conditions": [ { "type": "definition", "text": "Tự ý nửa chừng chấm dứt việc phạm tội là tự mình không thực hiện tội phạm đến cùng, tuy không có gì ngăn cản. Người tự ý nửa chừng chấm dứt việc phạm tội được miễn trách nhiệm hình sự về tội định phạm; nếu hành vi thực tế đã thực hiện có đủ yếu tố cấu thành của một tội khác, thì người đó phải chịu trách nhiệm hình sự về tội này" } ],
+                  "penalty": { "note": "Miễn trách nhiệm hình sự về tội định phạm" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "17", "name": "Đồng phạm", "article": 17 },
+              "rules": [
+                {
+                  "rule_id": "17_r1",
+                  "clause": 1,
+                  "logic": "DEFINITION",
+                  "priority": 1,
+                  "conditions": [ { "type": "definition", "text": "Đồng phạm là trường hợp có hai người trở lên cố ý cùng thực hiện một tội phạm" } ],
+                  "penalty": { "note": "Định nghĩa đồng phạm" }
+                },
+                {
+                  "rule_id": "17_r2",
+                  "clause": 2,
+                  "logic": "DEFINITION",
+                  "priority": 2,
+                  "conditions": [ { "type": "definition", "text": "Phạm tội có tổ chức là hình thức đồng phạm có sự câu kết chặt chẽ giữa những người cùng thực hiện tội phạm" } ],
+                  "penalty": { "note": "Định nghĩa phạm tội có tổ chức" }
+                },
+                {
+                  "rule_id": "17_r3",
+                  "clause": 3,
+                  "logic": "DEFINITION",
+                  "priority": 3,
+                  "conditions": [ { "type": "definition", "text": "Người đồng phạm bao gồm người tổ chức, người thực hành, người xúi giục, người giúp sức. Người thực hành là người trực tiếp thực hiện tội phạm. Người tổ chức là người chủ mưu, cầm đầu, chỉ huy việc thực hiện tội phạm. Người xúi giục là người kích động, dụ dỗ, thúc đẩy người khác thực hiện tội phạm. Người giúp sức là người tạo điều kiện tinh thần hoặc vật chất cho việc thực hiện tội phạm" } ],
+                  "penalty": { "note": "Các loại người đồng phạm" }
+                },
+                {
+                  "rule_id": "17_r4",
+                  "clause": 4,
+                  "logic": "BASE",
+                  "priority": 4,
+                  "conditions": [ { "type": "principle", "text": "Người đồng phạm không phải chịu trách nhiệm hình sự về hành vi vượt quá của người thực hành" } ],
+                  "penalty": { "note": "Hành vi vượt quá" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "18", "name": "Che giấu tội phạm", "article": 18 },
+              "rules": [
+                {
+                  "rule_id": "18_r1",
+                  "clause": 1,
+                  "logic": "BASE",
+                  "priority": 1,
+                  "conditions": [ { "type": "action", "text": "Người nào không hứa hẹn trước, nhưng sau khi biết tội phạm được thực hiện đã che giấu người phạm tội, dấu vết, tang vật của tội phạm hoặc có hành vi khác cản trở việc phát hiện, điều tra, xử lý người phạm tội, thì phải chịu trách nhiệm hình sự về tội che giấu tội phạm trong những trường hợp mà Bộ luật này quy định" } ],
+                  "penalty": { "note": "Trách nhiệm hình sự về tội che giấu tội phạm" }
+                },
+                {
+                  "rule_id": "18_r2",
+                  "clause": 2,
+                  "logic": "EXEMPTION",
+                  "priority": 2,
+                  "conditions": [ { "type": "relationship", "text": "Người che giấu tội phạm là ông, bà, cha, mẹ, con, cháu, anh chị em ruột, vợ hoặc chồng của người phạm tội không phải chịu trách nhiệm hình sự, trừ trường hợp che giấu các tội xâm phạm an ninh quốc gia hoặc tội đặc biệt nghiêm trọng khác quy định tại Điều 389 của Bộ luật này" } ],
+                  "penalty": { "note": "Miễn trách nhiệm hình sự đối với người thân thích" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "19", "name": "Không tố giác tội phạm", "article": 19 },
+              "rules": [
+                {
+                  "rule_id": "19_r1",
+                  "clause": 1,
+                  "logic": "BASE",
+                  "priority": 1,
+                  "conditions": [ { "type": "action", "text": "Người nào biết rõ tội phạm đang được chuẩn bị, đang được thực hiện hoặc đã được thực hiện mà không tố giác, thì phải chịu trách nhiệm hình sự về tội không tố giác tội phạm quy định tại Điều 390 của Bộ luật này" } ],
+                  "penalty": { "note": "Trách nhiệm hình sự về tội không tố giác tội phạm" }
+                },
+                {
+                  "rule_id": "19_r2",
+                  "clause": 2,
+                  "logic": "EXEMPTION",
+                  "priority": 2,
+                  "conditions": [ { "type": "relationship", "text": "Người không tố giác là ông, bà, cha, mẹ, con, cháu, anh chị em ruột, vợ hoặc chồng của người phạm tội không phải chịu trách nhiệm hình sự, trừ trường hợp không tố giác các tội quy định tại Chương XIII của Bộ luật này hoặc tội khác là tội phạm đặc biệt nghiêm trọng" } ],
+                  "penalty": { "note": "Miễn trách nhiệm hình sự đối với người thân thích" }
+                },
+                {
+                  "rule_id": "19_r3",
+                  "clause": 3,
+                  "logic": "EXEMPTION",
+                  "priority": 3,
+                  "conditions": [ { "type": "role", "text": "Người không tố giác là người bào chữa không phải chịu trách nhiệm hình sự, trừ trường hợp không tố giác các tội quy định tại Chương XIII của Bộ luật này hoặc tội khác là tội phạm đặc biệt nghiêm trọng do chính người mà mình bào chữa đang chuẩn bị, đang thực hiện hoặc đã thực hiện mà người bào chữa biết rõ khi thực hiện việc bào chữa" } ],
+                  "penalty": { "note": "Miễn trách nhiệm hình sự đối với người bào chữa" }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "chapter_id": "IV",
+          "name": "Những trường hợp loại trừ trách nhiệm hình sự",
+          "articles": [
+            {
+              "crime": { "id": "20", "name": "Sự kiện bất ngờ", "article": 20 },
+              "rules": [
+                {
+                  "rule_id": "20_r1",
+                  "clause": null,
+                  "logic": "EXEMPTION",
+                  "priority": 1,
+                  "conditions": [ { "type": "circumstance", "text": "Người thực hiện hành vi gây hậu quả nguy hại cho xã hội trong trường hợp không thể thấy trước hoặc không buộc phải thấy trước hậu quả của hành vi đó, thì không phải chịu trách nhiệm hình sự" } ],
+                  "penalty": { "note": "Loại trừ trách nhiệm hình sự" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "21", "name": "Tình trạng không có năng lực trách nhiệm hình sự", "article": 21 },
+              "rules": [
+                {
+                  "rule_id": "21_r1",
+                  "clause": null,
+                  "logic": "EXEMPTION",
+                  "priority": 1,
+                  "conditions": [ { "type": "mental_illness", "text": "Người thực hiện hành vi nguy hiểm cho xã hội trong khi đang mắc bệnh tâm thần, một bệnh khác làm mất khả năng nhận thức hoặc khả năng điều khiển hành vi của mình, thì không phải chịu trách nhiệm hình sự" } ],
+                  "penalty": { "note": "Loại trừ trách nhiệm hình sự" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "22", "name": "Phòng vệ chính đáng", "article": 22 },
+              "rules": [
+                {
+                  "rule_id": "22_r1",
+                  "clause": 1,
+                  "logic": "EXEMPTION",
+                  "priority": 1,
+                  "conditions": [ { "type": "defense", "text": "Phòng vệ chính đáng là hành vi của người vì bảo vệ quyền hoặc lợi ích chính đáng của mình, của người khác hoặc lợi ích của Nhà nước, của cơ quan, tổ chức mà chống trả lại một cách cần thiết người đang có hành vi xâm phạm các lợi ích nói trên. Phòng vệ chính đáng không phải là tội phạm" } ],
+                  "penalty": { "note": "Không phải tội phạm" }
+                },
+                {
+                  "rule_id": "22_r2",
+                  "clause": 2,
+                  "logic": "BASE",
+                  "priority": 2,
+                  "conditions": [ { "type": "excessive_defense", "text": "Vượt quá giới hạn phòng vệ chính đáng là hành vi chống trả rõ ràng quá mức cần thiết, không phù hợp với tính chất và mức độ nguy hiểm cho xã hội của hành vi xâm hại. Người có hành vi vượt quá giới hạn phòng vệ chính đáng phải chịu trách nhiệm hình sự theo quy định của Bộ luật này" } ],
+                  "penalty": { "note": "Vượt quá giới hạn phòng vệ chính đáng phải chịu trách nhiệm hình sự" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "23", "name": "Tình thế cấp thiết", "article": 23 },
+              "rules": [
+                {
+                  "rule_id": "23_r1",
+                  "clause": 1,
+                  "logic": "EXEMPTION",
+                  "priority": 1,
+                  "conditions": [ { "type": "necessity", "text": "Tình thế cấp thiết là tình thế của người vì muốn tránh gây thiệt hại cho quyền, lợi ích hợp pháp của mình, của người khác hoặc lợi ích của Nhà nước, của cơ quan, tổ chức mà không còn cách nào khác là phải gây một thiệt hại nhỏ hơn thiệt hại cần ngăn ngừa. Hành vi gây thiệt hại trong tình thế cấp thiết không phải là tội phạm" } ],
+                  "penalty": { "note": "Không phải tội phạm" }
+                },
+                {
+                  "rule_id": "23_r2",
+                  "clause": 2,
+                  "logic": "BASE",
+                  "priority": 2,
+                  "conditions": [ { "type": "excessive_necessity", "text": "Trong trường hợp thiệt hại gây ra rõ ràng vượt quá yêu cầu của tình thế cấp thiết, thì người gây thiệt hại đó phải chịu trách nhiệm hình sự" } ],
+                  "penalty": { "note": "Vượt quá yêu cầu của tình thế cấp thiết" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "24", "name": "Gây thiệt hại trong khi bắt giữ người phạm tội", "article": 24 },
+              "rules": [
+                {
+                  "rule_id": "24_r1",
+                  "clause": 1,
+                  "logic": "EXEMPTION",
+                  "priority": 1,
+                  "conditions": [ { "type": "arrest", "text": "Hành vi của người để bắt giữ người thực hiện hành vi phạm tội mà không còn cách nào khác là buộc phải sử dụng vũ lực cần thiết gây thiệt hại cho người bị bắt giữ thì không phải là tội phạm" } ],
+                  "penalty": { "note": "Không phải tội phạm" }
+                },
+                {
+                  "rule_id": "24_r2",
+                  "clause": 2,
+                  "logic": "BASE",
+                  "priority": 2,
+                  "conditions": [ { "type": "excessive_force", "text": "Trường hợp gây thiệt hại do sử dụng vũ lực rõ ràng vượt quá mức cần thiết, thì người gây thiệt hại phải chịu trách nhiệm hình sự" } ],
+                  "penalty": { "note": "Vượt quá mức cần thiết" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "25", "name": "Rủi ro trong nghiên cứu, thử nghiệm, áp dụng tiến bộ khoa học, kỹ thuật và công nghệ", "article": 25 },
+              "rules": [
+                {
+                  "rule_id": "25_r1",
+                  "clause": null,
+                  "logic": "EXEMPTION",
+                  "priority": 1,
+                  "conditions": [ { "type": "risk", "text": "Hành vi gây ra thiệt hại trong khi thực hiện việc nghiên cứu, thử nghiệm, áp dụng tiến bộ khoa học, kỹ thuật và công nghệ mới mặc dù đã tuân thủ đúng quy trình, quy phạm, áp dụng đầy đủ biện pháp phòng ngừa thì không phải là tội phạm. Người nào không áp dụng đúng quy trình, quy phạm, không áp dụng đầy đủ biện pháp phòng ngừa mà gây thiệt hại thì vẫn phải chịu trách nhiệm hình sự" } ],
+                  "penalty": { "note": "Loại trừ trách nhiệm hình sự nếu tuân thủ đúng quy định" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "26", "name": "Thi hành mệnh lệnh của người chỉ huy hoặc của cấp trên", "article": 26 },
+              "rules": [
+                {
+                  "rule_id": "26_r1",
+                  "clause": null,
+                  "logic": "EXEMPTION",
+                  "priority": 1,
+                  "conditions": [ { "type": "order", "text": "Người thực hiện hành vi gây thiệt hại trong khi thi hành mệnh lệnh của người chỉ huy hoặc của cấp trên trong lực lượng vũ trang nhân dân để thực hiện nhiệm vụ quốc phòng, an ninh nếu đã thực hiện đầy đủ quy trình báo cáo người ra mệnh lệnh nhưng người ra mệnh lệnh vẫn yêu cầu chấp hành mệnh lệnh đó, thì không phải chịu trách nhiệm hình sự. Trong trường hợp này người ra mệnh lệnh phải chịu trách nhiệm hình sự. Quy định này không áp dụng đối với các trường hợp quy định tại khoản 2 Điều 421, khoản 2 Điều 422 và khoản 2 Điều 423 của Bộ luật này" } ],
+                  "penalty": { "note": "Loại trừ trách nhiệm hình sự cho người thi hành mệnh lệnh hợp pháp" }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "chapter_id": "V",
+          "name": "Thời hiệu truy cứu trách nhiệm hình sự",
+          "articles": [
+            {
+              "crime": { "id": "27", "name": "Thời hiệu truy cứu trách nhiệm hình sự", "article": 27 },
+              "rules": [
+                {
+                  "rule_id": "27_r1",
+                  "clause": 1,
+                  "logic": "DEFINITION",
+                  "priority": 1,
+                  "conditions": [ { "type": "definition", "text": "Thời hiệu truy cứu trách nhiệm hình sự là thời hạn do Bộ luật này quy định mà khi hết thời hạn đó thì người phạm tội không bị truy cứu trách nhiệm hình sự" } ],
+                  "penalty": { "note": "Định nghĩa" }
+                },
+                {
+                  "rule_id": "27_r2",
+                  "clause": 2,
+                  "logic": "BASE",
+                  "priority": 2,
+                  "conditions": [
+                    { "type": "time_limit", "point": "a", "text": "05 năm đối với tội phạm ít nghiêm trọng" },
+                    { "type": "time_limit", "point": "b", "text": "10 năm đối với tội phạm nghiêm trọng" },
+                    { "type": "time_limit", "point": "c", "text": "15 năm đối với tội phạm rất nghiêm trọng" },
+                    { "type": "time_limit", "point": "d", "text": "20 năm đối với tội phạm đặc biệt nghiêm trọng" }
+                  ],
+                  "penalty": { "note": "Thời hạn truy cứu trách nhiệm hình sự" }
+                },
+                {
+                  "rule_id": "27_r3",
+                  "clause": 3,
+                  "logic": "CALCULATION",
+                  "priority": 3,
+                  "conditions": [ { "type": "calculation", "text": "Thời hiệu truy cứu trách nhiệm hình sự được tính từ ngày tội phạm được thực hiện. Nếu trong thời hạn quy định tại khoản 2 Điều này, người phạm tội lại thực hiện hành vi phạm tội mới mà Bộ luật này quy định mức cao nhất của khung hình phạt đối với tội ấy trên 01 năm tù, thì thời hiệu đối với tội cũ được tính lại kể từ ngày thực hiện hành vi phạm tội mới. Nếu trong thời hạn quy định tại khoản 2 Điều này, người phạm tội cố tình trốn tránh và đã có quyết định truy nã, thì thời hiệu tính lại kể từ khi người đó ra đầu thú hoặc bị bắt giữ" } ],
+                  "penalty": { "note": "Cách tính thời hiệu và trường hợp tính lại" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "28", "name": "Không áp dụng thời hiệu truy cứu trách nhiệm hình sự", "article": 28 },
+              "rules": [
+                {
+                  "rule_id": "28_r1",
+                  "clause": null,
+                  "logic": "EXCEPTION",
+                  "priority": 1,
+                  "conditions": [
+                    { "type": "exception", "point": "1", "text": "Các tội xâm phạm an ninh quốc gia quy định tại Chương XIII của Bộ luật này" },
+                    { "type": "exception", "point": "2", "text": "Các tội phá hoại hòa bình, chống loài người và tội phạm chiến tranh quy định tại Chương XXVI của Bộ luật này" },
+                    { "type": "exception", "point": "3", "text": "Tội tham ô tài sản thuộc trường hợp quy định tại khoản 3 và khoản 4 Điều 353 của Bộ luật này; tội nhận hối lộ thuộc trường hợp quy định tại khoản 3 và khoản 4 Điều 354 của Bộ luật này" }
+                  ],
+                  "penalty": { "note": "Không áp dụng thời hiệu truy cứu trách nhiệm hình sự" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "29", "name": "Căn cứ miễn trách nhiệm hình sự", "article": 29 },
+              "rules": [
+                {
+                  "rule_id": "29_r1",
+                  "clause": 1,
+                  "logic": "IMMUNITY",
+                  "priority": 1,
+                  "conditions": [
+                    { "type": "immunity", "point": "a", "text": "Khi tiến hành điều tra, truy tố hoặc xét xử, do có sự thay đổi chính sách, pháp luật làm cho hành vi phạm tội không còn nguy hiểm cho xã hội nữa" },
+                    { "type": "immunity", "point": "b", "text": "Khi có quyết định đại xá" }
+                  ],
+                  "penalty": { "note": "Miễn trách nhiệm hình sự bắt buộc" }
+                },
+                {
+                  "rule_id": "29_r2",
+                  "clause": 2,
+                  "logic": "IMMUNITY_DISCRETIONARY",
+                  "priority": 2,
+                  "conditions": [
+                    { "type": "immunity", "point": "a", "text": "Khi tiến hành điều tra, truy tố, xét xử do chuyển biến của tình hình mà người phạm tội không còn nguy hiểm cho xã hội nữa" },
+                    { "type": "immunity", "point": "b", "text": "Khi tiến hành điều tra, truy tố, xét xử, người phạm tội mắc bệnh hiểm nghèo dẫn đến không còn khả năng gây nguy hiểm cho xã hội nữa" },
+                    { "type": "immunity", "point": "c", "text": "Trước khi hành vi phạm tội bị phát giác, người phạm tội tự thú, khai rõ sự việc, góp phần có hiệu quả vào việc phát hiện và điều tra tội phạm, cố gắng hạn chế đến mức thấp nhất hậu quả của tội phạm và lập công lớn hoặc có cống hiến đặc biệt, được Nhà nước và xã hội thừa nhận" }
+                  ],
+                  "penalty": { "note": "Miễn trách nhiệm hình sự tùy nghi" }
+                },
+                {
+                  "rule_id": "29_r3",
+                  "clause": 3,
+                  "logic": "IMMUNITY_DISCRETIONARY",
+                  "priority": 3,
+                  "conditions": [ { "type": "immunity", "text": "Người thực hiện tội phạm nghiêm trọng do vô ý hoặc tội phạm ít nghiêm trọng gây thiệt hại về tính mạng, sức khỏe, danh dự, nhân phẩm hoặc tài sản của người khác, đã tự nguyện sửa chữa, bồi thường thiệt hại hoặc khắc phục hậu quả và được người bị hại hoặc người đại diện hợp pháp của người bị hại tự nguyện hòa giải và đề nghị miễn trách nhiệm hình sự, thì có thể được miễn trách nhiệm hình sự" } ],
+                  "penalty": { "note": "Hòa giải với người bị hại" }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "chapter_id": "VI",
+          "name": "Hình phạt",
+          "articles": [
+            {
+              "crime": { "id": "30", "name": "Khái niệm hình phạt", "article": 30 },
+              "rules": [
+                {
+                  "rule_id": "30_r1",
+                  "clause": null,
+                  "logic": "DEFINITION",
+                  "priority": 1,
+                  "conditions": [ { "type": "definition", "text": "Hình phạt là biện pháp cưỡng chế nghiêm khắc nhất của Nhà nước được quy định trong Bộ luật này, do Tòa án quyết định áp dụng đối với người hoặc pháp nhân thương mại phạm tội nhằm tước bỏ hoặc hạn chế quyền, lợi ích của người, pháp nhân thương mại đó" } ],
+                  "penalty": { "note": "Định nghĩa hình phạt" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "31", "name": "Mục đích của hình phạt", "article": 31 },
+              "rules": [
+                {
+                  "rule_id": "31_r1",
+                  "clause": null,
+                  "logic": "PURPOSE",
+                  "priority": 1,
+                  "conditions": [ { "type": "purpose", "text": "Hình phạt không chỉ nhằm trừng trị người, pháp nhân thương mại phạm tội mà còn giáo dục họ ý thức tuân theo pháp luật và các quy tắc của cuộc sống, ngăn ngừa họ phạm tội mới; giáo dục người, pháp nhân thương mại khác tôn trọng pháp luật, phòng ngừa và đấu tranh chống tội phạm" } ],
+                  "penalty": { "note": "Mục đích của hình phạt" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "32", "name": "Các hình phạt đối với người phạm tội", "article": 32 },
+              "rules": [
+                {
+                  "rule_id": "32_r1",
+                  "clause": 1,
+                  "logic": "LIST",
+                  "priority": 1,
+                  "conditions": [
+                    { "type": "penalty_main", "point": "a", "text": "Cảnh cáo" },
+                    { "type": "penalty_main", "point": "b", "text": "Phạt tiền" },
+                    { "type": "penalty_main", "point": "c", "text": "Cải tạo không giam giữ" },
+                    { "type": "penalty_main", "point": "d", "text": "Trục xuất" },
+                    { "type": "penalty_main", "point": "đ", "text": "Tù có thời hạn" },
+                    { "type": "penalty_main", "point": "e", "text": "Tù chung thân" },
+                    { "type": "penalty_main", "point": "g", "text": "Tử hình" }
+                  ],
+                  "penalty": { "note": "Hình phạt chính" }
+                },
+                {
+                  "rule_id": "32_r2",
+                  "clause": 2,
+                  "logic": "LIST",
+                  "priority": 2,
+                  "conditions": [
+                    { "type": "penalty_additional", "point": "a", "text": "Cấm đảm nhiệm chức vụ, cấm hành nghề hoặc làm công việc nhất định" },
+                    { "type": "penalty_additional", "point": "b", "text": "Cấm cư trú" },
+                    { "type": "penalty_additional", "point": "c", "text": "Quản chế" },
+                    { "type": "penalty_additional", "point": "d", "text": "Tước một số quyền công dân" },
+                    { "type": "penalty_additional", "point": "đ", "text": "Tịch thu tài sản" },
+                    { "type": "penalty_additional", "point": "e", "text": "Phạt tiền, khi không áp dụng là hình phạt chính" },
+                    { "type": "penalty_additional", "point": "g", "text": "Trục xuất, khi không áp dụng là hình phạt chính" }
+                  ],
+                  "penalty": { "note": "Hình phạt bổ sung" }
+                },
+                {
+                  "rule_id": "32_r3",
+                  "clause": 3,
+                  "logic": "BASE",
+                  "priority": 3,
+                  "conditions": [ { "type": "principle", "text": "Đối với mỗi tội phạm, người phạm tội chỉ bị áp dụng một hình phạt chính và có thể bị áp dụng một hoặc một số hình phạt bổ sung" } ],
+                  "penalty": { "note": "Nguyên tắc áp dụng hình phạt" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "33", "name": "Các hình phạt đối với pháp nhân thương mại phạm tội", "article": 33 },
+              "rules": [
+                {
+                  "rule_id": "33_r1",
+                  "clause": 1,
+                  "logic": "LIST",
+                  "priority": 1,
+                  "conditions": [
+                    { "type": "penalty_main_entity", "point": "a", "text": "Phạt tiền" },
+                    { "type": "penalty_main_entity", "point": "b", "text": "Đình chỉ hoạt động có thời hạn" },
+                    { "type": "penalty_main_entity", "point": "c", "text": "Đình chỉ hoạt động vĩnh viễn" }
+                  ],
+                  "penalty": { "note": "Hình phạt chính đối với pháp nhân thương mại" }
+                },
+                {
+                  "rule_id": "33_r2",
+                  "clause": 2,
+                  "logic": "LIST",
+                  "priority": 2,
+                  "conditions": [
+                    { "type": "penalty_additional_entity", "point": "a", "text": "Cấm kinh doanh, cấm hoạt động trong một số lĩnh vực nhất định" },
+                    { "type": "penalty_additional_entity", "point": "b", "text": "Cấm huy động vốn" },
+                    { "type": "penalty_additional_entity", "point": "c", "text": "Phạt tiền, khi không áp dụng là hình phạt chính" }
+                  ],
+                  "penalty": { "note": "Hình phạt bổ sung đối với pháp nhân thương mại" }
+                },
+                {
+                  "rule_id": "33_r3",
+                  "clause": 3,
+                  "logic": "BASE",
+                  "priority": 3,
+                  "conditions": [ { "type": "principle", "text": "Đối với mỗi tội phạm, pháp nhân thương mại phạm tội chỉ bị áp dụng một hình phạt chính và có thể bị áp dụng một hoặc một số hình phạt bổ sung" } ],
+                  "penalty": { "note": "Nguyên tắc áp dụng hình phạt" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "34", "name": "Cảnh cáo", "article": 34 },
+              "rules": [
+                {
+                  "rule_id": "34_r1",
+                  "clause": null,
+                  "logic": "BASE",
+                  "priority": 1,
+                  "conditions": [ { "type": "penalty", "text": "Cảnh cáo được áp dụng đối với người phạm tội ít nghiêm trọng và có nhiều tình tiết giảm nhẹ, nhưng chưa đến mức miễn hình phạt" } ],
+                  "penalty": { "note": "Điều kiện áp dụng cảnh cáo" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "35", "name": "Phạt tiền", "article": 35 },
+              "rules": [
+                {
+                  "rule_id": "35_r1",
+                  "clause": 1,
+                  "logic": "BASE",
+                  "priority": 1,
+                  "conditions": [
+                    { "type": "penalty_main", "point": "a", "text": "Người phạm tội ít nghiêm trọng, phạm tội nghiêm trọng do Bộ luật này quy định" },
+                    { "type": "penalty_main", "point": "b", "text": "Người phạm tội rất nghiêm trọng xâm phạm trật tự quản lý kinh tế, môi trường, trật tự công cộng, an toàn công cộng và một số tội phạm khác do Bộ luật này quy định" }
+                  ],
+                  "penalty": { "note": "Phạt tiền là hình phạt chính" }
+                },
+                {
+                  "rule_id": "35_r2",
+                  "clause": 2,
+                  "logic": "ADDITIONAL_PENALTY",
+                  "priority": 2,
+                  "conditions": [ { "type": "penalty_additional", "text": "Hình phạt tiền được áp dụng là hình phạt bổ sung đối với người phạm tội về tham nhũng, ma túy hoặc những tội phạm khác do Bộ luật này quy định" } ],
+                  "penalty": { "note": "Phạt tiền là hình phạt bổ sung" }
+                },
+                {
+                  "rule_id": "35_r3",
+                  "clause": 3,
+                  "logic": "CALCULATION",
+                  "priority": 3,
+                  "conditions": [ { "type": "amount", "text": "Mức tiền phạt được quyết định căn cứ vào tính chất và mức độ nguy hiểm của tội phạm, đồng thời có xét đến tình hình tài sản của người phạm tội, sự biến động của giá cả, nhưng không được thấp hơn 1.000.000 đồng" } ],
+                  "penalty": { "min": 1000000, "note": "Mức phạt tiền tối thiểu" }
+                },
+                {
+                  "rule_id": "35_r4",
+                  "clause": 4,
+                  "logic": "REFERENCE",
+                  "priority": 4,
+                  "conditions": [ { "type": "reference", "text": "Hình phạt tiền đối với pháp nhân thương mại phạm tội được quy định tại Điều 77 của Bộ luật này" } ],
+                  "penalty": { "note": "Tham chiếu Điều 77" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "36", "name": "Cải tạo không giam giữ", "article": 36 },
+              "rules": [
+                {
+                  "rule_id": "36_r1",
+                  "clause": 1,
+                  "logic": "BASE",
+                  "priority": 1,
+                  "conditions": [ { "type": "penalty", "text": "Cải tạo không giam giữ được áp dụng từ 06 tháng đến 03 năm đối với người phạm tội ít nghiêm trọng, phạm tội nghiêm trọng do Bộ luật này quy định mà đang có nơi làm việc ổn định hoặc có nơi cư trú rõ ràng nếu xét thấy không cần thiết phải cách ly người phạm tội khỏi xã hội. Nếu người bị kết án đã bị tạm giữ, tạm giam thì thời gian tạm giữ, tạm giam được trừ vào thời gian chấp hành hình phạt cải tạo không giam giữ, cứ 01 ngày tạm giữ, tạm giam bằng 03 ngày cải tạo không giam giữ" } ],
+                  "penalty": { "min": 0.5, "max": 3, "note": "Thời hạn và điều kiện áp dụng" }
+                },
+                {
+                  "rule_id": "36_r2",
+                  "clause": 2,
+                  "logic": "EXECUTION",
+                  "priority": 2,
+                  "conditions": [ { "type": "execution", "text": "Tòa án giao người bị phạt cải tạo không giam giữ cho cơ quan, tổ chức nơi người đó làm việc, học tập hoặc Ủy ban nhân dân cấp xã nơi người đó cư trú để giám sát, giáo dục. Gia đình người bị kết án có trách nhiệm phối hợp với cơ quan, tổ chức hoặc Ủy ban nhân dân cấp xã trong việc giám sát, giáo dục người đó" } ],
+                  "penalty": { "note": "Giao giám sát, giáo dục" }
+                },
+                {
+                  "rule_id": "36_r3",
+                  "clause": 3,
+                  "logic": "EXECUTION",
+                  "priority": 3,
+                  "conditions": [ { "type": "execution", "text": "Trong thời gian chấp hành án, người bị kết án phải thực hiện một số nghĩa vụ theo các quy định về cải tạo không giam giữ và bị khấu trừ một phần thu nhập từ 05% đến 20% để sung quỹ nhà nước. Việc khấu trừ thu nhập được thực hiện hàng tháng. Trong trường hợp đặc biệt, Tòa án có thể cho miễn việc khấu trừ thu nhập, nhưng phải ghi rõ lý do trong bản án. Không khấu trừ thu nhập đối với người chấp hành án là người đang thực hiện nghĩa vụ quân sự" } ],
+                  "penalty": { "deduction_rate": "05% đến 20%", "note": "Khấu trừ thu nhập" }
+                },
+                {
+                  "rule_id": "36_r4",
+                  "clause": 4,
+                  "logic": "EXECUTION",
+                  "priority": 4,
+                  "conditions": [ { "type": "execution", "text": "Trường hợp người bị phạt cải tạo không giam giữ không có việc làm hoặc bị mất việc làm trong thời gian chấp hành hình phạt này thì phải thực hiện một số công việc lao động phục vụ cộng đồng trong thời gian cải tạo không giam giữ. Thời gian lao động phục vụ cộng đồng không quá 04 giờ trong một ngày và không quá 05 ngày trong 01 tuần. Không áp dụng biện pháp lao động phục vụ cộng đồng đối với phụ nữ có thai hoặc đang nuôi con dưới 06 tháng tuổi, người già yếu, người bị bệnh hiểm nghèo, người khuyết tật nặng hoặc khuyết tật đặc biệt nặng. Người bị kết án cải tạo không giam giữ phải thực hiện những nghĩa vụ quy định tại Luật thi hành án hình sự" } ],
+                  "penalty": { "community_service": "tối đa 04 giờ/ngày, 05 ngày/tuần", "note": "Lao động phục vụ cộng đồng" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "37", "name": "Trục xuất", "article": 37 },
+              "rules": [
+                {
+                  "rule_id": "37_r1",
+                  "clause": null,
+                  "logic": "BASE",
+                  "priority": 1,
+                  "conditions": [ { "type": "penalty", "text": "Trục xuất là buộc người nước ngoài bị kết án phải rời khỏi lãnh thổ nước Cộng hòa xã hội chủ nghĩa Việt Nam. Trục xuất được Tòa án áp dụng là hình phạt chính hoặc hình phạt bổ sung trong từng trường hợp cụ thể" } ],
+                  "penalty": { "note": "Định nghĩa và áp dụng" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "38", "name": "Tù có thời hạn", "article": 38 },
+              "rules": [
+                {
+                  "rule_id": "38_r1",
+                  "clause": 1,
+                  "logic": "BASE",
+                  "priority": 1,
+                  "conditions": [ { "type": "penalty", "text": "Tù có thời hạn là buộc người bị kết án phải chấp hành hình phạt tại cơ sở giam giữ trong một thời hạn nhất định. Tù có thời hạn đối với người phạm một tội có mức tối thiểu là 03 tháng và mức tối đa là 20 năm. Thời gian tạm giữ, tạm giam được trừ vào thời hạn chấp hành hình phạt tù, cứ 01 ngày tạm giữ, tạm giam bằng 01 ngày tù" } ],
+                  "penalty": { "min": 0.25, "max": 20, "note": "Thời hạn tù" }
+                },
+                {
+                  "rule_id": "38_r2",
+                  "clause": 2,
+                  "logic": "EXCEPTION",
+                  "priority": 2,
+                  "conditions": [ { "type": "exception", "text": "Không áp dụng hình phạt tù có thời hạn đối với người lần đầu phạm tội ít nghiêm trọng do vô ý và có nơi cư trú rõ ràng" } ],
+                  "penalty": { "note": "Trường hợp không áp dụng tù có thời hạn" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "39", "name": "Tù chung thân", "article": 39 },
+              "rules": [
+                {
+                  "rule_id": "39_r1",
+                  "clause": null,
+                  "logic": "BASE",
+                  "priority": 1,
+                  "conditions": [ { "type": "penalty", "text": "Tù chung thân là hình phạt tù không thời hạn được áp dụng đối với người phạm tội đặc biệt nghiêm trọng, nhưng chưa đến mức bị xử phạt tử hình. Không áp dụng hình phạt tù chung thân đối với người dưới 18 tuổi phạm tội" } ],
+                  "penalty": { "note": "Định nghĩa và đối tượng không áp dụng" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "40", "name": "Tử hình", "article": 40 },
+              "rules": [
+                {
+                  "rule_id": "40_r1",
+                  "clause": 1,
+                  "logic": "BASE",
+                  "priority": 1,
+                  "conditions": [ { "type": "penalty", "text": "Tử hình là hình phạt đặc biệt chỉ áp dụng đối với người phạm tội đặc biệt nghiêm trọng thuộc một trong nhóm các tội xâm phạm an ninh quốc gia, xâm phạm tính mạng con người, các tội phạm về ma túy, tham nhũng và một số tội phạm đặc biệt nghiêm trọng khác do Bộ luật này quy định" } ],
+                  "penalty": { "note": "Phạm vi áp dụng" }
+                },
+                {
+                  "rule_id": "40_r2",
+                  "clause": 2,
+                  "logic": "EXCEPTION",
+                  "priority": 2,
+                  "conditions": [ { "type": "exception", "text": "Không áp dụng hình phạt tử hình đối với người dưới 18 tuổi khi phạm tội, phụ nữ có thai, phụ nữ đang nuôi con dưới 36 tháng tuổi hoặc người đủ 75 tuổi trở lên khi phạm tội hoặc khi xét xử" } ],
+                  "penalty": { "note": "Đối tượng không áp dụng tử hình" }
+                },
+                {
+                  "rule_id": "40_r3",
+                  "clause": 3,
+                  "logic": "EXCEPTION",
+                  "priority": 3,
+                  "conditions": [
+                    { "type": "exception", "point": "a", "text": "Phụ nữ có thai hoặc phụ nữ đang nuôi con dưới 36 tháng tuổi" },
+                    { "type": "exception", "point": "b", "text": "Người đủ 75 tuổi trở lên" },
+                    { "type": "exception", "point": "c", "text": "Người mắc bệnh ung thư giai đoạn cuối" }
+                  ],
+                  "penalty": { "note": "Trường hợp không thi hành án tử hình" }
+                },
+                {
+                  "rule_id": "40_r4",
+                  "clause": 4,
+                  "logic": "COMMUTATION",
+                  "priority": 4,
+                  "conditions": [ { "type": "commutation", "text": "Trong trường hợp quy định tại khoản 3 Điều này hoặc trường hợp người bị kết án tử hình được ân giảm, thì hình phạt tử hình được chuyển thành tù chung thân" } ],
+                  "penalty": { "note": "Chuyển thành tù chung thân" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "41", "name": "Cấm đảm nhiệm chức vụ, cấm hành nghề hoặc làm công việc nhất định", "article": 41 },
+              "rules": [
+                {
+                  "rule_id": "41_r1",
+                  "clause": null,
+                  "logic": "ADDITIONAL_PENALTY",
+                  "priority": 1,
+                  "conditions": [ { "type": "penalty", "text": "Cấm đảm nhiệm chức vụ, cấm hành nghề hoặc làm công việc nhất định được áp dụng khi xét thấy nếu để người bị kết án đảm nhiệm chức vụ, hành nghề hoặc làm công việc đó thì có thể gây nguy hại cho xã hội. Thời hạn cấm là từ 01 năm đến 05 năm, kể từ ngày chấp hành xong hình phạt tù hoặc từ ngày bản án có hiệu lực pháp luật nếu hình phạt chính là cảnh cáo, phạt tiền, cải tạo không giam giữ hoặc trong trường hợp người bị kết án được hưởng án treo" } ],
+                  "penalty": { "min": 1, "max": 5, "note": "Thời hạn cấm" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "42", "name": "Cấm cư trú", "article": 42 },
+              "rules": [
+                {
+                  "rule_id": "42_r1",
+                  "clause": null,
+                  "logic": "ADDITIONAL_PENALTY",
+                  "priority": 1,
+                  "conditions": [ { "type": "penalty", "text": "Cấm cư trú là buộc người bị kết án phạt tù không được tạm trú hoặc thường trú ở một số địa phương nhất định. Thời hạn cấm cư trú là từ 01 năm đến 05 năm, kể từ ngày chấp hành xong hình phạt tù" } ],
+                  "penalty": { "min": 1, "max": 5, "note": "Thời hạn cấm cư trú" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "43", "name": "Quản chế", "article": 43 },
+              "rules": [
+                {
+                  "rule_id": "43_r1",
+                  "clause": null,
+                  "logic": "ADDITIONAL_PENALTY",
+                  "priority": 1,
+                  "conditions": [ { "type": "penalty", "text": "Quản chế là buộc người bị kết án phạt tù phải cư trú, làm ăn sinh sống và cải tạo ở một địa phương nhất định dưới sự kiểm soát, giáo dục của chính quyền và nhân dân địa phương. Trong thời gian quản chế, người bị kết án không được tự ý ra khỏi nơi cư trú, bị tước một số quyền công dân theo quy định tại Điều 44 của Bộ luật này và bị cấm hành nghề hoặc làm công việc nhất định. Quản chế được áp dụng đối với người phạm tội xâm phạm an ninh quốc gia, người tái phạm nguy hiểm hoặc trong những trường hợp khác do Bộ luật này quy định. Thời hạn quản chế là từ 01 năm đến 05 năm, kể từ ngày chấp hành xong hình phạt tù" } ],
+                  "penalty": { "min": 1, "max": 5, "note": "Thời hạn quản chế" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "44", "name": "Tước một số quyền công dân", "article": 44 },
+              "rules": [
+                {
+                  "rule_id": "44_r1",
+                  "clause": 1,
+                  "logic": "ADDITIONAL_PENALTY",
+                  "priority": 1,
+                  "conditions": [
+                    { "type": "right", "point": "a", "text": "Quyền ứng cử đại biểu cơ quan quyền lực Nhà nước" },
+                    { "type": "right", "point": "b", "text": "Quyền làm việc trong các cơ quan nhà nước và quyền phục vụ trong lực lượng vũ trang nhân dân" }
+                  ],
+                  "penalty": { "note": "Các quyền bị tước" }
+                },
+                {
+                  "rule_id": "44_r2",
+                  "clause": 2,
+                  "logic": "ADDITIONAL_PENALTY",
+                  "priority": 2,
+                  "conditions": [ { "type": "duration", "text": "Thời hạn tước một số quyền công dân là từ 01 năm đến 05 năm, kể từ ngày chấp hành xong hình phạt tù hoặc kể từ ngày bản án có hiệu lực pháp luật trong trường hợp người bị kết án được hưởng án treo" } ],
+                  "penalty": { "min": 1, "max": 5, "note": "Thời hạn tước quyền" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "45", "name": "Tịch thu tài sản", "article": 45 },
+              "rules": [
+                {
+                  "rule_id": "45_r1",
+                  "clause": null,
+                  "logic": "ADDITIONAL_PENALTY",
+                  "priority": 1,
+                  "conditions": [ { "type": "penalty", "text": "Tịch thu tài sản là tước một phần hoặc toàn bộ tài sản thuộc sở hữu của người bị kết án để nộp vào ngân sách nhà nước. Tịch thu tài sản chỉ được áp dụng đối với người bị kết án về tội phạm nghiêm trọng, tội phạm rất nghiêm trọng hoặc tội phạm đặc biệt nghiêm trọng xâm phạm an ninh quốc gia, tội phạm về ma túy, tham nhũng hoặc tội phạm khác do Bộ luật này quy định. Khi tịch thu toàn bộ tài sản vẫn để cho người bị kết án và gia đình họ có điều kiện sinh sống" } ],
+                  "penalty": { "note": "Định nghĩa và điều kiện áp dụng" }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "chapter_id": "VII",
+          "name": "Các biện pháp tư pháp",
+          "articles": [
+            {
+              "crime": { "id": "46", "name": "Các biện pháp tư pháp", "article": 46 },
+              "rules": [
+                {
+                  "rule_id": "46_r1",
+                  "clause": 1,
+                  "logic": "LIST",
+                  "priority": 1,
+                  "conditions": [
+                    { "type": "judicial_measure", "point": "a", "text": "Tịch thu vật, tiền trực tiếp liên quan đến tội phạm" },
+                    { "type": "judicial_measure", "point": "b", "text": "Trả lại tài sản, sửa chữa hoặc bồi thường thiệt hại; buộc công khai xin lỗi" },
+                    { "type": "judicial_measure", "point": "c", "text": "Bắt buộc chữa bệnh" }
+                  ],
+                  "penalty": { "note": "Biện pháp tư pháp đối với người phạm tội" }
+                },
+                {
+                  "rule_id": "46_r2",
+                  "clause": 2,
+                  "logic": "LIST",
+                  "priority": 2,
+                  "conditions": [
+                    { "type": "judicial_measure_entity", "point": "a", "text": "Tịch thu vật, tiền trực tiếp liên quan đến tội phạm" },
+                    { "type": "judicial_measure_entity", "point": "b", "text": "Trả lại tài sản, sửa chữa hoặc bồi thường thiệt hại; buộc công khai xin lỗi" },
+                    { "type": "judicial_measure_entity", "point": "c", "text": "Khôi phục lại tình trạng ban đầu" },
+                    { "type": "judicial_measure_entity", "point": "d", "text": "Thực hiện một số biện pháp nhằm khắc phục, ngăn chặn hậu quả tiếp tục xảy ra" }
+                  ],
+                  "penalty": { "note": "Biện pháp tư pháp đối với pháp nhân thương mại phạm tội" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "47", "name": "Tịch thu vật, tiền trực tiếp liên quan đến tội phạm", "article": 47 },
+              "rules": [
+                {
+                  "rule_id": "47_r1",
+                  "clause": 1,
+                  "logic": "BASE",
+                  "priority": 1,
+                  "conditions": [
+                    { "type": "confiscation", "point": "a", "text": "Công cụ, phương tiện dùng vào việc phạm tội" },
+                    { "type": "confiscation", "point": "b", "text": "Vật hoặc tiền do phạm tội hoặc do mua bán, đổi chác những thứ ấy mà có; khoản thu lợi bất chính từ việc phạm tội" },
+                    { "type": "confiscation", "point": "c", "text": "Vật thuộc loại Nhà nước cấm tàng trữ, cấm lưu hành" }
+                  ],
+                  "penalty": { "note": "Đối tượng bị tịch thu" }
+                },
+                {
+                  "rule_id": "47_r2",
+                  "clause": 2,
+                  "logic": "EXCEPTION",
+                  "priority": 2,
+                  "conditions": [ { "type": "exception", "text": "Đối với vật, tiền bị người phạm tội chiếm đoạt hoặc sử dụng trái phép, thì không tịch thu mà trả lại cho chủ sở hữu hoặc người quản lý hợp pháp" } ],
+                  "penalty": { "note": "Trả lại tài sản" }
+                },
+                {
+                  "rule_id": "47_r3",
+                  "clause": 3,
+                  "logic": "BASE",
+                  "priority": 3,
+                  "conditions": [ { "type": "confiscation", "text": "Vật, tiền là tài sản của người khác, nếu người này có lỗi trong việc để cho người phạm tội sử dụng vào việc thực hiện tội phạm, thì có thể bị tịch thu" } ],
+                  "penalty": { "note": "Tịch thu tài sản của người có lỗi" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "48", "name": "Trả lại tài sản, sửa chữa hoặc bồi thường thiệt hại; buộc công khai xin lỗi", "article": 48 },
+              "rules": [
+                {
+                  "rule_id": "48_r1",
+                  "clause": 1,
+                  "logic": "BASE",
+                  "priority": 1,
+                  "conditions": [ { "type": "remedy", "text": "Người phạm tội phải trả lại tài sản đã chiếm đoạt cho chủ sở hữu hoặc người quản lý hợp pháp, phải sửa chữa hoặc bồi thường thiệt hại vật chất đã được xác định do hành vi phạm tội gây ra" } ],
+                  "penalty": { "note": "Trả lại tài sản và bồi thường thiệt hại vật chất" }
+                },
+                {
+                  "rule_id": "48_r2",
+                  "clause": 2,
+                  "logic": "BASE",
+                  "priority": 2,
+                  "conditions": [ { "type": "remedy", "text": "Trong trường hợp phạm tội gây thiệt hại về tinh thần, Tòa án buộc người phạm tội phải bồi thường về vật chất, công khai xin lỗi người bị hại" } ],
+                  "penalty": { "note": "Bồi thường thiệt hại tinh thần" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "49", "name": "Bắt buộc chữa bệnh", "article": 49 },
+              "rules": [
+                {
+                  "rule_id": "49_r1",
+                  "clause": 1,
+                  "logic": "JUDICIAL_MEASURE",
+                  "priority": 1,
+                  "conditions": [ { "type": "measure", "text": "Đối với người thực hiện hành vi nguy hiểm cho xã hội trong khi mắc bệnh quy định tại Điều 21 của Bộ luật này, Viện kiểm sát hoặc Tòa án căn cứ vào kết luận giám định pháp y, giám định pháp y tâm thần có thể quyết định đưa họ vào một cơ sở khám bệnh, chữa bệnh để bắt buộc chữa bệnh" } ],
+                  "penalty": { "note": "Áp dụng đối với người không có năng lực TNHS" }
+                },
+                {
+                  "rule_id": "49_r2",
+                  "clause": 2,
+                  "logic": "JUDICIAL_MEASURE",
+                  "priority": 2,
+                  "conditions": [ { "type": "measure", "text": "Đối với người phạm tội trong khi có năng lực trách nhiệm hình sự nhưng trước khi bị kết án đã mắc bệnh tới mức mất khả năng nhận thức hoặc khả năng điều khiển hành vi của mình, thì căn cứ vào kết luận giám định pháp y, giám định pháp y tâm thần, Tòa án có thể quyết định đưa họ vào một cơ sở khám bệnh, chữa bệnh để bắt buộc chữa bệnh. Sau khi có kết luận khỏi bệnh hoặc có kết luận đủ khả năng nhận thức, đủ khả năng điều khiển hành vi, người đó có thể phải chịu trách nhiệm hình sự" } ],
+                  "penalty": { "note": "Áp dụng trước khi kết án" }
+                },
+                {
+                  "rule_id": "49_r3",
+                  "clause": 3,
+                  "logic": "JUDICIAL_MEASURE",
+                  "priority": 3,
+                  "conditions": [ { "type": "measure", "text": "Đối với người đang chấp hành hình phạt tù mà bị bệnh tới mức mất khả năng nhận thức hoặc khả năng điều khiển hành vi của mình, thì căn cứ vào kết luận giám định pháp y, giám định pháp y tâm thần, Tòa án có thể quyết định đưa họ vào một cơ sở khám bệnh, chữa bệnh để bắt buộc chữa bệnh. Sau khi có kết luận khỏi bệnh hoặc có kết luận đủ khả năng nhận thức, đủ khả năng điều khiển hành vi, nếu không có lý do khác để miễn chấp hành hình phạt, thì người đó phải tiếp tục chấp hành hình phạt. Thời gian bắt buộc chữa bệnh được trừ vào thời hạn chấp hành hình phạt tù" } ],
+                  "penalty": { "note": "Áp dụng trong khi chấp hành hình phạt tù" }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "chapter_id": "VIII",
+          "name": "Quyết định hình phạt",
+          "articles": [
+            {
+              "crime": { "id": "50", "name": "Căn cứ quyết định hình phạt", "article": 50 },
+              "rules": [
+                {
+                  "rule_id": "50_r1",
+                  "clause": 1,
+                  "logic": "BASE",
+                  "priority": 1,
+                  "conditions": [ { "type": "basis", "text": "Khi quyết định hình phạt, Tòa án căn cứ vào quy định của Bộ luật này, cân nhắc tính chất và mức độ nguy hiểm cho xã hội của hành vi phạm tội, nhân thân người phạm tội, các tình tiết giảm nhẹ và tăng nặng trách nhiệm hình sự" } ],
+                  "penalty": { "note": "Căn cứ quyết định hình phạt" }
+                },
+                {
+                  "rule_id": "50_r2",
+                  "clause": 2,
+                  "logic": "BASE",
+                  "priority": 2,
+                  "conditions": [ { "type": "basis", "text": "Khi quyết định áp dụng hình phạt tiền, ngoài căn cứ quy định tại khoản 1 Điều này, Tòa án căn cứ vào tình hình tài sản, khả năng thi hành của người phạm tội" } ],
+                  "penalty": { "note": "Căn cứ riêng đối với hình phạt tiền" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "51", "name": "Các tình tiết giảm nhẹ trách nhiệm hình sự", "article": 51 },
+              "rules": [
+                {
+                  "rule_id": "51_r1",
+                  "clause": 1,
+                  "logic": "LIST",
+                  "priority": 1,
+                  "conditions": [
+                    { "type": "mitigating", "point": "a", "text": "Người phạm tội đã ngăn chặn hoặc làm giảm bớt tác hại của tội phạm" },
+                    { "type": "mitigating", "point": "b", "text": "Người phạm tội tự nguyện sửa chữa, bồi thường thiệt hại hoặc khắc phục hậu quả" },
+                    { "type": "mitigating", "point": "c", "text": "Phạm tội trong trường hợp vượt quá giới hạn phòng vệ chính đáng" },
+                    { "type": "mitigating", "point": "d", "text": "Phạm tội trong trường hợp vượt quá yêu cầu của tình thế cấp thiết" },
+                    { "type": "mitigating", "point": "đ", "text": "Phạm tội trong trường hợp vượt quá mức cần thiết khi bắt giữ người phạm tội" },
+                    { "type": "mitigating", "point": "e", "text": "Phạm tội trong trường hợp bị kích động về tinh thần do hành vi trái pháp luật của nạn nhân gây ra" },
+                    { "type": "mitigating", "point": "g", "text": "Phạm tội vì hoàn cảnh đặc biệt khó khăn mà không phải do mình tự gây ra" },
+                    { "type": "mitigating", "point": "h", "text": "Phạm tội nhưng chưa gây thiệt hại hoặc gây thiệt hại không lớn" },
+                    { "type": "mitigating", "point": "i", "text": "Phạm tội lần đầu và thuộc trường hợp ít nghiêm trọng" },
+                    { "type": "mitigating", "point": "k", "text": "Phạm tội vì bị người khác đe dọa hoặc cưỡng bức" },
+                    { "type": "mitigating", "point": "l", "text": "Phạm tội trong trường hợp bị hạn chế khả năng nhận thức mà không phải do lỗi của mình gây ra" },
+                    { "type": "mitigating", "point": "m", "text": "Phạm tội do lạc hậu" },
+                    { "type": "mitigating", "point": "n", "text": "Người phạm tội là phụ nữ có thai" },
+                    { "type": "mitigating", "point": "o", "text": "Người phạm tội là người đủ 70 tuổi trở lên" },
+                    { "type": "mitigating", "point": "p", "text": "Người phạm tội là người khuyết tật nặng hoặc khuyết tật đặc biệt nặng" },
+                    { "type": "mitigating", "point": "q", "text": "Người phạm tội là người có bệnh bị hạn chế khả năng nhận thức hoặc khả năng điều khiển hành vi của mình" },
+                    { "type": "mitigating", "point": "r", "text": "Người phạm tội tự thú" },
+                    { "type": "mitigating", "point": "s", "text": "Người phạm tội thành khẩn khai báo, ăn năn hối cải" },
+                    { "type": "mitigating", "point": "t", "text": "Người phạm tội tích cực hợp tác với cơ quan có trách nhiệm trong việc phát hiện tội phạm hoặc trong quá trình giải quyết vụ án" },
+                    { "type": "mitigating", "point": "u", "text": "Người phạm tội đã lập công chuộc tội" },
+                    { "type": "mitigating", "point": "v", "text": "Người phạm tội là người có thành tích xuất sắc trong sản xuất, chiến đấu, học tập hoặc công tác" },
+                    { "type": "mitigating", "point": "x", "text": "Người phạm tội là người có công với cách mạng hoặc là cha, mẹ, vợ, chồng, con của liệt sĩ" }
+                  ],
+                  "penalty": { "note": "Danh sách tình tiết giảm nhẹ" }
+                },
+                {
+                  "rule_id": "51_r2",
+                  "clause": 2,
+                  "logic": "DISCRETIONARY",
+                  "priority": 2,
+                  "conditions": [ { "type": "mitigating", "text": "Khi quyết định hình phạt, Tòa án có thể coi đầu thú hoặc tình tiết khác là tình tiết giảm nhẹ, nhưng phải ghi rõ lý do giảm nhẹ trong bản án" } ],
+                  "penalty": { "note": "Tình tiết giảm nhẹ khác" }
+                },
+                {
+                  "rule_id": "51_r3",
+                  "clause": 3,
+                  "logic": "EXCEPTION",
+                  "priority": 3,
+                  "conditions": [ { "type": "exception", "text": "Các tình tiết giảm nhẹ đã được Bộ luật này quy định là dấu hiệu định tội hoặc định khung thì không được coi là tình tiết giảm nhẹ trong khi quyết định hình phạt" } ],
+                  "penalty": { "note": "Không áp dụng nếu đã là dấu hiệu định tội/định khung" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "52", "name": "Các tình tiết tăng nặng trách nhiệm hình sự", "article": 52 },
+              "rules": [
+                {
+                  "rule_id": "52_r1",
+                  "clause": 1,
+                  "logic": "LIST",
+                  "priority": 1,
+                  "conditions": [
+                    { "type": "aggravating", "point": "a", "text": "Phạm tội có tổ chức" },
+                    { "type": "aggravating", "point": "b", "text": "Phạm tội có tính chất chuyên nghiệp" },
+                    { "type": "aggravating", "point": "c", "text": "Lợi dụng chức vụ, quyền hạn để phạm tội" },
+                    { "type": "aggravating", "point": "d", "text": "Phạm tội có tính chất côn đồ" },
+                    { "type": "aggravating", "point": "đ", "text": "Phạm tội vì động cơ đê hèn" },
+                    { "type": "aggravating", "point": "e", "text": "Cố tình thực hiện tội phạm đến cùng" },
+                    { "type": "aggravating", "point": "g", "text": "Phạm tội 02 lần trở lên" },
+                    { "type": "aggravating", "point": "h", "text": "Tái phạm hoặc tái phạm nguy hiểm" },
+                    { "type": "aggravating", "point": "i", "text": "Phạm tội đối với người dưới 16 tuổi, phụ nữ có thai hoặc người đủ 70 tuổi trở lên" },
+                    { "type": "aggravating", "point": "k", "text": "Phạm tội đối với người ở trong tình trạng không thể tự vệ được, người khuyết tật nặng hoặc khuyết tật đặc biệt nặng, người bị hạn chế khả năng nhận thức hoặc người lệ thuộc mình về mặt vật chất, tinh thần, công tác hoặc các mặt khác" },
+                    { "type": "aggravating", "point": "l", "text": "Lợi dụng hoàn cảnh chiến tranh, tình trạng khẩn cấp, thiên tai, dịch bệnh hoặc những khó khăn đặc biệt khác của xã hội để phạm tội" },
+                    { "type": "aggravating", "point": "m", "text": "Dùng thủ đoạn tinh vi, xảo quyệt hoặc tàn ác để phạm tội" },
+                    { "type": "aggravating", "point": "n", "text": "Dùng thủ đoạn hoặc phương tiện có khả năng gây nguy hại cho nhiều người để phạm tội" },
+                    { "type": "aggravating", "point": "o", "text": "Xúi giục người dưới 18 tuổi phạm tội" },
+                    { "type": "aggravating", "point": "p", "text": "Có hành động xảo quyệt hoặc hung hãn nhằm trốn tránh hoặc che giấu tội phạm" }
+                  ],
+                  "penalty": { "note": "Danh sách tình tiết tăng nặng" }
+                },
+                {
+                  "rule_id": "52_r2",
+                  "clause": 2,
+                  "logic": "EXCEPTION",
+                  "priority": 2,
+                  "conditions": [ { "type": "exception", "text": "Các tình tiết đã được Bộ luật này quy định là dấu hiệu định tội hoặc định khung hình phạt thì không được coi là tình tiết tăng nặng" } ],
+                  "penalty": { "note": "Không áp dụng nếu đã là dấu hiệu định tội/định khung" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "53", "name": "Tái phạm, tái phạm nguy hiểm", "article": 53 },
+              "rules": [
+                {
+                  "rule_id": "53_r1",
+                  "clause": 1,
+                  "logic": "DEFINITION",
+                  "priority": 1,
+                  "conditions": [ { "type": "definition", "text": "Tái phạm là trường hợp đã bị kết án, chưa được xóa án tích mà lại thực hiện hành vi phạm tội do cố ý hoặc thực hiện hành vi phạm tội về tội phạm rất nghiêm trọng, tội phạm đặc biệt nghiêm trọng do vô ý" } ],
+                  "penalty": { "note": "Định nghĩa tái phạm" }
+                },
+                {
+                  "rule_id": "53_r2",
+                  "clause": 2,
+                  "logic": "DEFINITION",
+                  "priority": 2,
+                  "conditions": [
+                    { "type": "definition", "point": "a", "text": "Đã bị kết án về tội phạm rất nghiêm trọng, tội phạm đặc biệt nghiêm trọng do cố ý, chưa được xóa án tích mà lại thực hiện hành vi phạm tội về tội phạm rất nghiêm trọng, tội phạm đặc biệt nghiêm trọng do vô ý" },
+                    { "type": "definition", "point": "b", "text": "Đã tái phạm, chưa được xóa án tích mà lại thực hiện hành vi phạm tội do cố ý" }
+                  ],
+                  "penalty": { "note": "Định nghĩa tái phạm nguy hiểm" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "54", "name": "Quyết định hình phạt dưới mức thấp nhất của khung hình phạt được áp dụng", "article": 54 },
+              "rules": [
+                {
+                  "rule_id": "54_r1",
+                  "clause": 1,
+                  "logic": "MITIGATION",
+                  "priority": 1,
+                  "conditions": [ { "type": "mitigation", "text": "Tòa án có thể quyết định một hình phạt dưới mức thấp nhất của khung hình phạt được áp dụng nhưng phải trong khung hình phạt liền kề nhẹ hơn của điều luật khi người phạm tội có ít nhất hai tình tiết giảm nhẹ quy định tại khoản 1 Điều 51 của Bộ luật này" } ],
+                  "penalty": { "note": "Giảm nhẹ xuống khung liền kề" }
+                },
+                {
+                  "rule_id": "54_r2",
+                  "clause": 2,
+                  "logic": "MITIGATION",
+                  "priority": 2,
+                  "conditions": [ { "type": "mitigation", "text": "Tòa án có thể quyết định một hình phạt dưới mức thấp nhất của khung hình phạt được áp dụng nhưng không bắt buộc phải trong khung hình phạt liền kề nhẹ hơn của điều luật đối với người phạm tội lần đầu là người giúp sức trong vụ án đồng phạm nhưng có vai trò không đáng kể" } ],
+                  "penalty": { "note": "Giảm nhẹ đặc biệt cho người giúp sức không đáng kể" }
+                },
+                {
+                  "rule_id": "54_r3",
+                  "clause": 3,
+                  "logic": "MITIGATION",
+                  "priority": 3,
+                  "conditions": [ { "type": "mitigation", "text": "Trong trường hợp có đủ các điều kiện quy định tại khoản 1 hoặc khoản 2 Điều này nhưng điều luật chỉ có một khung hình phạt hoặc khung hình phạt đó là khung hình phạt nhẹ nhất, thì Tòa án có thể quyết định hình phạt dưới mức thấp nhất của khung hình phạt hoặc chuyển sang một hình phạt khác thuộc loại nhẹ hơn. Lý do của việc giảm nhẹ phải được ghi rõ trong bản án" } ],
+                  "penalty": { "note": "Trường hợp chỉ có một khung hình phạt" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "55", "name": "Quyết định hình phạt trong trường hợp phạm nhiều tội", "article": 55 },
+              "rules": [
+                {
+                  "rule_id": "55_r1",
+                  "clause": 1,
+                  "logic": "AGGREGATION",
+                  "priority": 1,
+                  "conditions": [
+                    { "type": "main_penalty", "point": "a", "text": "Nếu các hình phạt đã tuyên cùng là cải tạo không giam giữ hoặc cùng là tù có thời hạn, thì các hình phạt đó được cộng lại thành hình phạt chung; hình phạt chung không được vượt quá 03 năm đối với hình phạt cải tạo không giam giữ, 30 năm đối với hình phạt tù có thời hạn" },
+                    { "type": "main_penalty", "point": "b", "text": "Nếu các hình phạt đã tuyên là cải tạo không giam giữ, tù có thời hạn, thì hình phạt cải tạo không giam giữ được chuyển đổi thành hình phạt tù theo tỷ lệ cứ 03 ngày cải tạo không giam giữ được chuyển đổi thành 01 ngày tù để tổng hợp thành hình phạt tù" },
+                    { "type": "main_penalty", "point": "c", "text": "Nếu hình phạt nặng nhất trong số các hình phạt đã tuyên là tù chung thân thì hình phạt chung là tù chung thân" },
+                    { "type": "main_penalty", "point": "d", "text": "Nếu hình phạt nặng nhất trong số các hình phạt đã tuyên là tử hình thì hình phạt chung là tử hình" },
+                    { "type": "main_penalty", "point": "đ", "text": "Phạt tiền không tổng hợp với các loại hình phạt khác; các khoản tiền phạt được cộng lại thành hình phạt chung" },
+                    { "type": "main_penalty", "point": "e", "text": "Trục xuất không tổng hợp với các loại hình phạt khác" }
+                  ],
+                  "penalty": { "note": "Tổng hợp hình phạt chính" }
+                },
+                {
+                  "rule_id": "55_r2",
+                  "clause": 2,
+                  "logic": "AGGREGATION",
+                  "priority": 2,
+                  "conditions": [
+                    { "type": "additional_penalty", "point": "a", "text": "Nếu các hình phạt đã tuyên là cùng loại thì hình phạt chung được quyết định trong giới hạn do Bộ luật này quy định đối với loại hình phạt đó; riêng đối với hình phạt tiền thì các khoản tiền phạt được cộng lại thành hình phạt chung" },
+                    { "type": "additional_penalty", "point": "b", "text": "Nếu các hình phạt đã tuyên là khác loại thì người bị kết án phải chấp hành tất cả các hình phạt đã tuyên" }
+                  ],
+                  "penalty": { "note": "Tổng hợp hình phạt bổ sung" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "56", "name": "Tổng hợp hình phạt của nhiều bản án", "article": 56 },
+              "rules": [
+                {
+                  "rule_id": "56_r1",
+                  "clause": 1,
+                  "logic": "AGGREGATION",
+                  "priority": 1,
+                  "conditions": [ { "type": "aggregation", "text": "Trong trường hợp một người đang phải chấp hành một bản án mà lại bị xét xử về tội đã phạm trước khi có bản án này, thì Tòa án quyết định hình phạt đối với tội đang bị xét xử, sau đó quyết định hình phạt chung theo quy định tại Điều 55 của Bộ luật này. Thời gian đã chấp hành hình phạt của bản án trước được trừ vào thời hạn chấp hành hình phạt chung" } ],
+                  "penalty": { "note": "Tổng hợp với bản án trước" }
+                },
+                {
+                  "rule_id": "56_r2",
+                  "clause": 2,
+                  "logic": "AGGREGATION",
+                  "priority": 2,
+                  "conditions": [ { "type": "aggregation", "text": "Khi xét xử một người đang phải chấp hành một bản án mà lại thực hiện hành vi phạm tội mới, Tòa án quyết định hình phạt đối với tội mới, sau đó tổng hợp với phần hình phạt chưa chấp hành của bản án trước rồi quyết định hình phạt chung theo quy định tại Điều 55 của Bộ luật này" } ],
+                  "penalty": { "note": "Tổng hợp với bản án mới" }
+                },
+                {
+                  "rule_id": "56_r3",
+                  "clause": 3,
+                  "logic": "AGGREGATION",
+                  "priority": 3,
+                  "conditions": [ { "type": "aggregation", "text": "Trong trường hợp một người phải chấp hành nhiều bản án đã có hiệu lực pháp luật mà các hình phạt của các bản án chưa được tổng hợp, thì Chánh án Tòa án có thẩm quyền ra quyết định tổng hợp hình phạt của các bản án theo quy định tại khoản 1 và khoản 2 Điều này" } ],
+                  "penalty": { "note": "Tổng hợp nhiều bản án đã có hiệu lực" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "57", "name": "Quyết định hình phạt trong trường hợp chuẩn bị phạm tội, phạm tội chưa đạt", "article": 57 },
+              "rules": [
+                {
+                  "rule_id": "57_r1",
+                  "clause": 1,
+                  "logic": "BASE",
+                  "priority": 1,
+                  "conditions": [ { "type": "sentencing", "text": "Đối với hành vi chuẩn bị phạm tội và hành vi phạm tội chưa đạt, hình phạt được quyết định theo các điều của Bộ luật này về các tội phạm tương ứng tùy theo tính chất, mức độ nguy hiểm cho xã hội của hành vi, mức độ thực hiện ý định phạm tội và những tình tiết khác khiến cho tội phạm không thực hiện được đến cùng" } ],
+                  "penalty": { "note": "Nguyên tắc chung" }
+                },
+                {
+                  "rule_id": "57_r2",
+                  "clause": 2,
+                  "logic": "PREPARATION",
+                  "priority": 2,
+                  "conditions": [ { "type": "preparation", "text": "Đối với trường hợp chuẩn bị phạm tội, hình phạt được quyết định trong phạm vi khung hình phạt được quy định trong các điều luật cụ thể" } ],
+                  "penalty": { "note": "Khung hình phạt cho chuẩn bị phạm tội" }
+                },
+                {
+                  "rule_id": "57_r3",
+                  "clause": 3,
+                  "logic": "ATTEMPT",
+                  "priority": 3,
+                  "conditions": [ { "type": "attempt", "text": "Đối với trường hợp phạm tội chưa đạt, nếu điều luật được áp dụng có quy định hình phạt cao nhất là tù chung thân hoặc tử hình thì áp dụng hình phạt tù không quá 20 năm; nếu là tù có thời hạn thì mức hình phạt không quá ba phần tư mức phạt tù mà điều luật quy định" } ],
+                  "penalty": { "max": 20, "note": "Mức phạt tối đa cho phạm tội chưa đạt" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "58", "name": "Quyết định hình phạt trong trường hợp đồng phạm", "article": 58 },
+              "rules": [
+                {
+                  "rule_id": "58_r1",
+                  "clause": null,
+                  "logic": "BASE",
+                  "priority": 1,
+                  "conditions": [ { "type": "sentencing", "text": "Khi quyết định hình phạt đối với những người đồng phạm, Tòa án phải xét đến tính chất của đồng phạm, tính chất và mức độ tham gia phạm tội của từng người đồng phạm. Các tình tiết giảm nhẹ, tăng nặng hoặc loại trừ trách nhiệm hình sự thuộc người đồng phạm nào, thì chỉ áp dụng đối với người đó" } ],
+                  "penalty": { "note": "Nguyên tắc cá thể hóa trách nhiệm hình sự trong đồng phạm" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "59", "name": "Miễn hình phạt", "article": 59 },
+              "rules": [
+                {
+                  "rule_id": "59_r1",
+                  "clause": null,
+                  "logic": "IMMUNITY",
+                  "priority": 1,
+                  "conditions": [ { "type": "immunity", "text": "Người phạm tội có thể được miễn hình phạt nếu thuộc trường hợp quy định tại khoản 1 và khoản 2 Điều 54 của Bộ luật này mà đáng được khoan hồng đặc biệt nhưng chưa đến mức được miễn trách nhiệm hình sự" } ],
+                  "penalty": { "note": "Điều kiện miễn hình phạt" }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "chapter_id": "IX",
+          "name": "Thời hiệu thi hành bản án, miễn chấp hành hình phạt, giảm thời hạn chấp hành hình phạt, án treo, tha tù trước thời hạn có điều kiện, hoãn chấp hành hình phạt tù, tạm đình chỉ chấp hành hình phạt tù",
+          "articles": [
+            {
+              "crime": { "id": "60", "name": "Thời hiệu thi hành bản án", "article": 60 },
+              "rules": [
+                {
+                  "rule_id": "60_r1",
+                  "clause": 1,
+                  "logic": "DEFINITION",
+                  "priority": 1,
+                  "conditions": [ { "type": "definition", "text": "Thời hiệu thi hành bản án hình sự là thời hạn do Bộ luật này quy định mà khi hết thời hạn đó người bị kết án, pháp nhân thương mại bị kết án không phải chấp hành bản án đã tuyên" } ],
+                  "penalty": { "note": "Định nghĩa" }
+                },
+                {
+                  "rule_id": "60_r2",
+                  "clause": 2,
+                  "logic": "BASE",
+                  "priority": 2,
+                  "conditions": [
+                    { "type": "time_limit", "point": "a", "text": "05 năm đối với các trường hợp xử phạt tiền, cải tạo không giam giữ hoặc xử phạt tù từ 03 năm trở xuống" },
+                    { "type": "time_limit", "point": "b", "text": "10 năm đối với các trường hợp xử phạt tù từ trên 03 năm đến 15 năm" },
+                    { "type": "time_limit", "point": "c", "text": "15 năm đối với các trường hợp xử phạt tù từ trên 15 năm đến 30 năm" },
+                    { "type": "time_limit", "point": "d", "text": "20 năm đối với các trường hợp xử phạt tù chung thân hoặc tử hình" }
+                  ],
+                  "penalty": { "note": "Thời hiệu thi hành bản án đối với cá nhân" }
+                },
+                {
+                  "rule_id": "60_r3",
+                  "clause": 3,
+                  "logic": "BASE",
+                  "priority": 3,
+                  "conditions": [ { "type": "time_limit", "text": "Thời hiệu thi hành bản án hình sự đối với pháp nhân thương mại là 05 năm" } ],
+                  "penalty": { "note": "Thời hiệu đối với pháp nhân thương mại" }
+                },
+                {
+                  "rule_id": "60_r4",
+                  "clause": 4,
+                  "logic": "CALCULATION",
+                  "priority": 4,
+                  "conditions": [ { "type": "calculation", "text": "Thời hiệu thi hành bản án hình sự được tính từ ngày bản án có hiệu lực pháp luật. Nếu trong thời hạn quy định tại khoản 2 và khoản 3 Điều này, người bị kết án, pháp nhân thương mại bị kết án lại thực hiện hành vi phạm tội mới, thì thời hiệu tính lại kể từ ngày thực hiện hành vi phạm tội mới" } ],
+                  "penalty": { "note": "Cách tính và trường hợp tính lại" }
+                },
+                {
+                  "rule_id": "60_r5",
+                  "clause": 5,
+                  "logic": "CALCULATION",
+                  "priority": 5,
+                  "conditions": [ { "type": "calculation", "text": "Trong thời hạn quy định tại khoản 2 Điều này, người bị kết án cố tình trốn tránh và đã có quyết định truy nã, thì thời hiệu tính lại kể từ ngày người đó ra trình diện hoặc bị bắt giữ" } ],
+                  "penalty": { "note": "Tính lại thời hiệu khi trốn tránh" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "61", "name": "Không áp dụng thời hiệu thi hành bản án", "article": 61 },
+              "rules": [
+                {
+                  "rule_id": "61_r1",
+                  "clause": null,
+                  "logic": "EXCEPTION",
+                  "priority": 1,
+                  "conditions": [ { "type": "exception", "text": "Không áp dụng thời hiệu thi hành bản án đối với các tội quy định tại Chương XIII, Chương XXVI, khoản 3 và khoản 4 Điều 353, khoản 3 và khoản 4 Điều 354 của Bộ luật này" } ],
+                  "penalty": { "note": "Các tội không áp dụng thời hiệu" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "62", "name": "Miễn chấp hành hình phạt", "article": 62 },
+              "rules": [
+                {
+                  "rule_id": "62_r1",
+                  "clause": 1,
+                  "logic": "IMMUNITY",
+                  "priority": 1,
+                  "conditions": [ { "type": "immunity", "text": "Người bị kết án được miễn chấp hành hình phạt khi được đặc xá hoặc đại xá" } ],
+                  "penalty": { "note": "Miễn do đặc xá, đại xá" }
+                },
+                {
+                  "rule_id": "62_r2",
+                  "clause": 2,
+                  "logic": "IMMUNITY_DISCRETIONARY",
+                  "priority": 2,
+                  "conditions": [
+                    { "type": "condition", "point": "a", "text": "Sau khi bị kết án đã lập công" },
+                    { "type": "condition", "point": "b", "text": "Mắc bệnh hiểm nghèo" },
+                    { "type": "condition", "point": "c", "text": "Chấp hành tốt pháp luật, có hoàn cảnh gia đình đặc biệt khó khăn và xét thấy người đó không còn nguy hiểm cho xã hội nữa" }
+                  ],
+                  "penalty": { "note": "Miễn chấp hành hình phạt đối với cải tạo không giam giữ hoặc tù đến 03 năm" }
+                },
+                {
+                  "rule_id": "62_r3",
+                  "clause": 3,
+                  "logic": "IMMUNITY_DISCRETIONARY",
+                  "priority": 3,
+                  "conditions": [ { "type": "immunity", "text": "Người bị kết án phạt tù có thời hạn trên 03 năm, chưa chấp hành hình phạt nếu đã lập công lớn hoặc mắc bệnh hiểm nghèo và người đó không còn nguy hiểm cho xã hội nữa, thì theo đề nghị của Viện trưởng Viện kiểm sát, Tòa án có thể quyết định miễn chấp hành toàn bộ hình phạt" } ],
+                  "penalty": { "note": "Miễn toàn bộ hình phạt tù trên 03 năm" }
+                },
+                {
+                  "rule_id": "62_r4",
+                  "clause": 4,
+                  "logic": "IMMUNITY_DISCRETIONARY",
+                  "priority": 4,
+                  "conditions": [ { "type": "immunity", "text": "Người bị kết án phạt tù đến 03 năm, đã được tạm đình chỉ chấp hành hình phạt, nếu trong thời gian được tạm đình chỉ mà đã lập công hoặc chấp hành tốt pháp luật, hoàn cảnh gia đình đặc biệt khó khăn và xét thấy người đó không còn nguy hiểm cho xã hội nữa, thì theo đề nghị của Viện trưởng Viện kiểm sát, Tòa án có thể quyết định miễn chấp hành phần hình phạt còn lại" } ],
+                  "penalty": { "note": "Miễn phần hình phạt còn lại sau tạm đình chỉ" }
+                },
+                {
+                  "rule_id": "62_r5",
+                  "clause": 5,
+                  "logic": "IMMUNITY_DISCRETIONARY",
+                  "priority": 5,
+                  "conditions": [ { "type": "immunity", "text": "Người bị kết án phạt tiền đã tích cực chấp hành được một phần hình phạt nhưng bị lâm vào hoàn cảnh kinh tế đặc biệt khó khăn kéo dài do thiên tai, hỏa hoạn, tai nạn hoặc ốm đau gây ra mà không thể tiếp tục chấp hành được phần hình phạt còn lại hoặc lập công lớn, thì theo đề nghị của Viện trưởng Viện kiểm sát, Tòa án có thể quyết định miễn chấp hành phần tiền phạt còn lại" } ],
+                  "penalty": { "note": "Miễn phần tiền phạt còn lại" }
+                },
+                {
+                  "rule_id": "62_r6",
+                  "clause": 6,
+                  "logic": "IMMUNITY_DISCRETIONARY",
+                  "priority": 6,
+                  "conditions": [ { "type": "immunity", "text": "Người bị phạt cấm cư trú hoặc quản chế, nếu đã chấp hành được một phần hai thời hạn hình phạt và cải tạo tốt, thì theo đề nghị của cơ quan thi hành án hình sự cấp huyện nơi người đó chấp hành hình phạt, Tòa án có thể quyết định miễn chấp hành phần hình phạt còn lại" } ],
+                  "penalty": { "note": "Miễn phần còn lại của cấm cư trú hoặc quản chế" }
+                },
+                {
+                  "rule_id": "62_r7",
+                  "clause": 7,
+                  "logic": "OBLIGATION",
+                  "priority": 7,
+                  "conditions": [ { "type": "obligation", "text": "Người được miễn chấp hành hình phạt theo quy định tại Điều này vẫn phải thực hiện đầy đủ các nghĩa vụ dân sự do Tòa án tuyên trong bản án" } ],
+                  "penalty": { "note": "Nghĩa vụ dân sự vẫn phải thực hiện" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "63", "name": "Giảm mức hình phạt đã tuyên", "article": 63 },
+              "rules": [
+                {
+                  "rule_id": "63_r1",
+                  "clause": 1,
+                  "logic": "REDUCTION",
+                  "priority": 1,
+                  "conditions": [ { "type": "reduction", "text": "Người bị kết án cải tạo không giam giữ, phạt tù có thời hạn hoặc phạt tù chung thân, nếu đã chấp hành hình phạt được một thời gian nhất định, có nhiều tiến bộ và đã bồi thường được một phần nghĩa vụ dân sự, thì theo đề nghị của cơ quan thi hành án hình sự có thẩm quyền, Tòa án có thể quyết định giảm thời hạn chấp hành hình phạt. Người bị kết án tù chung thân về tội tham ô tài sản, tội nhận hối lộ chỉ có thể được xét giảm thời hạn chấp hành hình phạt khi đã chủ động nộp lại ít nhất ba phần tư tài sản tham ô, nhận hối lộ và đã hợp tác tích cực với cơ quan chức năng trong việc phát hiện, điều tra, xử lý tội phạm hoặc lập công lớn. Thời gian đã chấp hành hình phạt để được xét giảm lần đầu là một phần ba thời hạn đối với hình phạt cải tạo không giam giữ, hình phạt tù có thời hạn, 12 năm đối với tù chung thân" } ],
+                  "penalty": { "note": "Điều kiện giảm án lần đầu" }
+                },
+                {
+                  "rule_id": "63_r2",
+                  "clause": 2,
+                  "logic": "REDUCTION",
+                  "priority": 2,
+                  "conditions": [ { "type": "reduction", "text": "Một người có thể được giảm nhiều lần, nhưng phải bảo đảm chấp hành được một phần hai mức hình phạt đã tuyên. Người bị kết án tù chung thân, lần đầu được giảm xuống 30 năm tù và dù được giảm nhiều lần cũng phải bảo đảm thời hạn thực tế chấp hành hình phạt là 20 năm" } ],
+                  "penalty": { "note": "Giới hạn giảm án" }
+                },
+                {
+                  "rule_id": "63_r3",
+                  "clause": 3,
+                  "logic": "REDUCTION",
+                  "priority": 3,
+                  "conditions": [ { "type": "reduction", "text": "Trường hợp người bị kết án về nhiều tội trong đó có tội bị kết án phạt tù chung thân thì Tòa án chỉ xét giảm lần đầu xuống 30 năm tù sau khi đã chấp hành được 15 năm tù và dù được giảm nhiều lần nhưng vẫn phải bảo đảm thời gian thực tế chấp hành là 25 năm" } ],
+                  "penalty": { "note": "Giảm án đối với người phạm nhiều tội có tù chung thân" }
+                },
+                {
+                  "rule_id": "63_r4",
+                  "clause": 4,
+                  "logic": "REDUCTION",
+                  "priority": 4,
+                  "conditions": [ { "type": "reduction", "text": "Đối với người đã được giảm một phần hình phạt mà lại thực hiện hành vi phạm tội mới ít nghiêm trọng do cố ý, thì Tòa án chỉ xét giảm lần đầu sau khi người đó đã chấp hành được một phần hai mức hình phạt chung" } ],
+                  "penalty": { "note": "Giảm án sau khi phạm tội mới ít nghiêm trọng" }
+                },
+                {
+                  "rule_id": "63_r5",
+                  "clause": 5,
+                  "logic": "REDUCTION",
+                  "priority": 5,
+                  "conditions": [ { "type": "reduction", "text": "Đối với người đã được giảm một phần hình phạt mà lại thực hiện hành vi phạm tội mới nghiêm trọng, rất nghiêm trọng hoặc đặc biệt nghiêm trọng, thì Tòa án chỉ xét giảm lần đầu sau khi người đó đã chấp hành được hai phần ba mức hình phạt chung hoặc trường hợp hình phạt chung là tù chung thân thì việc xét giảm án thực hiện theo quy định tại khoản 3 Điều này" } ],
+                  "penalty": { "note": "Giảm án sau khi phạm tội mới nghiêm trọng trở lên" }
+                },
+                {
+                  "rule_id": "63_r6",
+                  "clause": 6,
+                  "logic": "REDUCTION",
+                  "priority": 6,
+                  "conditions": [ { "type": "reduction", "text": "Đối với người bị kết án tử hình được ân giảm hoặc người bị kết án tử hình thuộc trường hợp quy định tại khoản 3 Điều 40 của Bộ luật này thì thời gian đã chấp hành hình phạt để được xét giảm lần đầu là 25 năm và dù được giảm nhiều lần nhưng vẫn phải bảo đảm thời hạn thực tế chấp hành hình phạt là 30 năm" } ],
+                  "penalty": { "note": "Giảm án đối với tử hình được ân giảm" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "64", "name": "Giảm thời hạn chấp hành hình phạt trong trường hợp đặc biệt", "article": 64 },
+              "rules": [
+                {
+                  "rule_id": "64_r1",
+                  "clause": null,
+                  "logic": "REDUCTION_SPECIAL",
+                  "priority": 1,
+                  "conditions": [ { "type": "reduction_special", "text": "Người bị kết án có lý do đáng được khoan hồng thêm như đã lập công, đã quá già yếu hoặc mắc bệnh hiểm nghèo, thì Tòa án có thể xét giảm vào thời gian sớm hơn hoặc với mức cao hơn so với thời gian và mức quy định tại Điều 63 của Bộ luật này" } ],
+                  "penalty": { "note": "Giảm đặc biệt" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "65", "name": "Án treo", "article": 65 },
+              "rules": [
+                {
+                  "rule_id": "65_r1",
+                  "clause": 1,
+                  "logic": "SUSPENDED_SENTENCE",
+                  "priority": 1,
+                  "conditions": [ { "type": "suspended_sentence", "text": "Khi xử phạt tù không quá 03 năm, căn cứ vào nhân thân của người phạm tội và các tình tiết giảm nhẹ, nếu xét thấy không cần phải bắt chấp hành hình phạt tù, thì Tòa án cho hưởng án treo và ấn định thời gian thử thách từ 01 năm đến 05 năm và thực hiện các nghĩa vụ trong thời gian thử thách theo quy định của Luật thi hành án hình sự" } ],
+                  "penalty": { "probation": "01 năm đến 05 năm", "note": "Điều kiện hưởng án treo" }
+                },
+                {
+                  "rule_id": "65_r2",
+                  "clause": 2,
+                  "logic": "SUSPENDED_SENTENCE",
+                  "priority": 2,
+                  "conditions": [ { "type": "supervision", "text": "Trong thời gian thử thách, Tòa án giao người được hưởng án treo cho cơ quan, tổ chức nơi người đó làm việc hoặc chính quyền địa phương nơi người đó cư trú để giám sát, giáo dục. Gia đình người bị kết án có trách nhiệm phối hợp với cơ quan, tổ chức, chính quyền địa phương trong việc giám sát, giáo dục người đó" } ],
+                  "penalty": { "note": "Giám sát, giáo dục người hưởng án treo" }
+                },
+                {
+                  "rule_id": "65_r3",
+                  "clause": 3,
+                  "logic": "SUSPENDED_SENTENCE",
+                  "priority": 3,
+                  "conditions": [ { "type": "additional_penalty", "text": "Tòa án có thể quyết định áp dụng đối với người được hưởng án treo hình phạt bổ sung nếu trong điều luật áp dụng có quy định hình phạt này" } ],
+                  "penalty": { "note": "Áp dụng hình phạt bổ sung" }
+                },
+                {
+                  "rule_id": "65_r4",
+                  "clause": 4,
+                  "logic": "REDUCTION",
+                  "priority": 4,
+                  "conditions": [ { "type": "reduction", "text": "Người được hưởng án treo đã chấp hành được một phần hai thời gian thử thách và có nhiều tiến bộ thì theo đề nghị của cơ quan, tổ chức có trách nhiệm giám sát, giáo dục, Tòa án có thể quyết định rút ngắn thời gian thử thách" } ],
+                  "penalty": { "note": "Rút ngắn thời gian thử thách" }
+                },
+                {
+                  "rule_id": "65_r5",
+                  "clause": 5,
+                  "logic": "REVOCATION",
+                  "priority": 5,
+                  "conditions": [ { "type": "revocation", "text": "Trong thời gian thử thách, nếu người được hưởng án treo cố ý vi phạm nghĩa vụ theo quy định của Luật thi hành án hình sự 02 lần trở lên, thì Tòa án có thể quyết định buộc người đó phải chấp hành hình phạt tù của bản án đã cho hưởng án treo. Trường hợp thực hiện hành vi phạm tội mới thì Tòa án buộc người đó phải chấp hành hình phạt của bản án trước và tổng hợp với hình phạt của bản án mới theo quy định tại Điều 56 của Bộ luật này" } ],
+                  "penalty": { "note": "Buộc chấp hành hình phạt tù khi vi phạm" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "66", "name": "Tha tù trước thời hạn có điều kiện", "article": 66 },
+              "rules": [
+                {
+                  "rule_id": "66_r1",
+                  "clause": 1,
+                  "logic": "CONDITIONAL_RELEASE",
+                  "priority": 1,
+                  "conditions": [
+                    { "type": "condition", "point": "a", "text": "Phạm tội lần đầu" },
+                    { "type": "condition", "point": "b", "text": "Có nhiều tiến bộ, có ý thức cải tạo tốt" },
+                    { "type": "condition", "point": "c", "text": "Có nơi cư trú rõ ràng" },
+                    { "type": "condition", "point": "d", "text": "Đã chấp hành xong hình phạt bổ sung là hình phạt tiền, nghĩa vụ bồi thường thiệt hại và án phí" },
+                    { "type": "condition", "point": "đ", "text": "Đã chấp hành được ít nhất là một phần hai mức phạt tù có thời hạn hoặc ít nhất là 15 năm đối với trường hợp bị phạt tù chung thân nhưng đã được giảm xuống tù có thời hạn. Trường hợp người phạm tội là người có công với cách mạng, thân nhân của người có công với cách mạng, người đủ 70 tuổi trở lên, người khuyết tật nặng hoặc khuyết tật đặc biệt nặng, phụ nữ đang nuôi con dưới 36 tháng tuổi thì phải chấp hành được ít nhất là một phần ba mức phạt tù có thời hạn hoặc ít nhất là 12 năm đối với trường hợp bị phạt tù chung thân nhưng đã được giảm xuống tù có thời hạn" },
+                    { "type": "condition", "point": "e", "text": "Không thuộc một trong các trường hợp phạm tội quy định tại khoản 2 Điều này" }
+                  ],
+                  "penalty": { "note": "Điều kiện tha tù trước thời hạn có điều kiện" }
+                },
+                {
+                  "rule_id": "66_r2",
+                  "clause": 2,
+                  "logic": "EXCEPTION",
+                  "priority": 2,
+                  "conditions": [
+                    { "type": "exception", "point": "a", "text": "Người bị kết án về một trong các tội quy định tại Chương XIII, Chương XXVI, Điều 299 của Bộ luật này; người bị kết án 10 năm tù trở lên về một trong các tội quy định tại Chương XIV của Bộ luật này do cố ý hoặc người bị kết án 07 năm tù trở lên đối với một trong các tội quy định tại các điều 168, 169, 248, 251 và 252 của Bộ luật này" },
+                    { "type": "exception", "point": "b", "text": "Người bị kết án tử hình được ân giảm hoặc thuộc trường hợp quy định tại khoản 3 Điều 40 của Bộ luật này" }
+                  ],
+                  "penalty": { "note": "Trường hợp không áp dụng tha tù trước thời hạn có điều kiện" }
+                },
+                {
+                  "rule_id": "66_r3",
+                  "clause": 3,
+                  "logic": "PROCEDURE",
+                  "priority": 3,
+                  "conditions": [ { "type": "procedure", "text": "Theo đề nghị của cơ quan thi hành án hình sự có thẩm quyền, Tòa án quyết định tha tù trước thời hạn có điều kiện đối với người bị kết án. Người được tha tù trước thời hạn có điều kiện phải thực hiện các nghĩa vụ trong thời gian thử thách. Thời gian thử thách bằng thời gian còn lại của hình phạt tù" } ],
+                  "penalty": { "note": "Thủ tục và thời gian thử thách" }
+                },
+                {
+                  "rule_id": "66_r4",
+                  "clause": 4,
+                  "logic": "REVOCATION",
+                  "priority": 4,
+                  "conditions": [ { "type": "revocation", "text": "Người được tha tù trước thời hạn có điều kiện cố ý vi phạm nghĩa vụ 02 lần trở lên hoặc bị xử phạt vi phạm hành chính 02 lần trở lên trong thời gian thử thách, thì Tòa án có thể hủy bỏ quyết định tha tù trước thời hạn có điều kiện đối với người đó và buộc họ phải chấp hành phần hình phạt tù còn lại chưa chấp hành. Nếu người đó thực hiện hành vi phạm tội mới trong thời gian thử thách thì Tòa án buộc người đó chấp hành hình phạt của bản án mới và tổng hợp với phần hình phạt tù chưa chấp hành của bản án trước theo quy định tại Điều 56 của Bộ luật này" } ],
+                  "penalty": { "note": "Hủy bỏ quyết định tha tù trước thời hạn" }
+                },
+                {
+                  "rule_id": "66_r5",
+                  "clause": 5,
+                  "logic": "REDUCTION",
+                  "priority": 5,
+                  "conditions": [ { "type": "reduction", "text": "Người được tha tù trước thời hạn có điều kiện đã chấp hành được ít nhất là một phần hai thời gian thử thách và có nhiều tiến bộ thì theo đề nghị của cơ quan thi hành án hình sự có thẩm quyền, Tòa án có thể quyết định rút ngắn thời gian thử thách" } ],
+                  "penalty": { "note": "Rút ngắn thời gian thử thách" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "67", "name": "Hoãn chấp hành hình phạt tù", "article": 67 },
+              "rules": [
+                {
+                  "rule_id": "67_r1",
+                  "clause": 1,
+                  "logic": "POSTPONEMENT",
+                  "priority": 1,
+                  "conditions": [
+                    { "type": "condition", "point": "a", "text": "Bị bệnh nặng thì được hoãn cho đến khi sức khỏe được hồi phục" },
+                    { "type": "condition", "point": "b", "text": "Phụ nữ có thai hoặc đang nuôi con dưới 36 tháng tuổi, thì được hoãn cho đến khi con đủ 36 tháng tuổi" },
+                    { "type": "condition", "point": "c", "text": "Là người lao động duy nhất trong gia đình, nếu phải chấp hành hình phạt tù thì gia đình sẽ gặp khó khăn đặc biệt, được hoãn đến 01 năm, trừ trường hợp người đó bị kết án về các tội xâm phạm an ninh quốc gia hoặc các tội khác là tội phạm rất nghiêm trọng, tội phạm đặc biệt nghiêm trọng" },
+                    { "type": "condition", "point": "d", "text": "Bị kết án về tội phạm ít nghiêm trọng, do nhu cầu công vụ, thì được hoãn đến 01 năm" }
+                  ],
+                  "penalty": { "note": "Các trường hợp hoãn chấp hành hình phạt tù" }
+                },
+                {
+                  "rule_id": "67_r2",
+                  "clause": 2,
+                  "logic": "CONSEQUENCE",
+                  "priority": 2,
+                  "conditions": [ { "type": "consequence", "text": "Trong thời gian được hoãn chấp hành hình phạt tù, nếu người được hoãn chấp hành hình phạt lại thực hiện hành vi phạm tội mới, thì Tòa án buộc người đó phải chấp hành hình phạt trước và tổng hợp với hình phạt của bản án mới theo quy định tại Điều 56 của Bộ luật này" } ],
+                  "penalty": { "note": "Phạm tội mới trong thời gian hoãn" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "68", "name": "Tạm đình chỉ chấp hành hình phạt tù", "article": 68 },
+              "rules": [
+                {
+                  "rule_id": "68_r1",
+                  "clause": 1,
+                  "logic": "SUSPENSION",
+                  "priority": 1,
+                  "conditions": [ { "type": "suspension", "text": "Người đang chấp hành hình phạt tù mà thuộc một trong các trường hợp quy định tại khoản 1 Điều 67 của Bộ luật này, thì có thể được tạm đình chỉ chấp hành hình phạt tù" } ],
+                  "penalty": { "note": "Điều kiện tạm đình chỉ" }
+                },
+                {
+                  "rule_id": "68_r2",
+                  "clause": 2,
+                  "logic": "CALCULATION",
+                  "priority": 2,
+                  "conditions": [ { "type": "calculation", "text": "Thời gian tạm đình chỉ không được tính vào thời gian chấp hành hình phạt tù" } ],
+                  "penalty": { "note": "Không tính thời gian tạm đình chỉ" }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "chapter_id": "X",
+          "name": "Xóa án tích",
+          "articles": [
+            {
+              "crime": { "id": "69", "name": "Xóa án tích", "article": 69 },
+              "rules": [
+                {
+                  "rule_id": "69_r1",
+                  "clause": 1,
+                  "logic": "DEFINITION",
+                  "priority": 1,
+                  "conditions": [ { "type": "definition", "text": "Người bị kết án được xóa án tích theo quy định tại các điều từ Điều 70 đến Điều 73 của Bộ luật này. Người được xóa án tích coi như chưa bị kết án" } ],
+                  "penalty": { "note": "Hiệu lực của xóa án tích" }
+                },
+                {
+                  "rule_id": "69_r2",
+                  "clause": 2,
+                  "logic": "EXCEPTION",
+                  "priority": 2,
+                  "conditions": [ { "type": "exception", "text": "Người bị kết án do lỗi vô ý về tội phạm ít nghiêm trọng, tội phạm nghiêm trọng và người được miễn hình phạt không bị coi là có án tích" } ],
+                  "penalty": { "note": "Trường hợp không bị coi là có án tích" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "70", "name": "Đương nhiên được xóa án tích", "article": 70 },
+              "rules": [
+                {
+                  "rule_id": "70_r1",
+                  "clause": 1,
+                  "logic": "BASE",
+                  "priority": 1,
+                  "conditions": [ { "type": "scope", "text": "Đương nhiên được xóa án tích được áp dụng đối với người bị kết án không phải về các tội quy định tại Chương XIII và Chương XXVI của Bộ luật này khi họ đã chấp hành xong hình phạt chính, thời gian thử thách án treo hoặc hết thời hiệu thi hành bản án và đáp ứng các điều kiện quy định tại khoản 2 và khoản 3 Điều này" } ],
+                  "penalty": { "note": "Đối tượng áp dụng" }
+                },
+                {
+                  "rule_id": "70_r2",
+                  "clause": 2,
+                  "logic": "AUTOMATIC",
+                  "priority": 2,
+                  "conditions": [
+                    { "type": "time_limit", "point": "a", "text": "01 năm trong trường hợp bị phạt cảnh cáo, phạt tiền, cải tạo không giam giữ, phạt tù nhưng được hưởng án treo" },
+                    { "type": "time_limit", "point": "b", "text": "02 năm trong trường hợp bị phạt tù đến 05 năm" },
+                    { "type": "time_limit", "point": "c", "text": "03 năm trong trường hợp bị phạt tù từ trên 05 năm đến 15 năm" },
+                    { "type": "time_limit", "point": "d", "text": "05 năm trong trường hợp bị phạt tù từ trên 15 năm, tù chung thân hoặc tử hình nhưng đã được giảm án. Trường hợp người bị kết án đang chấp hành hình phạt bổ sung là quản chế, cấm cư trú, cấm đảm nhiệm chức vụ, cấm hành nghề hoặc làm công việc nhất định, tước một số quyền công dân mà thời hạn phải chấp hành dài hơn thời hạn quy định tại các điểm a, b và c khoản này thì thời hạn đương nhiên được xóa án tích sẽ hết vào thời điểm người đó chấp hành xong hình phạt bổ sung" }
+                  ],
+                  "penalty": { "note": "Thời hạn đương nhiên xóa án tích" }
+                },
+                {
+                  "rule_id": "70_r3",
+                  "clause": 3,
+                  "logic": "AUTOMATIC",
+                  "priority": 3,
+                  "conditions": [ { "type": "time_limit", "text": "Người bị kết án đương nhiên được xóa án tích, nếu từ khi hết thời hiệu thi hành bản án, người đó không thực hiện hành vi phạm tội mới trong thời hạn quy định tại khoản 2 Điều này" } ],
+                  "penalty": { "note": "Xóa án tích khi hết thời hiệu thi hành bản án" }
+                },
+                {
+                  "rule_id": "70_r4",
+                  "clause": 4,
+                  "logic": "PROCEDURE",
+                  "priority": 4,
+                  "conditions": [ { "type": "procedure", "text": "Cơ quan quản lý cơ sở dữ liệu lý lịch tư pháp có trách nhiệm cập nhật thông tin về tình hình án tích của người bị kết án và khi có yêu cầu thì cấp phiếu lý lịch tư pháp xác nhận không có án tích, nếu có đủ điều kiện quy định tại khoản 2 hoặc khoản 3 Điều này" } ],
+                  "penalty": { "note": "Thủ tục cấp phiếu lý lịch tư pháp" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "71", "name": "Xóa án tích theo quyết định của Tòa án", "article": 71 },
+              "rules": [
+                {
+                  "rule_id": "71_r1",
+                  "clause": 1,
+                  "logic": "JUDICIAL",
+                  "priority": 1,
+                  "conditions": [ { "type": "scope", "text": "Xóa án tích theo quyết định của Tòa án được áp dụng đối với người bị kết án về một trong các tội quy định tại Chương XIII và Chương XXVI của Bộ luật này. Tòa án quyết định việc xóa án tích đối với người bị kết án căn cứ vào tính chất của tội phạm đã thực hiện, thái độ chấp hành pháp luật, thái độ lao động của người bị kết án và các điều kiện quy định tại khoản 2 Điều này" } ],
+                  "penalty": { "note": "Đối tượng và căn cứ" }
+                },
+                {
+                  "rule_id": "71_r2",
+                  "clause": 2,
+                  "logic": "JUDICIAL",
+                  "priority": 2,
+                  "conditions": [
+                    { "type": "time_limit", "point": "a", "text": "01 năm trong trường hợp bị phạt cảnh cáo, phạt cải tạo không giam giữ, phạt tù nhưng được hưởng án treo" },
+                    { "type": "time_limit", "point": "b", "text": "03 năm trong trường hợp bị phạt tù đến 05 năm" },
+                    { "type": "time_limit", "point": "c", "text": "05 năm trong trường hợp bị phạt tù từ trên 05 năm đến 15 năm" },
+                    { "type": "time_limit", "point": "d", "text": "07 năm trong trường hợp bị phạt tù trên 15 năm, tù chung thân hoặc tử hình nhưng đã được giảm án. Trường hợp người bị kết án đang chấp hành hình phạt bổ sung là quản chế, cấm cư trú, tước một số quyền công dân mà thời hạn phải chấp hành dài hơn thời hạn quy định tại điểm a, điểm b khoản này thì Tòa án quyết định việc xóa án tích từ khi người đó chấp hành xong hình phạt bổ sung" }
+                  ],
+                  "penalty": { "note": "Thời hạn để được xét xóa án tích" }
+                },
+                {
+                  "rule_id": "71_r3",
+                  "clause": 3,
+                  "logic": "PROCEDURE",
+                  "priority": 3,
+                  "conditions": [ { "type": "procedure", "text": "Người bị Tòa án bác đơn xin xóa án tích lần đầu, thì sau 01 năm kể từ ngày bị Tòa án bác đơn mới được xin xóa án tích; nếu bị bác đơn lần thứ hai trở đi, thì sau 02 năm kể từ ngày bị Tòa án bác đơn mới được xin xóa án tích" } ],
+                  "penalty": { "note": "Thời hạn xin lại sau khi bị bác đơn" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "72", "name": "Xóa án tích trong trường hợp đặc biệt", "article": 72 },
+              "rules": [
+                {
+                  "rule_id": "72_r1",
+                  "clause": null,
+                  "logic": "SPECIAL",
+                  "priority": 1,
+                  "conditions": [ { "type": "special", "text": "Trong trường hợp người bị kết án có những biểu hiện tiến bộ rõ rệt và đã lập công, được cơ quan, tổ chức nơi người đó công tác hoặc chính quyền địa phương nơi người đó cư trú đề nghị, thì Tòa án quyết định việc xóa án tích nếu người đó đã bảo đảm được ít nhất một phần ba thời hạn quy định tại khoản 2 Điều 70 và khoản 2 Điều 71 của Bộ luật này" } ],
+                  "penalty": { "note": "Xóa án tích đặc biệt" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "73", "name": "Cách tính thời hạn để xóa án tích", "article": 73 },
+              "rules": [
+                {
+                  "rule_id": "73_r1",
+                  "clause": 1,
+                  "logic": "CALCULATION",
+                  "priority": 1,
+                  "conditions": [ { "type": "calculation", "text": "Thời hạn để xóa án tích quy định tại Điều 70 và Điều 71 của Bộ luật này căn cứ vào hình phạt chính đã tuyên" } ],
+                  "penalty": { "note": "Căn cứ vào hình phạt chính" }
+                },
+                {
+                  "rule_id": "73_r2",
+                  "clause": 2,
+                  "logic": "CALCULATION",
+                  "priority": 2,
+                  "conditions": [ { "type": "calculation", "text": "Người bị kết án chưa được xóa án tích mà thực hiện hành vi phạm tội mới và bị Tòa án kết án bằng bản án có hiệu lực pháp luật thì thời hạn để xóa án tích cũ được tính lại kể từ ngày chấp hành xong hình phạt chính hoặc thời gian thử thách án treo của bản án mới hoặc từ ngày bản án mới hết thời hiệu thi hành" } ],
+                  "penalty": { "note": "Tính lại thời hạn khi phạm tội mới" }
+                },
+                {
+                  "rule_id": "73_r3",
+                  "clause": 3,
+                  "logic": "CALCULATION",
+                  "priority": 3,
+                  "conditions": [ { "type": "calculation", "text": "Người bị kết án trong trường hợp phạm nhiều tội mà có tội thuộc trường hợp đương nhiên được xóa án tích, có tội thuộc trường hợp xóa án tích theo quyết định của Tòa án thì căn cứ vào thời hạn quy định tại Điều 71 của Bộ luật này Tòa án quyết định việc xóa án tích đối với người đó" } ],
+                  "penalty": { "note": "Phạm nhiều tội" }
+                },
+                {
+                  "rule_id": "73_r4",
+                  "clause": 4,
+                  "logic": "EQUIVALENCE",
+                  "priority": 4,
+                  "conditions": [ { "type": "equivalence", "text": "Người được miễn chấp hành phần hình phạt còn lại cũng được coi như đã chấp hành xong hình phạt" } ],
+                  "penalty": { "note": "Miễn chấp hành phần còn lại" }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "chapter_id": "XI",
+          "name": "Những quy định đối với pháp nhân thương mại phạm tội",
+          "articles": [
+            {
+              "crime": { "id": "74", "name": "Áp dụng quy định của Bộ luật hình sự đối với pháp nhân thương mại phạm tội", "article": 74 },
+              "rules": [
+                {
+                  "rule_id": "74_r1",
+                  "clause": null,
+                  "logic": "BASE",
+                  "priority": 1,
+                  "conditions": [ { "type": "scope", "text": "Pháp nhân thương mại phạm tội phải chịu trách nhiệm hình sự theo những quy định của Chương này; theo quy định khác của Phần thứ nhất của Bộ luật này không trái với quy định của Chương này" } ],
+                  "penalty": { "note": "Áp dụng quy định chung và riêng" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "75", "name": "Điều kiện chịu trách nhiệm hình sự của pháp nhân thương mại", "article": 75 },
+              "rules": [
+                {
+                  "rule_id": "75_r1",
+                  "clause": 1,
+                  "logic": "BASE",
+                  "priority": 1,
+                  "conditions": [
+                    { "type": "condition", "point": "a", "text": "Hành vi phạm tội được thực hiện nhân danh pháp nhân thương mại" },
+                    { "type": "condition", "point": "b", "text": "Hành vi phạm tội được thực hiện vì lợi ích của pháp nhân thương mại" },
+                    { "type": "condition", "point": "c", "text": "Hành vi phạm tội được thực hiện có sự chỉ đạo, điều hành hoặc chấp thuận của pháp nhân thương mại" },
+                    { "type": "condition", "point": "d", "text": "Chưa hết thời hiệu truy cứu trách nhiệm hình sự quy định tại khoản 2 và khoản 3 Điều 27 của Bộ luật này" }
+                  ],
+                  "penalty": { "note": "Các điều kiện chịu trách nhiệm hình sự" }
+                },
+                {
+                  "rule_id": "75_r2",
+                  "clause": 2,
+                  "logic": "BASE",
+                  "priority": 2,
+                  "conditions": [ { "type": "principle", "text": "Việc pháp nhân thương mại chịu trách nhiệm hình sự không loại trừ trách nhiệm hình sự của cá nhân" } ],
+                  "penalty": { "note": "Trách nhiệm song song" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "76", "name": "Phạm vi chịu trách nhiệm hình sự của pháp nhân thương mại", "article": 76 },
+              "rules": [
+                {
+                  "rule_id": "76_r1",
+                  "clause": null,
+                  "logic": "LIST",
+                  "priority": 1,
+                  "conditions": [ { "type": "list", "text": "Pháp nhân thương mại phải chịu trách nhiệm hình sự về tội phạm quy định tại một trong các điều 188, 189, 190, 191, 192, 193, 194, 195, 196, 200, 203, 209, 210, 211, 213, 216, 217, 225, 226, 227, 232, 234, 235, 237, 238, 239, 242, 243, 244, 245, 246, 300 và 324 của Bộ luật này" } ],
+                  "penalty": { "note": "Danh sách các điều luật áp dụng" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "77", "name": "Phạt tiền", "article": 77 },
+              "rules": [
+                {
+                  "rule_id": "77_r1",
+                  "clause": 1,
+                  "logic": "BASE",
+                  "priority": 1,
+                  "conditions": [ { "type": "penalty", "text": "Phạt tiền được áp dụng là hình phạt chính hoặc hình phạt bổ sung đối với pháp nhân thương mại phạm tội" } ],
+                  "penalty": { "note": "Áp dụng phạt tiền" }
+                },
+                {
+                  "rule_id": "77_r2",
+                  "clause": 2,
+                  "logic": "CALCULATION",
+                  "priority": 2,
+                  "conditions": [ { "type": "amount", "text": "Mức tiền phạt được quyết định căn cứ vào tính chất, mức độ nguy hiểm của tội phạm và có xét đến tình hình tài chính của pháp nhân thương mại phạm tội, sự biến động của giá cả nhưng không được thấp hơn 50.000.000 đồng" } ],
+                  "penalty": { "min": 50000000, "note": "Mức phạt tiền tối thiểu" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "78", "name": "Đình chỉ hoạt động có thời hạn", "article": 78 },
+              "rules": [
+                {
+                  "rule_id": "78_r1",
+                  "clause": 1,
+                  "logic": "BASE",
+                  "priority": 1,
+                  "conditions": [ { "type": "penalty", "text": "Đình chỉ hoạt động có thời hạn là tạm dừng hoạt động của pháp nhân thương mại trong một hoặc một số lĩnh vực mà pháp nhân thương mại phạm tội gây thiệt hại đến tính mạng, sức khỏe con người, môi trường hoặc an ninh, trật tự, an toàn xã hội và hậu quả gây ra có khả năng khắc phục trên thực tế" } ],
+                  "penalty": { "note": "Điều kiện áp dụng" }
+                },
+                {
+                  "rule_id": "78_r2",
+                  "clause": 2,
+                  "logic": "BASE",
+                  "priority": 2,
+                  "conditions": [ { "type": "duration", "text": "Thời hạn đình chỉ hoạt động từ 06 tháng đến 03 năm" } ],
+                  "penalty": { "min": 0.5, "max": 3, "note": "Thời hạn đình chỉ" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "79", "name": "Đình chỉ hoạt động vĩnh viễn", "article": 79 },
+              "rules": [
+                {
+                  "rule_id": "79_r1",
+                  "clause": 1,
+                  "logic": "BASE",
+                  "priority": 1,
+                  "conditions": [ { "type": "penalty", "text": "Đình chỉ hoạt động vĩnh viễn là chấm dứt hoạt động của pháp nhân thương mại trong một hoặc một số lĩnh vực mà pháp nhân thương mại phạm tội gây thiệt hại hoặc có khả năng thực tế gây thiệt hại đến tính mạng của nhiều người, gây sự cố môi trường hoặc gây ảnh hưởng xấu đến an ninh, trật tự, an toàn xã hội và không có khả năng khắc phục hậu quả gây ra" } ],
+                  "penalty": { "note": "Điều kiện áp dụng đình chỉ vĩnh viễn" }
+                },
+                {
+                  "rule_id": "79_r2",
+                  "clause": 2,
+                  "logic": "BASE",
+                  "priority": 2,
+                  "conditions": [ { "type": "penalty", "text": "Pháp nhân thương mại được thành lập chỉ để thực hiện tội phạm thì bị đình chỉ vĩnh viễn toàn bộ hoạt động" } ],
+                  "penalty": { "note": "Đình chỉ vĩnh viễn toàn bộ" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "80", "name": "Cấm kinh doanh, cấm hoạt động trong một số lĩnh vực nhất định", "article": 80 },
+              "rules": [
+                {
+                  "rule_id": "80_r1",
+                  "clause": 1,
+                  "logic": "ADDITIONAL_PENALTY",
+                  "priority": 1,
+                  "conditions": [ { "type": "penalty", "text": "Cấm kinh doanh, cấm hoạt động trong một số lĩnh vực nhất định được áp dụng khi xét thấy nếu để pháp nhân thương mại bị kết án tiếp tục kinh doanh hoặc hoạt động trong lĩnh vực đó, thì có thể gây nguy hại cho tính mạng, sức khỏe của con người hoặc cho xã hội" } ],
+                  "penalty": { "note": "Điều kiện áp dụng" }
+                },
+                {
+                  "rule_id": "80_r2",
+                  "clause": 2,
+                  "logic": "ADDITIONAL_PENALTY",
+                  "priority": 2,
+                  "conditions": [ { "type": "scope", "text": "Tòa án quyết định lĩnh vực cụ thể bị cấm kinh doanh hoặc cấm hoạt động" } ],
+                  "penalty": { "note": "Xác định lĩnh vực bị cấm" }
+                },
+                {
+                  "rule_id": "80_r3",
+                  "clause": 3,
+                  "logic": "ADDITIONAL_PENALTY",
+                  "priority": 3,
+                  "conditions": [ { "type": "duration", "text": "Thời hạn cấm kinh doanh, cấm hoạt động trong một số lĩnh vực nhất định là từ 01 năm đến 03 năm, kể từ ngày bản án có hiệu lực pháp luật" } ],
+                  "penalty": { "min": 1, "max": 3, "note": "Thời hạn cấm" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "81", "name": "Cấm huy động vốn", "article": 81 },
+              "rules": [
+                {
+                  "rule_id": "81_r1",
+                  "clause": 1,
+                  "logic": "ADDITIONAL_PENALTY",
+                  "priority": 1,
+                  "conditions": [ { "type": "penalty", "text": "Cấm huy động vốn được áp dụng khi xét thấy nếu để pháp nhân thương mại bị kết án huy động vốn thì có nguy cơ tiếp tục phạm tội" } ],
+                  "penalty": { "note": "Điều kiện áp dụng" }
+                },
+                {
+                  "rule_id": "81_r2",
+                  "clause": 2,
+                  "logic": "LIST",
+                  "priority": 2,
+                  "conditions": [
+                    { "type": "form", "point": "a", "text": "Cấm vay vốn của tổ chức tín dụng, chi nhánh ngân hàng nước ngoài hoặc quỹ đầu tư" },
+                    { "type": "form", "point": "b", "text": "Cấm phát hành, chào bán chứng khoán" },
+                    { "type": "form", "point": "c", "text": "Cấm huy động vốn khách hàng" },
+                    { "type": "form", "point": "d", "text": "Cấm liên doanh, liên kết trong và ngoài nước" },
+                    { "type": "form", "point": "đ", "text": "Cấm hình thành quỹ tín thác bất động sản" }
+                  ],
+                  "penalty": { "note": "Các hình thức cấm huy động vốn" }
+                },
+                {
+                  "rule_id": "81_r3",
+                  "clause": 3,
+                  "logic": "ADDITIONAL_PENALTY",
+                  "priority": 3,
+                  "conditions": [ { "type": "application", "text": "Tòa án quyết định áp dụng một hoặc một số hình thức cấm huy động vốn quy định tại khoản 2 Điều này" } ],
+                  "penalty": { "note": "Áp dụng một hoặc nhiều hình thức" }
+                },
+                {
+                  "rule_id": "81_r4",
+                  "clause": 4,
+                  "logic": "ADDITIONAL_PENALTY",
+                  "priority": 4,
+                  "conditions": [ { "type": "duration", "text": "Thời hạn cấm huy động vốn là từ 01 năm đến 03 năm, kể từ ngày bản án có hiệu lực pháp luật" } ],
+                  "penalty": { "min": 1, "max": 3, "note": "Thời hạn cấm" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "82", "name": "Các biện pháp tư pháp áp dụng đối với pháp nhân thương mại phạm tội", "article": 82 },
+              "rules": [
+                {
+                  "rule_id": "82_r1",
+                  "clause": 1,
+                  "logic": "LIST",
+                  "priority": 1,
+                  "conditions": [
+                    { "type": "measure", "point": "a", "text": "Các biện pháp tư pháp quy định tại Điều 47 và Điều 48 của Bộ luật này" },
+                    { "type": "measure", "point": "b", "text": "Buộc khôi phục lại tình trạng ban đầu" },
+                    { "type": "measure", "point": "c", "text": "Buộc thực hiện một số biện pháp nhằm khắc phục, ngăn chặn hậu quả tiếp tục xảy ra" }
+                  ],
+                  "penalty": { "note": "Các biện pháp tư pháp có thể áp dụng" }
+                },
+                {
+                  "rule_id": "82_r2",
+                  "clause": 2,
+                  "logic": "JUDICIAL_MEASURE",
+                  "priority": 2,
+                  "conditions": [ { "type": "measure", "text": "Tòa án có thể quyết định áp dụng biện pháp tư pháp buộc pháp nhân thương mại phạm tội phải khôi phục lại tình trạng ban đầu đã bị thay đổi do hành vi phạm tội của mình gây ra" } ],
+                  "penalty": { "note": "Khôi phục tình trạng ban đầu" }
+                },
+                {
+                  "rule_id": "82_r3",
+                  "clause": 3,
+                  "logic": "LIST",
+                  "priority": 3,
+                  "conditions": [
+                    { "type": "measure_detail", "point": "a", "text": "Buộc tháo dỡ công trình, phần công trình xây dựng không có giấy phép hoặc xây dựng không đúng với giấy phép" },
+                    { "type": "measure_detail", "point": "b", "text": "Buộc khắc phục tình trạng ô nhiễm môi trường, lây lan dịch bệnh" },
+                    { "type": "measure_detail", "point": "c", "text": "Buộc đưa ra khỏi lãnh thổ nước Cộng hòa xã hội chủ nghĩa Việt Nam hoặc tái xuất hàng hóa, vật phẩm, phương tiện được đưa vào lãnh thổ, nhập khẩu trái với quy định của pháp luật hoặc được tạm nhập, tái xuất nhưng không tái xuất theo đúng quy định của pháp luật; hàng hóa nhập khẩu, quá cảnh xâm phạm quyền sở hữu trí tuệ, hàng hóa giả mạo quyền sở hữu trí tuệ, phương tiện, nguyên liệu, vật liệu nhập khẩu được sử dụng chủ yếu để sản xuất, kinh doanh hàng hóa giả mạo về sở hữu trí tuệ sau khi đã loại bỏ yếu tố vi phạm" },
+                    { "type": "measure_detail", "point": "d", "text": "Buộc tiêu hủy hàng hóa, vật phẩm gây hại cho sức khỏe con người, vật nuôi, cây trồng và môi trường, văn hóa phẩm có nội dung độc hại hoặc tang vật khác thuộc đối tượng bị tiêu hủy theo quy định của pháp luật" },
+                    { "type": "measure_detail", "point": "đ", "text": "Buộc loại bỏ yếu tố vi phạm trên hàng hóa, bao bì hàng hóa, phương tiện kinh doanh, vật phẩm" },
+                    { "type": "measure_detail", "point": "e", "text": "Buộc thu hồi sản phẩm, hàng hóa vi phạm đang lưu thông trên thị trường" }
+                  ],
+                  "penalty": { "note": "Các biện pháp khắc phục hậu quả cụ thể" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "83", "name": "Căn cứ quyết định hình phạt đối với pháp nhân thương mại phạm tội", "article": 83 },
+              "rules": [
+                {
+                  "rule_id": "83_r1",
+                  "clause": null,
+                  "logic": "BASE",
+                  "priority": 1,
+                  "conditions": [ { "type": "basis", "text": "Khi quyết định hình phạt, Tòa án căn cứ vào quy định của Bộ luật này, cân nhắc tính chất và mức độ nguy hiểm cho xã hội của hành vi phạm tội, việc chấp hành pháp luật của pháp nhân thương mại và các tình tiết giảm nhẹ và tăng nặng trách nhiệm hình sự áp dụng đối với pháp nhân thương mại" } ],
+                  "penalty": { "note": "Căn cứ quyết định hình phạt" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "84", "name": "Các tình tiết giảm nhẹ trách nhiệm hình sự áp dụng đối với pháp nhân thương mại", "article": 84 },
+              "rules": [
+                {
+                  "rule_id": "84_r1",
+                  "clause": 1,
+                  "logic": "LIST",
+                  "priority": 1,
+                  "conditions": [
+                    { "type": "mitigating", "point": "a", "text": "Đã ngăn chặn hoặc làm giảm bớt tác hại của tội phạm" },
+                    { "type": "mitigating", "point": "b", "text": "Tự nguyện sửa chữa, bồi thường thiệt hại hoặc khắc phục hậu quả" },
+                    { "type": "mitigating", "point": "c", "text": "Phạm tội nhưng chưa gây thiệt hại hoặc gây thiệt hại không lớn" },
+                    { "type": "mitigating", "point": "d", "text": "Tích cực hợp tác với cơ quan có trách nhiệm trong việc phát hiện tội phạm hoặc trong quá trình giải quyết vụ án" },
+                    { "type": "mitigating", "point": "đ", "text": "Có nhiều đóng góp trong việc thực hiện chính sách xã hội" }
+                  ],
+                  "penalty": { "note": "Danh sách tình tiết giảm nhẹ" }
+                },
+                {
+                  "rule_id": "84_r2",
+                  "clause": 2,
+                  "logic": "DISCRETIONARY",
+                  "priority": 2,
+                  "conditions": [ { "type": "mitigating", "text": "Khi quyết định hình phạt, Tòa án có thể coi các tình tiết khác là tình tiết giảm nhẹ, nhưng phải ghi rõ lý do giảm nhẹ trong bản án" } ],
+                  "penalty": { "note": "Tình tiết giảm nhẹ khác" }
+                },
+                {
+                  "rule_id": "84_r3",
+                  "clause": 3,
+                  "logic": "EXCEPTION",
+                  "priority": 3,
+                  "conditions": [ { "type": "exception", "text": "Các tình tiết giảm nhẹ đã được Bộ luật này quy định là dấu hiệu định tội hoặc định khung thì không được coi là tình tiết giảm nhẹ trong khi quyết định hình phạt" } ],
+                  "penalty": { "note": "Không áp dụng nếu đã là dấu hiệu định tội/định khung" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "85", "name": "Các tình tiết tăng nặng trách nhiệm hình sự áp dụng đối với pháp nhân thương mại", "article": 85 },
+              "rules": [
+                {
+                  "rule_id": "85_r1",
+                  "clause": 1,
+                  "logic": "LIST",
+                  "priority": 1,
+                  "conditions": [
+                    { "type": "aggravating", "point": "a", "text": "Câu kết với pháp nhân thương mại khác để phạm tội" },
+                    { "type": "aggravating", "point": "b", "text": "Cố ý thực hiện tội phạm đến cùng" },
+                    { "type": "aggravating", "point": "c", "text": "Phạm tội 02 lần trở lên" },
+                    { "type": "aggravating", "point": "d", "text": "Tái phạm hoặc tái phạm nguy hiểm" },
+                    { "type": "aggravating", "point": "đ", "text": "Lợi dụng hoàn cảnh chiến tranh, tình trạng khẩn cấp, thiên tai, dịch bệnh hoặc những khó khăn đặc biệt khác của xã hội để phạm tội" },
+                    { "type": "aggravating", "point": "e", "text": "Dùng thủ đoạn tinh vi để phạm tội hoặc nhằm trốn tránh, che giấu tội phạm" }
+                  ],
+                  "penalty": { "note": "Danh sách tình tiết tăng nặng" }
+                },
+                {
+                  "rule_id": "85_r2",
+                  "clause": 2,
+                  "logic": "EXCEPTION",
+                  "priority": 2,
+                  "conditions": [ { "type": "exception", "text": "Các tình tiết đã được Bộ luật này quy định là dấu hiệu định tội hoặc định khung hình phạt thì không được coi là tình tiết tăng nặng" } ],
+                  "penalty": { "note": "Không áp dụng nếu đã là dấu hiệu định tội/định khung" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "86", "name": "Quyết định hình phạt trong trường hợp pháp nhân thương mại phạm nhiều tội", "article": 86 },
+              "rules": [
+                {
+                  "rule_id": "86_r1",
+                  "clause": 1,
+                  "logic": "AGGREGATION",
+                  "priority": 1,
+                  "conditions": [
+                    { "type": "main_penalty", "point": "a", "text": "Nếu các hình phạt đã tuyên cùng là phạt tiền thì các khoản tiền phạt được cộng lại thành hình phạt chung. Hình phạt tiền không tổng hợp với các hình phạt khác" },
+                    { "type": "main_penalty", "point": "b", "text": "Nếu các hình phạt đã tuyên là đình chỉ hoạt động có thời hạn và đình chỉ hoạt động vĩnh viễn trong cùng lĩnh vực hoặc hình phạt đã tuyên cùng là đình chỉ hoạt động vĩnh viễn trong cùng lĩnh vực thì hình phạt chung là đình chỉ hoạt động vĩnh viễn trong lĩnh vực đó" },
+                    { "type": "main_penalty", "point": "c", "text": "Nếu các hình phạt đã tuyên là đình chỉ hoạt động có thời hạn trong cùng lĩnh vực thì được tổng hợp thành hình phạt chung nhưng không vượt quá 04 năm" },
+                    { "type": "main_penalty", "point": "d", "text": "Nếu trong số các hình phạt đã tuyên có hình phạt đình chỉ hoạt động vĩnh viễn thuộc trường hợp quy định tại khoản 2 Điều 79 của Bộ luật này thì hình phạt chung là đình chỉ hoạt động vĩnh viễn đối với toàn bộ hoạt động" },
+                    { "type": "main_penalty", "point": "đ", "text": "Nếu các hình phạt đã tuyên là đình chỉ hoạt động có thời hạn trong các lĩnh vực khác nhau hoặc đình chỉ hoạt động vĩnh viễn trong các lĩnh vực khác nhau hoặc đình chỉ hoạt động có thời hạn và đình chỉ hoạt động vĩnh viễn trong các lĩnh vực khác nhau thì không tổng hợp" }
+                  ],
+                  "penalty": { "note": "Tổng hợp hình phạt chính" }
+                },
+                {
+                  "rule_id": "86_r2",
+                  "clause": 2,
+                  "logic": "AGGREGATION",
+                  "priority": 2,
+                  "conditions": [
+                    { "type": "additional_penalty", "point": "a", "text": "Nếu các hình phạt đã tuyên là cùng loại thì hình phạt chung được quyết định trong giới hạn do Bộ luật này quy định đối với hình phạt đó; riêng đối với hình phạt tiền thì các khoản tiền được cộng lại thành hình phạt chung" },
+                    { "type": "additional_penalty", "point": "b", "text": "Nếu các hình phạt đã tuyên là khác loại thì pháp nhân thương mại bị kết án phải chấp hành tất cả các hình phạt đã tuyên" }
+                  ],
+                  "penalty": { "note": "Tổng hợp hình phạt bổ sung" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "87", "name": "Tổng hợp hình phạt của nhiều bản án", "article": 87 },
+              "rules": [
+                {
+                  "rule_id": "87_r1",
+                  "clause": 1,
+                  "logic": "AGGREGATION",
+                  "priority": 1,
+                  "conditions": [ { "type": "aggregation", "text": "Trường hợp pháp nhân thương mại đang chấp hành một bản án mà lại bị xét xử về tội đã phạm trước khi có bản án này, thì Tòa án quyết định hình phạt đối với tội đang bị xét xử, sau đó quyết định hình phạt chung theo quy định tại Điều 86 của Bộ luật này. Thời gian đã chấp hành hình phạt của bản án trước về đình chỉ hoạt động có thời hạn, cấm kinh doanh, cấm hoạt động trong một số lĩnh vực nhất định hoặc cấm huy động vốn được trừ vào thời hạn chấp hành hình phạt chung" } ],
+                  "penalty": { "note": "Tổng hợp với bản án trước" }
+                },
+                {
+                  "rule_id": "87_r2",
+                  "clause": 2,
+                  "logic": "AGGREGATION",
+                  "priority": 2,
+                  "conditions": [ { "type": "aggregation", "text": "Khi xét xử một pháp nhân thương mại đang phải chấp hành một bản án mà lại thực hiện hành vi phạm tội mới, Tòa án quyết định hình phạt đối với tội mới, sau đó tổng hợp với phần hình phạt chưa chấp hành của bản án trước rồi quyết định hình phạt chung theo quy định tại Điều 86 của Bộ luật này" } ],
+                  "penalty": { "note": "Tổng hợp với bản án mới" }
+                },
+                {
+                  "rule_id": "87_r3",
+                  "clause": 3,
+                  "logic": "AGGREGATION",
+                  "priority": 3,
+                  "conditions": [ { "type": "aggregation", "text": "Trong trường hợp một pháp nhân thương mại phải chấp hành nhiều bản án đã có hiệu lực pháp luật mà các hình phạt của các bản án chưa được tổng hợp, thì Chánh án Tòa án có thẩm quyền ra quyết định tổng hợp hình phạt của các bản án theo quy định tại khoản 1 và khoản 2 Điều này" } ],
+                  "penalty": { "note": "Tổng hợp nhiều bản án đã có hiệu lực" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "88", "name": "Miễn hình phạt", "article": 88 },
+              "rules": [
+                {
+                  "rule_id": "88_r1",
+                  "clause": null,
+                  "logic": "IMMUNITY",
+                  "priority": 1,
+                  "conditions": [ { "type": "immunity", "text": "Pháp nhân thương mại phạm tội có thể được miễn hình phạt khi đã khắc phục toàn bộ hậu quả và đã bồi thường toàn bộ thiệt hại do hành vi phạm tội gây ra" } ],
+                  "penalty": { "note": "Điều kiện miễn hình phạt" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "89", "name": "Xóa án tích", "article": 89 },
+              "rules": [
+                {
+                  "rule_id": "89_r1",
+                  "clause": null,
+                  "logic": "AUTOMATIC",
+                  "priority": 1,
+                  "conditions": [ { "type": "expungement", "text": "Pháp nhân thương mại bị kết án đương nhiên được xóa án tích nếu trong thời hạn 02 năm kể từ khi chấp hành xong hình phạt chính, hình phạt bổ sung, các quyết định khác của bản án hoặc từ khi hết thời hiệu thi hành bản án mà pháp nhân thương mại không thực hiện hành vi phạm tội mới" } ],
+                  "penalty": { "note": "Đương nhiên xóa án tích sau 02 năm" }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "chapter_id": "XII",
+          "name": "Những quy định đối với người dưới 18 tuổi phạm tội",
+          "articles": [
+            {
+              "crime": { "id": "90", "name": "Áp dụng Bộ luật hình sự đối với người dưới 18 tuổi phạm tội", "article": 90 },
+              "rules": [
+                {
+                  "rule_id": "90_r1",
+                  "clause": null,
+                  "logic": "BASE",
+                  "priority": 1,
+                  "conditions": [ { "type": "scope", "text": "Người từ đủ 14 tuổi đến dưới 18 tuổi phạm tội phải chịu trách nhiệm hình sự theo những quy định của Chương này; theo quy định khác của Phần thứ nhất của Bộ luật này không trái với quy định của Chương này" } ],
+                  "penalty": { "note": "Áp dụng quy định chung và riêng" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "91", "name": "Nguyên tắc xử lý đối với người dưới 18 tuổi phạm tội", "article": 91 },
+              "rules": [
+                {
+                  "rule_id": "91_r1",
+                  "clause": 1,
+                  "logic": "PRINCIPLE",
+                  "priority": 1,
+                  "conditions": [ { "type": "principle", "text": "Việc xử lý người dưới 18 tuổi phạm tội phải bảo đảm lợi ích tốt nhất của người dưới 18 tuổi và chủ yếu nhằm mục đích giáo dục, giúp đỡ họ sửa chữa sai lầm, phát triển lành mạnh, trở thành công dân có ích cho xã hội. Việc xử lý người dưới 18 tuổi phạm tội phải căn cứ vào độ tuổi, khả năng nhận thức của họ về tính chất nguy hiểm cho xã hội của hành vi phạm tội, nguyên nhân và điều kiện gây ra tội phạm" } ],
+                  "penalty": { "note": "Mục đích giáo dục là chính" }
+                },
+                {
+                  "rule_id": "91_r2",
+                  "clause": 2,
+                  "logic": "IMMUNITY",
+                  "priority": 2,
+                  "conditions": [
+                    { "type": "immunity", "point": "a", "text": "Người từ đủ 16 tuổi đến dưới 18 tuổi phạm tội ít nghiêm trọng, phạm tội nghiêm trọng, trừ tội phạm quy định tại các điều 134, 141, 171, 248, 249, 250, 251 và 252 của Bộ luật này" },
+                    { "type": "immunity", "point": "b", "text": "Người từ đủ 14 tuổi đến dưới 16 tuổi phạm tội rất nghiêm trọng quy định tại khoản 2 Điều 12 của Bộ luật này, trừ tội phạm quy định tại các điều 123, 134, 141, 142, 144, 150, 151, 168, 171, 248, 249, 250, 251 và 252 của Bộ luật này" },
+                    { "type": "immunity", "point": "c", "text": "Người dưới 18 tuổi là người đồng phạm có vai trò không đáng kể trong vụ án" }
+                  ],
+                  "penalty": { "note": "Có thể được miễn trách nhiệm hình sự và áp dụng biện pháp giám sát, giáo dục" }
+                },
+                {
+                  "rule_id": "91_r3",
+                  "clause": 3,
+                  "logic": "PRINCIPLE",
+                  "priority": 3,
+                  "conditions": [ { "type": "principle", "text": "Việc truy cứu trách nhiệm hình sự người dưới 18 tuổi phạm tội chỉ trong trường hợp cần thiết và phải căn cứ vào những đặc điểm về nhân thân của họ, tính chất nguy hiểm cho xã hội của hành vi phạm tội và yêu cầu của việc phòng ngừa tội phạm" } ],
+                  "penalty": { "note": "Truy cứu trách nhiệm hình sự là biện pháp cuối cùng" }
+                },
+                {
+                  "rule_id": "91_r4",
+                  "clause": 4,
+                  "logic": "PRINCIPLE",
+                  "priority": 4,
+                  "conditions": [ { "type": "principle", "text": "Khi xét xử, Tòa án chỉ áp dụng hình phạt đối với người dưới 18 tuổi phạm tội nếu xét thấy việc miễn trách nhiệm hình sự và áp dụng một trong các biện pháp quy định tại Mục 2 hoặc việc áp dụng biện pháp giáo dục tại trường giáo dưỡng quy định tại Mục 3 Chương này không bảo đảm hiệu quả giáo dục, phòng ngừa" } ],
+                  "penalty": { "note": "Hình phạt chỉ áp dụng khi biện pháp giáo dục không hiệu quả" }
+                },
+                {
+                  "rule_id": "91_r5",
+                  "clause": 5,
+                  "logic": "EXCEPTION",
+                  "priority": 5,
+                  "conditions": [ { "type": "exception", "text": "Không xử phạt tù chung thân hoặc tử hình đối với người dưới 18 tuổi phạm tội" } ],
+                  "penalty": { "note": "Cấm tù chung thân và tử hình" }
+                },
+                {
+                  "rule_id": "91_r6",
+                  "clause": 6,
+                  "logic": "PRINCIPLE",
+                  "priority": 6,
+                  "conditions": [ { "type": "principle", "text": "Tòa án chỉ áp dụng hình phạt tù có thời hạn đối với người dưới 18 tuổi phạm tội khi xét thấy các hình phạt và biện pháp giáo dục khác không có tác dụng răn đe, phòng ngừa. Khi xử phạt tù có thời hạn, Tòa án cho người dưới 18 tuổi phạm tội được hưởng mức án nhẹ hơn mức án áp dụng đối với người đủ 18 tuổi trở lên phạm tội tương ứng và với thời hạn thích hợp ngắn nhất. Không áp dụng hình phạt bổ sung đối với người dưới 18 tuổi phạm tội" } ],
+                  "penalty": { "note": "Hạn chế áp dụng tù có thời hạn và không áp dụng hình phạt bổ sung" }
+                },
+                {
+                  "rule_id": "91_r7",
+                  "clause": 7,
+                  "logic": "CALCULATION",
+                  "priority": 7,
+                  "conditions": [ { "type": "calculation", "text": "Án đã tuyên đối với người chưa đủ 16 tuổi phạm tội, thì không tính để xác định tái phạm hoặc tái phạm nguy hiểm" } ],
+                  "penalty": { "note": "Không tính án tích để xác định tái phạm" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "92", "name": "Điều kiện áp dụng", "article": 92 },
+              "rules": [
+                {
+                  "rule_id": "92_r1",
+                  "clause": null,
+                  "logic": "CONDITION",
+                  "priority": 1,
+                  "conditions": [ { "type": "condition", "text": "Cơ quan điều tra, Viện kiểm sát hoặc Tòa án chỉ quyết định miễn trách nhiệm hình sự và áp dụng biện pháp khiển trách, hòa giải tại cộng đồng hoặc biện pháp giáo dục tại xã, phường, thị trấn, nếu người dưới 18 tuổi phạm tội hoặc người đại diện hợp pháp của họ đồng ý với việc áp dụng một trong các biện pháp này" } ],
+                  "penalty": { "note": "Cần sự đồng ý của người dưới 18 tuổi hoặc đại diện" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "93", "name": "Khiển trách", "article": 93 },
+              "rules": [
+                {
+                  "rule_id": "93_r1",
+                  "clause": 1,
+                  "logic": "BASE",
+                  "priority": 1,
+                  "conditions": [
+                    { "type": "condition", "point": "a", "text": "Người từ đủ 16 tuổi đến dưới 18 tuổi lần đầu phạm tội ít nghiêm trọng thuộc trường hợp quy định tại điểm a khoản 2 Điều 91 của Bộ luật này" },
+                    { "type": "condition", "point": "b", "text": "Người dưới 18 tuổi là người đồng phạm có vai trò không đáng kể trong vụ án" }
+                  ],
+                  "penalty": { "note": "Đối tượng áp dụng khiển trách" }
+                },
+                {
+                  "rule_id": "93_r2",
+                  "clause": 2,
+                  "logic": "PROCEDURE",
+                  "priority": 2,
+                  "conditions": [ { "type": "procedure", "text": "Cơ quan điều tra, Viện kiểm sát hoặc Tòa án quyết định áp dụng biện pháp khiển trách. Việc khiển trách đối với người dưới 18 tuổi phạm tội phải có sự chứng kiến của cha mẹ hoặc người đại diện hợp pháp của người dưới 18 tuổi" } ],
+                  "penalty": { "note": "Thủ tục khiển trách" }
+                },
+                {
+                  "rule_id": "93_r3",
+                  "clause": 3,
+                  "logic": "OBLIGATION",
+                  "priority": 3,
+                  "conditions": [
+                    { "type": "obligation", "point": "a", "text": "Tuân thủ pháp luật, nội quy, quy chế của nơi cư trú, học tập, làm việc" },
+                    { "type": "obligation", "point": "b", "text": "Trình diện trước cơ quan có thẩm quyền khi được yêu cầu" },
+                    { "type": "obligation", "point": "c", "text": "Tham gia các chương trình học tập, dạy nghề do địa phương tổ chức, tham gia lao động với hình thức phù hợp" }
+                  ],
+                  "penalty": { "note": "Nghĩa vụ của người bị khiển trách" }
+                },
+                {
+                  "rule_id": "93_r4",
+                  "clause": 4,
+                  "logic": "DURATION",
+                  "priority": 4,
+                  "conditions": [ { "type": "duration", "text": "Tùy từng trường hợp cụ thể cơ quan có thẩm quyền ấn định thời gian thực hiện các nghĩa vụ quy định tại điểm b và điểm c khoản 3 Điều này từ 03 tháng đến 01 năm" } ],
+                  "penalty": { "min": 0.25, "max": 1, "note": "Thời gian thực hiện nghĩa vụ" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "94", "name": "Hòa giải tại cộng đồng", "article": 94 },
+              "rules": [
+                {
+                  "rule_id": "94_r1",
+                  "clause": 1,
+                  "logic": "BASE",
+                  "priority": 1,
+                  "conditions": [
+                    { "type": "condition", "point": "a", "text": "Người từ đủ 16 tuổi đến dưới 18 tuổi phạm tội ít nghiêm trọng hoặc phạm tội nghiêm trọng thuộc trường hợp quy định tại điểm a khoản 2 Điều 91 của Bộ luật này" },
+                    { "type": "condition", "point": "b", "text": "Người từ đủ 14 tuổi đến dưới 16 tuổi phạm tội rất nghiêm trọng thuộc trường hợp quy định tại điểm b khoản 2 Điều 91 của Bộ luật này" }
+                  ],
+                  "penalty": { "note": "Đối tượng áp dụng hòa giải tại cộng đồng" }
+                },
+                {
+                  "rule_id": "94_r2",
+                  "clause": 2,
+                  "logic": "PROCEDURE",
+                  "priority": 2,
+                  "conditions": [ { "type": "procedure", "text": "Cơ quan điều tra, Viện kiểm sát hoặc Tòa án phối hợp với Ủy ban nhân dân cấp xã tổ chức việc hòa giải tại cộng đồng khi người bị hại hoặc người đại diện hợp pháp của người bị hại đã tự nguyện hòa giải và đề nghị miễn trách nhiệm hình sự" } ],
+                  "penalty": { "note": "Thủ tục hòa giải" }
+                },
+                {
+                  "rule_id": "94_r3",
+                  "clause": 3,
+                  "logic": "OBLIGATION",
+                  "priority": 3,
+                  "conditions": [
+                    { "type": "obligation", "point": "a", "text": "Xin lỗi người bị hại và bồi thường thiệt hại" },
+                    { "type": "obligation", "point": "b", "text": "Nghĩa vụ quy định tại khoản 3 Điều 93 của Bộ luật này" }
+                  ],
+                  "penalty": { "note": "Nghĩa vụ của người được hòa giải" }
+                },
+                {
+                  "rule_id": "94_r4",
+                  "clause": 4,
+                  "logic": "DURATION",
+                  "priority": 4,
+                  "conditions": [ { "type": "duration", "text": "Tùy từng trường hợp cụ thể, cơ quan có thẩm quyền ấn định thời điểm xin lỗi, thời gian thực hiện nghĩa vụ bồi thường thiệt hại quy định tại điểm a khoản 3 Điều này từ 03 tháng đến 01 năm" } ],
+                  "penalty": { "min": 0.25, "max": 1, "note": "Thời gian thực hiện nghĩa vụ" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "95", "name": "Giáo dục tại xã, phường, thị trấn", "article": 95 },
+              "rules": [
+                {
+                  "rule_id": "95_r1",
+                  "clause": 1,
+                  "logic": "BASE",
+                  "priority": 1,
+                  "conditions": [
+                    { "type": "condition", "point": "a", "text": "Người từ đủ 16 tuổi đến dưới 18 tuổi phạm tội ít nghiêm trọng hoặc phạm tội nghiêm trọng thuộc trường hợp quy định tại điểm a khoản 2 Điều 91 của Bộ luật này" },
+                    { "type": "condition", "point": "b", "text": "Người từ đủ 14 tuổi đến dưới 16 tuổi phạm tội rất nghiêm trọng thuộc trường hợp quy định tại điểm b khoản 2 Điều 91 của Bộ luật này" }
+                  ],
+                  "penalty": { "min": 1, "max": 2, "note": "Thời gian giáo dục từ 01 năm đến 02 năm" }
+                },
+                {
+                  "rule_id": "95_r2",
+                  "clause": 2,
+                  "logic": "OBLIGATION",
+                  "priority": 2,
+                  "conditions": [
+                    { "type": "obligation", "point": "a", "text": "Chấp hành đầy đủ nghĩa vụ về học tập, lao động" },
+                    { "type": "obligation", "point": "b", "text": "Chịu sự giám sát, giáo dục của gia đình, xã, phường, thị trấn" },
+                    { "type": "obligation", "point": "c", "text": "Không đi khỏi nơi cư trú khi không được phép" },
+                    { "type": "obligation", "point": "d", "text": "Các nghĩa vụ theo quy định tại khoản 3 Điều 93 của Bộ luật này" }
+                  ],
+                  "penalty": { "note": "Nghĩa vụ của người được giáo dục" }
+                },
+                {
+                  "rule_id": "95_r3",
+                  "clause": 3,
+                  "logic": "REDUCTION",
+                  "priority": 3,
+                  "conditions": [ { "type": "reduction", "text": "Nếu người được giáo dục tại xã, phường, thị trấn đã chấp hành một phần hai thời hạn và có nhiều tiến bộ thì theo đề nghị của Ủy ban nhân dân cấp xã được giao trách nhiệm giám sát, giáo dục, cơ quan đã áp dụng biện pháp này có thể quyết định chấm dứt thời hạn giáo dục tại xã, phường, thị trấn" } ],
+                  "penalty": { "note": "Chấm dứt trước thời hạn" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "96", "name": "Giáo dục tại trường giáo dưỡng", "article": 96 },
+              "rules": [
+                {
+                  "rule_id": "96_r1",
+                  "clause": 1,
+                  "logic": "BASE",
+                  "priority": 1,
+                  "conditions": [ { "type": "measure", "text": "Tòa án có thể áp dụng biện pháp giáo dục tại trường giáo dưỡng từ 01 năm đến 02 năm đối với người dưới 18 tuổi phạm tội, nếu thấy do tính chất nghiêm trọng của hành vi phạm tội, do nhân thân và môi trường sống của người đó mà cần đưa người đó vào một tổ chức giáo dục có kỷ luật chặt chẽ" } ],
+                  "penalty": { "min": 1, "max": 2, "note": "Thời gian giáo dục tại trường giáo dưỡng" }
+                },
+                {
+                  "rule_id": "96_r2",
+                  "clause": 2,
+                  "logic": "OBLIGATION",
+                  "priority": 2,
+                  "conditions": [ { "type": "obligation", "text": "Người được giáo dục tại trường giáo dưỡng phải chấp hành đầy đủ những nghĩa vụ về học tập, học nghề, lao động, sinh hoạt dưới sự quản lý, giáo dục của nhà trường" } ],
+                  "penalty": { "note": "Nghĩa vụ của học sinh trường giáo dưỡng" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "97", "name": "Chấm dứt trước thời hạn biện pháp giáo dục tại trường giáo dưỡng", "article": 97 },
+              "rules": [
+                {
+                  "rule_id": "97_r1",
+                  "clause": null,
+                  "logic": "REDUCTION",
+                  "priority": 1,
+                  "conditions": [ { "type": "reduction", "text": "Nếu người được giáo dục tại trường giáo dưỡng đã chấp hành một phần hai thời hạn, có nhiều tiến bộ, thì theo đề nghị của trường giáo dưỡng được giao trách nhiệm quản lý, giáo dục, Tòa án có thể quyết định chấm dứt thời hạn giáo dục tại trường giáo dưỡng" } ],
+                  "penalty": { "note": "Điều kiện chấm dứt trước thời hạn" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "98", "name": "Các hình phạt được áp dụng đối với người dưới 18 tuổi phạm tội", "article": 98 },
+              "rules": [
+                {
+                  "rule_id": "98_r1",
+                  "clause": null,
+                  "logic": "LIST",
+                  "priority": 1,
+                  "conditions": [
+                    { "type": "penalty", "point": "1", "text": "Cảnh cáo" },
+                    { "type": "penalty", "point": "2", "text": "Phạt tiền" },
+                    { "type": "penalty", "point": "3", "text": "Cải tạo không giam giữ" },
+                    { "type": "penalty", "point": "4", "text": "Tù có thời hạn" }
+                  ],
+                  "penalty": { "note": "Danh sách hình phạt áp dụng cho người dưới 18 tuổi" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "99", "name": "Phạt tiền", "article": 99 },
+              "rules": [
+                {
+                  "rule_id": "99_r1",
+                  "clause": null,
+                  "logic": "BASE",
+                  "priority": 1,
+                  "conditions": [ { "type": "penalty", "text": "Phạt tiền được áp dụng là hình phạt chính đối với người từ đủ 16 tuổi đến dưới 18 tuổi, nếu người đó có thu nhập hoặc có tài sản riêng. Mức tiền phạt đối với người từ đủ 16 tuổi đến dưới 18 tuổi phạm tội không quá một phần hai mức tiền phạt mà điều luật quy định" } ],
+                  "penalty": { "note": "Điều kiện và mức phạt tiền" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "100", "name": "Cải tạo không giam giữ", "article": 100 },
+              "rules": [
+                {
+                  "rule_id": "100_r1",
+                  "clause": 1,
+                  "logic": "BASE",
+                  "priority": 1,
+                  "conditions": [ { "type": "penalty", "text": "Hình phạt cải tạo không giam giữ được áp dụng đối với người từ đủ 16 tuổi đến dưới 18 tuổi phạm tội rất nghiêm trọng do vô ý hoặc phạm tội ít nghiêm trọng, phạm tội nghiêm trọng hoặc người từ đủ 14 tuổi đến dưới 16 tuổi phạm tội rất nghiêm trọng do vô ý hoặc phạm tội ít nghiêm trọng" } ],
+                  "penalty": { "note": "Đối tượng áp dụng" }
+                },
+                {
+                  "rule_id": "100_r2",
+                  "clause": 2,
+                  "logic": "BASE",
+                  "priority": 2,
+                  "conditions": [ { "type": "penalty", "text": "Khi áp dụng hình phạt cải tạo không giam giữ đối với người dưới 18 tuổi phạm tội, thì không khấu trừ thu nhập của người đó. Thời hạn cải tạo không giam giữ đối với người dưới 18 tuổi phạm tội không quá một phần hai thời hạn mà điều luật quy định" } ],
+                  "penalty": { "note": "Không khấu trừ thu nhập và giới hạn thời hạn" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "101", "name": "Tù có thời hạn", "article": 101 },
+              "rules": [
+                {
+                  "rule_id": "101_r1",
+                  "clause": null,
+                  "logic": "BASE",
+                  "priority": 1,
+                  "conditions": [
+                    { "type": "penalty", "point": "1", "text": "Đối với người từ đủ 16 tuổi đến dưới 18 tuổi khi phạm tội, nếu điều luật được áp dụng quy định hình phạt tù chung thân hoặc tử hình, thì mức hình phạt cao nhất được áp dụng không quá 18 năm tù; nếu là tù có thời hạn thì mức hình phạt cao nhất được áp dụng không quá ba phần tư mức phạt tù mà điều luật quy định" },
+                    { "type": "penalty", "point": "2", "text": "Đối với người từ đủ 14 tuổi đến dưới 16 tuổi khi phạm tội, nếu điều luật được áp dụng quy định hình phạt tù chung thân hoặc tử hình, thì mức hình phạt cao nhất được áp dụng không quá 12 năm tù; nếu là tù có thời hạn thì mức hình phạt cao nhất được áp dụng không quá một phần hai mức phạt tù mà điều luật quy định" }
+                  ],
+                  "penalty": { "note": "Giới hạn mức phạt tù có thời hạn" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "102", "name": "Quyết định hình phạt trong trường hợp chuẩn bị phạm tội, phạm tội chưa đạt", "article": 102 },
+              "rules": [
+                {
+                  "rule_id": "102_r1",
+                  "clause": 1,
+                  "logic": "BASE",
+                  "priority": 1,
+                  "conditions": [ { "type": "sentencing", "text": "Tòa án quyết định hình phạt đối với người dưới 18 tuổi trong trường hợp chuẩn bị phạm tội hoặc phạm tội chưa đạt theo nguyên tắc quy định tại khoản 1 Điều 57 của Bộ luật này" } ],
+                  "penalty": { "note": "Nguyên tắc chung" }
+                },
+                {
+                  "rule_id": "102_r2",
+                  "clause": 2,
+                  "logic": "PREPARATION",
+                  "priority": 2,
+                  "conditions": [ { "type": "preparation", "text": "Mức hình phạt cao nhất đối với người từ đủ 14 tuổi đến dưới 16 tuổi chuẩn bị phạm tội không quá một phần ba mức hình phạt được quy định trong khung hình phạt đối với hành vi chuẩn bị phạm tội trong điều luật được áp dụng. Mức hình phạt cao nhất đối với người từ đủ 16 tuổi đến dưới 18 tuổi chuẩn bị phạm tội không quá một phần hai mức hình phạt được quy định trong khung hình phạt đối với hành vi chuẩn bị phạm tội trong điều luật được áp dụng" } ],
+                  "penalty": { "note": "Giới hạn mức phạt đối với chuẩn bị phạm tội" }
+                },
+                {
+                  "rule_id": "102_r3",
+                  "clause": 3,
+                  "logic": "ATTEMPT",
+                  "priority": 3,
+                  "conditions": [ { "type": "attempt", "text": "Mức hình phạt cao nhất áp dụng đối với người từ đủ 14 tuổi đến dưới 16 tuổi phạm tội chưa đạt không quá một phần ba mức hình phạt quy định tại Điều 100 và Điều 101 của Bộ luật này. Mức hình phạt cao nhất áp dụng đối với người từ đủ 16 tuổi đến dưới 18 tuổi phạm tội chưa đạt không quá một phần hai mức hình phạt quy định tại các Điều 99, 100 và 101 của Bộ luật này" } ],
+                  "penalty": { "note": "Giới hạn mức phạt đối với phạm tội chưa đạt" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "103", "name": "Tổng hợp hình phạt trong trường hợp phạm nhiều tội", "article": 103 },
+              "rules": [
+                {
+                  "rule_id": "103_r1",
+                  "clause": 1,
+                  "logic": "AGGREGATION",
+                  "priority": 1,
+                  "conditions": [ { "type": "aggregation", "text": "Khi xét xử cùng một lần người dưới 18 tuổi phạm nhiều tội thì Tòa án quyết định hình phạt đối với từng tội và tổng hợp hình phạt chung theo quy định tại Điều 55 của Bộ luật này. Nếu hình phạt chung là cải tạo không giam giữ thì mức hình phạt cao nhất được áp dụng không quá 03 năm. Nếu hình phạt chung là tù có thời hạn thì mức hình phạt cao nhất được áp dụng không được vượt quá 18 năm đối với người từ đủ 16 tuổi đến dưới 18 tuổi khi phạm tội và 12 năm đối với người từ đủ 14 tuổi đến dưới 16 tuổi khi phạm tội" } ],
+                  "penalty": { "note": "Tổng hợp hình phạt đối với người dưới 18 tuổi" }
+                },
+                {
+                  "rule_id": "103_r2",
+                  "clause": 2,
+                  "logic": "AGGREGATION",
+                  "priority": 2,
+                  "conditions": [
+                    { "type": "aggregation", "point": "a", "text": "Nếu mức hình phạt đã tuyên đối với tội được thực hiện trước khi người đó đủ 16 tuổi nặng hơn hoặc bằng mức hình phạt đã tuyên đối với tội được thực hiện sau khi đủ 16 tuổi thì hình phạt chung không vượt quá mức hình phạt cao nhất đối với người từ đủ 14 tuổi đến dưới 16 tuổi theo quy định tại khoản 1 Điều này" },
+                    { "type": "aggregation", "point": "b", "text": "Nếu mức hình phạt đã tuyên đối với tội được thực hiện sau khi người đó đủ 16 tuổi nặng hơn mức hình phạt đã tuyên đối với tội được thực hiện trước khi đủ 16 tuổi thì hình phạt chung không vượt quá mức hình phạt cao nhất đối với người từ đủ 16 tuổi đến dưới 18 tuổi theo quy định tại khoản 1 Điều này" }
+                  ],
+                  "penalty": { "note": "Tổng hợp hình phạt khi phạm tội ở hai độ tuổi khác nhau trước và sau 16 tuổi" }
+                },
+                {
+                  "rule_id": "103_r3",
+                  "clause": 3,
+                  "logic": "AGGREGATION",
+                  "priority": 3,
+                  "conditions": [
+                    { "type": "aggregation", "point": "a", "text": "Nếu mức hình phạt Tòa án tuyên đối với tội được thực hiện khi người đó chưa đủ 18 tuổi nặng hơn hoặc bằng mức hình phạt áp dụng đối với tội được thực hiện khi người đó đã đủ 18 tuổi, thì hình phạt chung không được vượt quá mức hình phạt cao nhất đối với người từ đủ 16 tuổi đến dưới 18 tuổi theo quy định tại khoản 1 Điều này" },
+                    { "type": "aggregation", "point": "b", "text": "Nếu mức hình phạt Tòa án tuyên đối với tội được thực hiện khi người đó đã đủ 18 tuổi nặng hơn mức hình phạt áp dụng đối với tội thực hiện khi người đó chưa đủ 18 tuổi thì hình phạt chung áp dụng như đối với người đủ 18 tuổi trở lên phạm tội" }
+                  ],
+                  "penalty": { "note": "Tổng hợp hình phạt khi phạm tội ở hai độ tuổi khác nhau trước và sau 18 tuổi" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "104", "name": "Tổng hợp hình phạt của nhiều bản án", "article": 104 },
+              "rules": [
+                {
+                  "rule_id": "104_r1",
+                  "clause": null,
+                  "logic": "AGGREGATION",
+                  "priority": 1,
+                  "conditions": [ { "type": "aggregation", "text": "Việc tổng hợp hình phạt trong trường hợp một người đang phải chấp hành một bản án mà lại bị xét xử về tội đã phạm trước hoặc sau khi có bản án này, được thực hiện theo quy định tại Điều 55 và Điều 56 của Bộ luật này. Hình phạt chung không được vượt quá mức hình phạt cao nhất quy định tại Điều 103 của Bộ luật này" } ],
+                  "penalty": { "note": "Tổng hợp nhiều bản án" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "105", "name": "Giảm mức hình phạt đã tuyên", "article": 105 },
+              "rules": [
+                {
+                  "rule_id": "105_r1",
+                  "clause": 1,
+                  "logic": "REDUCTION",
+                  "priority": 1,
+                  "conditions": [ { "type": "reduction", "text": "Người dưới 18 tuổi phạm tội bị phạt cải tạo không giam giữ hoặc phạt tù, nếu có tiến bộ và đã chấp hành được một phần tư thời hạn, thì được Tòa án xét giảm; riêng đối với hình phạt tù, mỗi lần có thể giảm đến 04 năm nhưng phải bảo đảm đã chấp hành ít nhất là hai phần năm mức hình phạt đã tuyên" } ],
+                  "penalty": { "note": "Điều kiện giảm án" }
+                },
+                {
+                  "rule_id": "105_r2",
+                  "clause": 2,
+                  "logic": "REDUCTION_SPECIAL",
+                  "priority": 2,
+                  "conditions": [ { "type": "reduction_special", "text": "Người dưới 18 tuổi phạm tội bị phạt cải tạo không giam giữ hoặc phạt tù, nếu lập công hoặc mắc bệnh hiểm nghèo, thì được xét giảm ngay và có thể được miễn chấp hành phần hình phạt còn lại" } ],
+                  "penalty": { "note": "Giảm đặc biệt" }
+                },
+                {
+                  "rule_id": "105_r3",
+                  "clause": 3,
+                  "logic": "REDUCTION_FINE",
+                  "priority": 3,
+                  "conditions": [ { "type": "reduction_fine", "text": "Người dưới 18 tuổi phạm tội bị phạt tiền nhưng bị lâm vào hoàn cảnh kinh tế đặc biệt khó khăn kéo dài do thiên tai, hỏa hoạn, tai nạn hoặc ốm đau gây ra hoặc lập công lớn, thì theo đề nghị của Viện trưởng Viện kiểm sát, Tòa án có thể quyết định giảm hoặc miễn việc chấp hành phần tiền phạt còn lại" } ],
+                  "penalty": { "note": "Giảm hoặc miễn tiền phạt" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "106", "name": "Tha tù trước hạn có điều kiện", "article": 106 },
+              "rules": [
+                {
+                  "rule_id": "106_r1",
+                  "clause": 1,
+                  "logic": "CONDITIONAL_RELEASE",
+                  "priority": 1,
+                  "conditions": [
+                    { "type": "condition", "point": "a", "text": "Phạm tội lần đầu" },
+                    { "type": "condition", "point": "b", "text": "Có nhiều tiến bộ, có ý thức cải tạo tốt" },
+                    { "type": "condition", "point": "c", "text": "Đã chấp hành được một phần ba thời hạn phạt tù" },
+                    { "type": "condition", "point": "d", "text": "Có nơi cư trú rõ ràng" }
+                  ],
+                  "penalty": { "note": "Điều kiện tha tù trước hạn có điều kiện" }
+                },
+                {
+                  "rule_id": "106_r2",
+                  "clause": 2,
+                  "logic": "PROCEDURE",
+                  "priority": 2,
+                  "conditions": [ { "type": "procedure", "text": "Việc tha tù trước thời hạn có điều kiện được thực hiện theo quy định tại các khoản 3, 4 và 5 Điều 66 của Bộ luật này" } ],
+                  "penalty": { "note": "Thủ tục thực hiện" }
+                }
+              ]
+            },
+            {
+              "crime": { "id": "107", "name": "Xóa án tích", "article": 107 },
+              "rules": [
+                {
+                  "rule_id": "107_r1",
+                  "clause": 1,
+                  "logic": "AUTOMATIC",
+                  "priority": 1,
+                  "conditions": [
+                    { "type": "expungement", "point": "a", "text": "Người từ đủ 14 đến dưới 16 tuổi" },
+                    { "type": "expungement", "point": "b", "text": "Người từ đủ 16 tuổi đến dưới 18 tuổi bị kết án về tội phạm ít nghiêm trọng, tội phạm nghiêm trọng hoặc tội phạm rất nghiêm trọng do vô ý" },
+                    { "type": "expungement", "point": "c", "text": "Người bị áp dụng biện pháp tư pháp quy định tại Mục 3 Chương này" }
+                  ],
+                  "penalty": { "note": "Đương nhiên được coi là không có án tích" }
+                },
+                {
+                  "rule_id": "107_r2",
+                  "clause": 2,
+                  "logic": "AUTOMATIC",
+                  "priority": 2,
+                  "conditions": [
+                    { "type": "time_limit", "point": "a", "text": "06 tháng trong trường hợp bị phạt cảnh cáo, phạt tiền, phạt cải tạo không giam giữ hoặc phạt tù nhưng được hưởng án treo" },
+                    { "type": "time_limit", "point": "b", "text": "01 năm trong trường hợp bị phạt tù đến 05 năm" },
+                    { "type": "time_limit", "point": "c", "text": "02 năm trong trường hợp bị phạt tù từ trên 05 năm đến 15 năm" },
+                    { "type": "time_limit", "point": "d", "text": "03 năm trong trường hợp bị phạt tù trên 15 năm" }
+                  ],
+                  "penalty": { "note": "Thời hạn đương nhiên xóa án tích đối với tội rất nghiêm trọng do cố ý hoặc đặc biệt nghiêm trọng" }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

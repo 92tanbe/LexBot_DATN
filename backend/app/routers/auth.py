@@ -8,40 +8,49 @@ router = APIRouter(prefix="/auth", tags=["Authentication"])
 
 @router.post("/register", response_model=Token, status_code=status.HTTP_201_CREATED)
 async def register(user_data: UserCreate):
-    # Kiểm tra email đã tồn tại chưa
-    existing_user = await users_collection.find_one({"email": user_data.email})
-    if existing_user:
+    try:
+        # Kiểm tra email đã tồn tại chưa
+        existing_user = await users_collection.find_one({"email": user_data.email})
+        if existing_user:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Email này đã được đăng ký. Vui lòng dùng email khác.",
+            )
+
+        # Kiểm tra username đã tồn tại chưa
+        existing_username = await users_collection.find_one({"username": user_data.username})
+        if existing_username:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Tên người dùng đã tồn tại. Vui lòng chọn tên khác.",
+            )
+
+        # Tạo user mới
+        hashed_pw = hash_password(user_data.password)
+        new_user = {
+            "username": user_data.username,
+            "email": user_data.email,
+            "hashed_password": hashed_pw,
+        }
+        result = await users_collection.insert_one(new_user)
+        user_id = str(result.inserted_id)
+
+        # Tạo JWT token
+        access_token = create_access_token(data={"sub": user_id, "email": user_data.email})
+
+        return Token(
+            access_token=access_token,
+            token_type="bearer",
+            user=UserResponse(id=user_id, username=user_data.username, email=user_data.email),
+        )
+    except HTTPException:
+        raise
+    except Exception as e:
+        import traceback
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Email này đã được đăng ký. Vui lòng dùng email khác.",
+            detail=f"Error inserting user: {str(e)}\n\nTraceback: {traceback.format_exc()}"
         )
-
-    # Kiểm tra username đã tồn tại chưa
-    existing_username = await users_collection.find_one({"username": user_data.username})
-    if existing_username:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Tên người dùng đã tồn tại. Vui lòng chọn tên khác.",
-        )
-
-    # Tạo user mới
-    hashed_pw = hash_password(user_data.password)
-    new_user = {
-        "username": user_data.username,
-        "email": user_data.email,
-        "hashed_password": hashed_pw,
-    }
-    result = await users_collection.insert_one(new_user)
-    user_id = str(result.inserted_id)
-
-    # Tạo JWT token
-    access_token = create_access_token(data={"sub": user_id, "email": user_data.email})
-
-    return Token(
-        access_token=access_token,
-        token_type="bearer",
-        user=UserResponse(id=user_id, username=user_data.username, email=user_data.email),
-    )
 
 
 @router.post("/login", response_model=Token)
