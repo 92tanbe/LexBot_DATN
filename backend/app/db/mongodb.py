@@ -5,3 +5,4 @@ client = AsyncIOMotorClient(URL_MONGODB)
 database = client["lexbot_db"]
 
 users_collection = database["users"]
+chats_collection = database["chats"]
