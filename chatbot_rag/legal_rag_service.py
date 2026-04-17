@@ -224,9 +224,16 @@ class LegalRAGService:
                 (
                     "system",
                     (
-                        "Ban la tro ly RAG phap ly. "
+                        "Ban la tro ly RAG phap ly viet bang tieng Viet tu nhien, ro rang, de hieu. "
                         "Chi duoc tra loi dua tren context duoc cung cap. "
-                        "Neu context chua du chac chan, phai noi ro do la ket qua tham khao."
+                        "Neu context chua du chac chan, phai noi ro do la ket qua tham khao. "
+                        "Uu tien van phong giong mau tu van phap ly pho thong: "
+                        "doan 1 neu hanh vi va can cu dieu luat; "
+                        "doan 2 neu muc hinh phat chinh va bo sung neu co; "
+                        "doan 3 tom tat muc do nghiem trong; "
+                        "doan 4 luu y thong tin chi mang tinh tham khao; "
+                        "cuoi cung them dong 'Can cu phap ly:' va 1 dong tom tat dieu luat lien quan. "
+                        "Khong dung markdown, khong gach dau dong, khong bieu tuong."
                     ),
                 ),
                 (
@@ -234,12 +241,111 @@ class LegalRAGService:
                     (
                         "Cau hoi:\n{question}\n\n"
                         "Top ket qua retrieve:\n{context}\n\n"
-                        "Hay viet cau tra loi ngan gon, de doc, neu co thi neu ro Dieu, khoan, diem va hinh phat."
+                        "Hay viet cau tra loi theo dung bo cuc da yeu cau, neu ro Dieu, khoan, diem neu co, va hinh phat."
                     ),
                 ),
             ]
         )
         return prompt | self.llm
+
+    def _format_article_reference(
+        self,
+        row: dict[str, Any],
+        point_label: str | None = None,
+    ) -> str:
+        clause = row.get("clause")
+        article = row.get("article")
+        reference = f"Điều {article}"
+        if clause:
+            reference += f", khoản {clause}"
+        if point_label:
+            reference += f", điểm {point_label}"
+        return reference
+
+    def _format_penalty_sentence(self, row: dict[str, Any]) -> str:
+        penalty_note = row.get("penalty_note")
+        penalty_extra = row.get("penalty_extra")
+        if penalty_note:
+            sentence = f"Hình phạt đối với tội này {penalty_note.strip()}"
+        elif row.get("penalty_min") is not None and row.get("penalty_max") is not None:
+            sentence = (
+                "Hình phạt đối với tội này có thể bị xử phạt tù "
+                f"từ {row['penalty_min']} năm đến {row['penalty_max']} năm"
+            )
+        elif row.get("penalty_min") is not None:
+            sentence = f"Hình phạt đối với tội này có thể bị áp dụng từ mức {row['penalty_min']}"
+        else:
+            sentence = "Hình phạt đối với tội này được áp dụng theo quy định của điều luật tương ứng"
+        if penalty_extra:
+            sentence += f". Ngoài ra, người phạm tội còn có thể {str(penalty_extra).strip()}"
+        else:
+            sentence += "."
+        return sentence
+
+    def _build_legal_basis_line(
+        self,
+        row: dict[str, Any],
+        point_text: str | None = None,
+    ) -> str:
+        article = row.get("article")
+        clause = row.get("clause")
+        crime_name = row.get("crime_name", "hành vi liên quan")
+        reference = f"Bộ luật Hình sự 2015 Điều {article}"
+        if clause:
+            reference += f", khoản {clause}"
+        if point_text:
+            reference += f", điểm {point_text}"
+        return f"{reference} quy định về {crime_name.lower()} và khung hình phạt áp dụng cho trường hợp này."
+
+    def _compose_structured_answer(
+        self,
+        question: str,
+        retrieved: dict[str, Any],
+    ) -> str | None:
+        rows = retrieved.get("rows") or []
+        if not rows:
+            return None
+
+        top = rows[0]
+        rule_details = self._find_rule_details(top["rule_id"])
+        condition_hint_norm = normalize_text(retrieved.get("hints", {}).get("condition_hint", ""))
+        search_terms = retrieved.get("search_terms") or []
+        best_point = self._choose_best_point(rule_details, question, condition_hint_norm, search_terms)
+        point_label = str(best_point["point"]) if best_point else None
+        point_description = best_point.get("text", "").strip() if best_point else ""
+        article_reference = self._format_article_reference(top, point_label)
+
+        first_paragraph = (
+            f"Nếu xét theo thông tin bạn cung cấp, hành vi này có thể bị xem xét theo {article_reference} "
+            f"Bộ luật Hình sự 2015 về tội {str(top['crime_name']).lower()}."
+        )
+        if point_description:
+            first_paragraph += f" Trường hợp này thuộc tình tiết {point_description}."
+        elif top.get("logic"):
+            first_paragraph += f" Đây là trường hợp {str(top['logic']).strip()}."
+
+        second_paragraph = self._format_penalty_sentence(top)
+
+        third_paragraph = (
+            f"Tóm lại, đây là hành vi thuộc nhóm tội phạm nghiêm trọng và người thực hiện "
+            f"có thể phải chịu trách nhiệm hình sự rất nặng theo quy định hiện hành."
+        )
+
+        fourth_paragraph = (
+            "Lưu ý, thông tin trên đây chỉ mang tính tham khảo. "
+            "Bạn nên liên hệ luật sư hoặc cơ quan có thẩm quyền để được tư vấn cụ thể theo tình huống thực tế."
+        )
+
+        legal_basis = self._build_legal_basis_line(top, point_label)
+
+        return (
+            f"{first_paragraph}\n\n"
+            f"{second_paragraph}\n\n"
+            f"{third_paragraph}\n\n"
+            f"{fourth_paragraph}\n\n"
+            f"Căn cứ pháp lý:\n\n"
+            f"{legal_basis}"
+        )
 
     def extract_hints(self, question: str) -> SearchHints:
         return self.extract_chain.invoke({"question": question})
@@ -446,8 +552,12 @@ class LegalRAGService:
         if retrieved.get("explanation"):
             context_lines.append(f"Giai thich xac dinh: {retrieved['explanation']}")
         context = "\n".join(context_lines) if context_lines else "Khong tim thay ket qua retrieve phu hop."
-        response = self.answer_chain.invoke({"question": question, "context": context})
-        answer_text = response.content if hasattr(response, "content") else str(response)
+        structured_answer = self._compose_structured_answer(question, retrieved)
+        if structured_answer:
+            answer_text = structured_answer
+        else:
+            response = self.answer_chain.invoke({"question": question, "context": context})
+            answer_text = response.content if hasattr(response, "content") else str(response)
         return {
             **retrieved,
             "final_answer": answer_text,

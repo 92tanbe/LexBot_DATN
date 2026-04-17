@@ -8,27 +8,6 @@ const GOI_Y = [
   { icon: 'sparkle', label: 'Hình phạt tội hình sự' },
 ];
 
-function buildCitationLabel(row) {
-  const clauseText = row?.clause ? `, khoản ${row.clause}` : '';
-  return `BLHS 2015 Điều ${row?.article}${clauseText}`;
-}
-
-function buildLegalSummary(row) {
-  const clauseText = row?.clause ? `khoản ${row.clause}` : 'điều luật liên quan';
-  const logicText = row?.logic ? `${row.logic}.` : `quy định về ${row?.crime_name?.toLowerCase?.() || 'hành vi liên quan'}.`;
-  return `Điều ${row?.article}, ${clauseText} ${logicText}`;
-}
-
-function getUniqueRows(rows = []) {
-  const seen = new Set();
-  return rows.filter((row) => {
-    const key = `${row.rule_id || ''}-${row.article || ''}-${row.clause || ''}`;
-    if (seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  });
-}
-
 function MainContent() {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
@@ -61,7 +40,6 @@ function MainContent() {
           content: response.final_answer,
           explanation: response.explanation,
           hints: response.hints,
-          rows: response.rows || [],
         },
       ]);
     } catch (error) {
@@ -117,65 +95,14 @@ function MainContent() {
           <>
             {messages.map((msg, idx) => (
               <div key={idx} className={`message-bubble ${msg.role === 'user' ? 'message-user' : 'message-bot'}`}>
-                {msg.role === 'user' ? (
-                  <div className="message-content">{msg.content}</div>
-                ) : (
-                  <div className="message-content">
-                    <div className="message-bot-header">
-                      <div className="message-bot-brand">
-                        <div className="message-bot-avatar">AI</div>
-                        <div>
-                          <div className="message-bot-name">AI Luật</div>
-                          <div className="message-bot-subtitle">Phân tích dựa trên dữ liệu pháp lý truy xuất được</div>
-                        </div>
-                      </div>
-                      <span className="message-bot-badge">Pro</span>
+                <div className="message-content">
+                  {msg.content}
+                  {msg.explanation && (
+                    <div className="message-explanation">
+                      <strong>Cơ sở pháp lý:</strong> {msg.explanation}
                     </div>
-
-                    <div className="message-answer">
-                      {String(msg.content || '')
-                        .split('\n')
-                        .filter(Boolean)
-                        .map((paragraph, paragraphIdx) => (
-                          <p key={paragraphIdx}>{paragraph}</p>
-                        ))}
-                    </div>
-
-                    {msg.explanation && (
-                      <div className="message-explanation">
-                        <strong>Lưu ý:</strong> {msg.explanation}
-                      </div>
-                    )}
-
-                    {getUniqueRows(msg.rows).length > 0 && (
-                      <>
-                        <div className="message-section">
-                          <div className="message-section-title">Căn cứ pháp lý</div>
-                          <ul className="legal-basis-list">
-                            {getUniqueRows(msg.rows).map((row, rowIdx) => (
-                              <li key={`${row.rule_id || rowIdx}`} className="legal-basis-item">
-                                <span className="legal-basis-link">{buildCitationLabel(row)}</span>
-                                <span className="legal-basis-text">{buildLegalSummary(row)}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-
-                        <div className="message-section">
-                          <div className="message-section-title">Trích dẫn</div>
-                          <div className="citation-chips">
-                            {getUniqueRows(msg.rows).map((row, rowIdx) => (
-                              <div key={`${row.rule_id || rowIdx}-citation`} className="citation-chip">
-                                <span className="citation-chip-index">{rowIdx + 1}</span>
-                                <span>{buildCitationLabel(row)}</span>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      </>
-                    )}
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
             ))}
             {isLoading && (
