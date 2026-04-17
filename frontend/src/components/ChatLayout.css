@@ -1157,6 +1157,177 @@
   font-weight: 800;
 }
 
+.case-summary-box,
+.case-warning-box {
+  margin-bottom: 14px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(15, 23, 42, 0.72);
+  border: 1px solid rgba(99, 102, 241, 0.18);
+  color: #cbd5e1;
+}
+
+.case-warning-box {
+  margin-top: 14px;
+  border-color: rgba(245, 158, 11, 0.28);
+  background: rgba(120, 53, 15, 0.18);
+}
+
+.person-analysis-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+}
+
+.person-analysis-card {
+  padding: 16px;
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.72));
+  border: 1px solid rgba(99, 102, 241, 0.18);
+  box-shadow: 0 12px 28px rgba(2, 6, 23, 0.28);
+}
+
+.person-analysis-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.person-analysis-name {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #f8fafc;
+}
+
+.person-analysis-role {
+  margin-top: 4px;
+  color: #a5b4fc;
+  font-size: 0.83rem;
+  font-weight: 700;
+}
+
+.person-analysis-confidence {
+  flex-shrink: 0;
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: rgba(14, 165, 233, 0.12);
+  border: 1px solid rgba(14, 165, 233, 0.25);
+  color: #7dd3fc;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.person-analysis-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.person-analysis-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(99, 102, 241, 0.1);
+  border: 1px solid rgba(99, 102, 241, 0.18);
+  color: #cbd5e1;
+  font-size: 0.78rem;
+}
+
+.person-analysis-block {
+  margin-top: 14px;
+}
+
+.person-analysis-label {
+  margin-bottom: 8px;
+  color: #e2e8f0;
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+
+.person-analysis-list {
+  margin: 0;
+  padding-left: 18px;
+  color: #cbd5e1;
+}
+
+.person-analysis-list li + li {
+  margin-top: 8px;
+}
+
+.person-analysis-empty {
+  color: #94a3b8;
+  font-size: 0.88rem;
+}
+
+.crime-analysis-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.crime-analysis-item {
+  padding: 12px;
+  border-radius: 14px;
+  background: rgba(30, 41, 59, 0.58);
+  border: 1px solid rgba(148, 163, 184, 0.14);
+}
+
+.crime-analysis-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.crime-analysis-tag {
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(99, 102, 241, 0.15);
+  color: #c7d2fe;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.crime-analysis-reference {
+  color: #94a3b8;
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.crime-analysis-name {
+  color: #f8fafc;
+  font-weight: 700;
+}
+
+.crime-analysis-basis {
+  margin-top: 6px;
+  color: #cbd5e1;
+  font-size: 0.84rem;
+}
+
+.crime-analysis-penalty,
+.person-analysis-penalty-summary {
+  margin-top: 8px;
+  color: #fcd34d;
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.person-analysis-note {
+  margin-top: 14px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.24);
+  color: #fde68a;
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
 /* Typing Indicator */
 .typing-indicator {
   display: inline-flex;
@@ -1190,4 +1361,6 @@
 @media (max-width: 600px) {
   .message-bubble { max-width: 100%; }
   .message-bot-header { flex-direction: column; }
+  .person-analysis-header { flex-direction: column; }
+  .crime-analysis-top { flex-direction: column; align-items: flex-start; }
 }

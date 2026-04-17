@@ -2,12 +2,7 @@
  * Thanh điều hướng bên trái
  * — Áp dụng design system từ demo.jsx (dark mode + glassmorphism) —
  */
-const SAMPLE_QUESTIONS = [
-  "Lái xe ô tô say rượu gây tai nạn chết 1 người?",
-  "Xe máy vượt đèn đỏ, không đội mũ bảo hiểm?",
-  "Ô tô chạy quá tốc độ gây tai nạn thương tích nặng?",
-  "Xe đầu kéo sai làn, tai nạn liên hoàn 2 người chết?",
-];
+
 
 const QUICK_LOOKUPS = [
   "Điều 260 BLHS",
@@ -40,19 +35,7 @@ function Sidebar() {
         </button>
       </nav>
 
-      {/* Tình huống mẫu */}
-      <div className="sidebar-divider" />
-      <h2 className="sidebar-section-title">📌 Tình huống mẫu</h2>
-      <div style={{ padding: '0 12px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-        {SAMPLE_QUESTIONS.map((q, i) => (
-          <button key={i} type="button" className="nav-item" style={{ fontSize: '0.8rem', lineHeight: 1.5, padding: '9px 12px' }}>
-            <span className="nav-icon" style={{ width: 20, height: 20, borderRadius: '50%', background: 'rgba(99,102,241,0.28)', color: '#818cf8', fontSize: '10px', fontWeight: 700, justifyContent: 'center', flexShrink: 0 }}>
-              {i + 1}
-            </span>
-            <span className="nav-text">{q}</span>
-          </button>
-        ))}
-      </div>
+
 
       {/* Tra cứu nhanh */}
       <div className="sidebar-divider" />

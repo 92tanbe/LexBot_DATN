@@ -8,25 +8,48 @@ const GOI_Y = [
   { icon: 'sparkle', label: 'Hình phạt tội hình sự' },
 ];
 
-function buildCitationLabel(row) {
-  const clauseText = row?.clause ? `, khoản ${row.clause}` : '';
-  return `BLHS 2015 Điều ${row?.article}${clauseText}`;
+function formatRoleLabel(role) {
+  const labels = {
+    chu_muu: 'Chủ mưu',
+    giup_suc: 'Giúp sức',
+    thuc_hanh: 'Thực hành',
+    xui_giuc: 'Xúi giục',
+    dong_pham: 'Đồng phạm',
+    khong_pham_toi: 'Chưa đủ căn cứ phạm tội',
+    can_dieu_tra_them: 'Cần điều tra thêm',
+  };
+  return labels[role] || role || 'Chưa xác định';
 }
 
-function buildLegalSummary(row) {
-  const clauseText = row?.clause ? `khoản ${row.clause}` : 'điều luật liên quan';
-  const logicText = row?.logic ? `${row.logic}.` : `quy định về ${row?.crime_name?.toLowerCase?.() || 'hành vi liên quan'}.`;
-  return `Điều ${row?.article}, ${clauseText} ${logicText}`;
+function formatCrimeGroupLabel(classification) {
+  const labels = {
+    toi_chinh: 'Tội chính',
+    toi_phu: 'Tội phụ',
+    toi_co_the_xem_xet_them: 'Tội có thể xem xét thêm',
+  };
+  return labels[classification] || 'Khả năng pháp lý';
 }
 
-function getUniqueRows(rows = []) {
-  const seen = new Set();
-  return rows.filter((row) => {
-    const key = `${row.rule_id || ''}-${row.article || ''}-${row.clause || ''}`;
-    if (seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  });
+function formatTriState(value) {
+  const labels = {
+    co: 'Có',
+    khong: 'Không',
+    chua_ro: 'Chưa rõ',
+  };
+  return labels[value] || 'Chưa rõ';
+}
+
+function buildCrimeReference(crime) {
+  const clauseText = crime?.clause ? `, khoản ${crime.clause}` : '';
+  return `Điều ${crime?.article}${clauseText}`;
+}
+
+function getPeopleFromMessage(msg) {
+  if (Array.isArray(msg.people) && msg.people.length > 0) return msg.people;
+  if (Array.isArray(msg.caseAnalysis?.people) && msg.caseAnalysis.people.length > 0) {
+    return msg.caseAnalysis.people;
+  }
+  return [];
 }
 
 function MainContent() {
@@ -62,6 +85,8 @@ function MainContent() {
           explanation: response.explanation,
           hints: response.hints,
           rows: response.rows || [],
+          people: response.people || [],
+          caseAnalysis: response.case_analysis || null,
         },
       ]);
     } catch (error) {
@@ -141,39 +166,106 @@ function MainContent() {
                         ))}
                     </div>
 
+                    {getPeopleFromMessage(msg).length > 0 && (
+                      <div className="message-section">
+                        <div className="message-section-title">Phân tích theo từng đối tượng</div>
+                        {msg.caseAnalysis?.case_summary && (
+                          <div className="case-summary-box">{msg.caseAnalysis.case_summary}</div>
+                        )}
+                        <div className="person-analysis-grid">
+                          {getPeopleFromMessage(msg).map((person, personIdx) => (
+                            <article key={`${person.name || 'person'}-${personIdx}`} className="person-analysis-card">
+                              <div className="person-analysis-header">
+                                <div>
+                                  <div className="person-analysis-name">{person.name || 'Chưa rõ tên'}</div>
+                                  <div className="person-analysis-role">{formatRoleLabel(person.role)}</div>
+                                </div>
+                                <div className="person-analysis-confidence">
+                                  Độ tin cậy {Math.round((person.confidence || 0) * 100)}%
+                                </div>
+                              </div>
+
+                              <div className="person-analysis-meta">
+                                <span className="person-analysis-chip">Cầm ma túy: {formatTriState(person.direct_drug_contact)}</span>
+                                <span className="person-analysis-chip">Hưởng lợi: {formatTriState(person.benefited)}</span>
+                                <span className="person-analysis-chip">Biết mục đích: {formatTriState(person.knew_criminal_purpose)}</span>
+                              </div>
+
+                              <div className="person-analysis-block">
+                                <div className="person-analysis-label">Hành vi</div>
+                                {Array.isArray(person.actions) && person.actions.length > 0 ? (
+                                  <ul className="person-analysis-list">
+                                    {person.actions.map((action, actionIdx) => (
+                                      <li key={`${person.name || 'person'}-action-${actionIdx}`}>{action}</li>
+                                    ))}
+                                  </ul>
+                                ) : (
+                                  <div className="person-analysis-empty">Chưa có dữ kiện hành vi cụ thể.</div>
+                                )}
+                              </div>
+
+                              <div className="person-analysis-block">
+                                <div className="person-analysis-label">Tội danh có thể áp dụng</div>
+                                {Array.isArray(person.possible_crimes) && person.possible_crimes.length > 0 ? (
+                                  <div className="crime-analysis-list">
+                                    {person.possible_crimes.map((crime, crimeIdx) => (
+                                      <div key={`${person.name || 'person'}-crime-${crimeIdx}`} className="crime-analysis-item">
+                                        <div className="crime-analysis-top">
+                                          <span className="crime-analysis-tag">{formatCrimeGroupLabel(crime.classification)}</span>
+                                          <span className="crime-analysis-reference">{buildCrimeReference(crime)}</span>
+                                        </div>
+                                        <div className="crime-analysis-name">{crime.crime_name}</div>
+                                        {crime.basis && <div className="crime-analysis-basis">{crime.basis}</div>}
+                                        {crime.penalty_range && <div className="crime-analysis-penalty">{crime.penalty_range}</div>}
+                                      </div>
+                                    ))}
+                                  </div>
+                                ) : (
+                                  <div className="person-analysis-empty">Cần điều tra thêm.</div>
+                                )}
+                              </div>
+
+                              {person.penalty_range && (
+                                <div className="person-analysis-block">
+                                  <div className="person-analysis-label">Khung hình phạt sơ bộ</div>
+                                  <div className="person-analysis-penalty-summary">{person.penalty_range}</div>
+                                </div>
+                              )}
+
+                              {Array.isArray(person.legal_articles) && person.legal_articles.length > 0 && (
+                                <div className="person-analysis-block">
+                                  <div className="person-analysis-label">Điều luật liên quan</div>
+                                  <div className="person-analysis-meta">
+                                    {person.legal_articles.map((article, articleIdx) => (
+                                      <span key={`${person.name || 'person'}-article-${articleIdx}`} className="person-analysis-chip">
+                                        {article}
+                                      </span>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+
+                              {person.investigation_note && (
+                                <div className="person-analysis-note">{person.investigation_note}</div>
+                              )}
+                            </article>
+                          ))}
+                        </div>
+
+                        {Array.isArray(msg.caseAnalysis?.unresolved_facts) && msg.caseAnalysis.unresolved_facts.length > 0 && (
+                          <div className="case-warning-box">
+                            <strong>Cần điều tra thêm:</strong> {msg.caseAnalysis.unresolved_facts.join('; ')}
+                          </div>
+                        )}
+                      </div>
+                    )}
+
                     {msg.explanation && (
                       <div className="message-explanation">
                         <strong>Lưu ý:</strong> {msg.explanation}
                       </div>
                     )}
 
-                    {getUniqueRows(msg.rows).length > 0 && (
-                      <>
-                        <div className="message-section">
-                          <div className="message-section-title">Căn cứ pháp lý</div>
-                          <ul className="legal-basis-list">
-                            {getUniqueRows(msg.rows).map((row, rowIdx) => (
-                              <li key={`${row.rule_id || rowIdx}`} className="legal-basis-item">
-                                <span className="legal-basis-link">{buildCitationLabel(row)}</span>
-                                <span className="legal-basis-text">{buildLegalSummary(row)}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-
-                        <div className="message-section">
-                          <div className="message-section-title">Trích dẫn</div>
-                          <div className="citation-chips">
-                            {getUniqueRows(msg.rows).map((row, rowIdx) => (
-                              <div key={`${row.rule_id || rowIdx}-citation`} className="citation-chip">
-                                <span className="citation-chip-index">{rowIdx + 1}</span>
-                                <span>{buildCitationLabel(row)}</span>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      </>
-                    )}
                   </div>
                 )}
               </div>
