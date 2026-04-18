@@ -185,11 +185,13 @@ function MainContent() {
                                 </div>
                               </div>
 
+{/* 
                               <div className="person-analysis-meta">
                                 <span className="person-analysis-chip">Cầm ma túy: {formatTriState(person.direct_drug_contact)}</span>
                                 <span className="person-analysis-chip">Hưởng lợi: {formatTriState(person.benefited)}</span>
                                 <span className="person-analysis-chip">Biết mục đích: {formatTriState(person.knew_criminal_purpose)}</span>
                               </div>
+                              */}
 
                               <div className="person-analysis-block">
                                 <div className="person-analysis-label">Hành vi</div>
