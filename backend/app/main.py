@@ -1,16 +1,22 @@
+import os
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.routers import auth, chat
 
 app = FastAPI(title="LexBot API", version="1.0.0")
 
-# CORS — cho phép frontend (local dev + Vercel production)
+_default_cors = [
+    "http://localhost:5173",
+    "https://lex-bot-datn.vercel.app",
+]
+_extra_cors = [o.strip() for o in os.getenv("CORS_ORIGINS", "").split(",") if o.strip()]
+_cors_origins = list(dict.fromkeys(_default_cors + _extra_cors))
+
+# CORS — mặc định local + Vercel; thêm domain qua CORS_ORIGINS (cách nhau bởi dấu phẩy)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",
-        "https://lex-bot-datn.vercel.app",
-    ],
+    allow_origins=_cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

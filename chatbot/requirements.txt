@@ -1,0 +1,33 @@
+# Core API + DB
+fastapi[standard]>=0.115
+uvicorn[standard]>=0.30
+neo4j>=5.13
+python-dotenv>=1.0
+pydantic>=2.7
+
+# LLM
+openai>=1.40.0
+
+# Embedding & Reranker
+sentence-transformers>=3.0
+torch>=2.2
+numpy>=1.26
+
+# NLP tieng Viet
+underthesea>=6.8
+
+# Streaming + HTTP
+sse-starlette>=2.1
+httpx>=0.27
+requests>=2.32
+
+# Streamlit demo
+streamlit>=1.36
+
+# Evaluation
+pyyaml>=6.0
+pytest>=8.0
+tqdm>=4.66
+
+# Optional: ngrok / deploy helpers (khong bat buoc)
+# ragas>=0.1   # kich hoat khi can chay RAGAS metrics
