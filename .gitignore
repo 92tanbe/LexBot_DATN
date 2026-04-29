@@ -1,0 +1,16 @@
+.env
+./law-crawler/.gitignore
+node_modules/
+./backend/law-service/.gitignore
+./backend/auth-service/.gitignore
+./backend/rag/.gitignore
+auth-sql/
+law-sql/
+qna-sql/
+backend/rag/corpus/*.csv
+backend/rag/chroma_db_law/
+backend/rag/qna-sql/
+backend/law-service/law-sql/
+
+backend/graph/neo4j/data/
+backend/graph/neo4j/logs/

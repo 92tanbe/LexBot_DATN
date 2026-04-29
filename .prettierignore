@@ -1,0 +1,14 @@
+law-crawler/phap-dien/
+venv/
+.venv/
+node_modules/
+docker-compose.yml
+web/.next/
+backend/rag/
+backend/api-gateway/
+*.yaml
+./web/.next/
+./web/assets/
+./web/out/
+**/backend/auth-service/auth-sql/
+*.sqlite3

@@ -1,0 +1,17 @@
+name: saulvn-law-crawler
+services:
+    phpmyadmin:
+        image: phpmyadmin:latest
+        restart: always
+        ports:
+            - "8081:80"
+        environment:
+            PMA_HOST: law-mysql
+            UPLOAD_LIMIT: 300M
+        networks:
+            - app-network
+
+networks:
+    app-network:
+        external: true
+        name: saulvn-backend_app-network

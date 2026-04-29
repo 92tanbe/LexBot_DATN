@@ -1,0 +1,5 @@
+peewee
+pymysql
+beautifulsoup4
+pandas
+python-dotenv
