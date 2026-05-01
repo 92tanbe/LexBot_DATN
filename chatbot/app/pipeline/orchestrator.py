@@ -50,24 +50,32 @@ logger = logging.getLogger(__name__)
 # --------------------------- LLM client ------------------------------------
 
 
-def _llm_client():
+def _llm_client() -> tuple[object | None, str | None]:
+    """Tra ve (client, error_message). Neu OK thi error_message = None."""
     if not settings.openai_api_key:
-        return None
+        return None, "OPENAI_API_KEY rong - kiem tra chatbot/.env"
     try:
         from openai import OpenAI
-
-        return OpenAI(api_key=settings.openai_api_key)
     except Exception as exc:  # noqa: BLE001
-        logger.warning("Khong khoi tao duoc OpenAI client: %s", exc)
-        return None
+        return None, f"openai SDK chua cai dat: {exc}"
+    try:
+        return OpenAI(api_key=settings.openai_api_key), None
+    except Exception as exc:  # noqa: BLE001
+        return None, f"Khoi tao OpenAI client loi: {exc}"
 
 
 def _call_llm_for_analysis(
     question: str, entities: CaseEntities, context: str
-) -> CaseAnalysis | None:
-    client = _llm_client()
+) -> tuple[CaseAnalysis | None, str | None]:
+    """Goi LLM. Tra ve (case, error_message).
+
+    Khi case is None thi error_message luon co gia tri de orchestrator
+    ghi vao warnings cho frontend debug.
+    """
+    client, err = _llm_client()
     if client is None:
-        return None
+        logger.warning("Stage 3 LLM khong san sang: %s", err)
+        return None, err
 
     user_prompt = build_user_prompt(
         question=question,
@@ -75,8 +83,16 @@ def _call_llm_for_analysis(
         context=context,
     )
 
+    logger.info(
+        "Stage 3: goi LLM model=%s system_chars=%d user_chars=%d context_chars=%d",
+        settings.openai_model,
+        len(SYSTEM_PROMPT),
+        len(user_prompt),
+        len(context),
+    )
+
     try:
-        resp = client.chat.completions.create(
+        resp = client.chat.completions.create(  # type: ignore[attr-defined]
             model=settings.openai_model,
             temperature=0,
             response_format={"type": "json_object"},
@@ -86,12 +102,13 @@ def _call_llm_for_analysis(
             ],
         )
     except Exception as exc:  # noqa: BLE001
-        logger.warning("LLM analysis goi loi: %s", exc)
-        return None
+        msg = f"LLM call exception: {type(exc).__name__}: {exc}"
+        logger.exception("Stage 3 LLM call failed")
+        return None, msg
 
     raw = resp.choices[0].message.content if resp.choices else ""
     if not raw:
-        return None
+        return None, "LLM tra ve content rong"
 
     raw = raw.strip()
     if raw.startswith("```"):
@@ -101,30 +118,46 @@ def _call_llm_for_analysis(
 
     try:
         data = json.loads(raw)
-    except json.JSONDecodeError:
-        logger.warning("LLM tra ve JSON khong hop le")
-        return None
+    except json.JSONDecodeError as exc:
+        logger.warning("LLM JSON parse loi: %s. Raw[:300]=%s", exc, raw[:300])
+        return None, f"LLM JSON parse loi: {exc}"
 
     try:
-        return CaseAnalysis.model_validate(data)
+        case = CaseAnalysis.model_validate(data)
     except Exception as exc:  # noqa: BLE001
         logger.warning("CaseAnalysis validate loi: %s", exc)
-        return None
+        return None, f"CaseAnalysis schema validate loi: {exc}"
+
+    logger.info(
+        "Stage 3 LLM OK: %d actor, confidence=%s, finish=%s",
+        len(case.actors),
+        case.confidence,
+        getattr(resp.choices[0], "finish_reason", "?") if resp.choices else "?",
+    )
+    return case, None
 
 
 # ---------------------- Fallback khi LLM khong san sang ---------------------
 
 
 def _fallback_case_analysis(
-    question: str, chunks: list[RetrievedChunk]
+    question: str,
+    chunks: list[RetrievedChunk],
+    llm_error: str | None = None,
 ) -> CaseAnalysis:
-    """Tao CaseAnalysis don gian khi khong co OPENAI_API_KEY hoac LLM loi."""
+    """Tao CaseAnalysis don gian khi LLM that bai. llm_error duoc dua vao warnings."""
+    base_warning = (
+        f"LLM khong san sang ({llm_error}), output la fallback"
+        if llm_error
+        else "LLM khong san sang, output la fallback"
+    )
+
     if not chunks:
         return CaseAnalysis(
             summary="Khong tim thay can cu phap ly phu hop trong co so du lieu.",
             actors=[],
             confidence="low",
-            warnings=["Khong co context retrieval"],
+            warnings=["Khong co context retrieval", base_warning],
         )
 
     top = chunks[0]
@@ -162,7 +195,7 @@ def _fallback_case_analysis(
         summary=f"Truong hop co the lien quan toi {top.dieu_name or 'mot toi danh'} (Dieu {top.article}).",
         actors=[actor],
         confidence="low",
-        warnings=["LLM khong san sang, output la fallback"],
+        warnings=[base_warning],
     )
 
 
@@ -304,11 +337,11 @@ def run_pipeline(
     context_str = build_context(reranked, graph_results=graph_results)
 
     t0 = time.time()
-    case = _call_llm_for_analysis(question, entities, context_str)
+    case, llm_error = _call_llm_for_analysis(question, entities, context_str)
     timings["stage3_llm_ms"] = round((time.time() - t0) * 1000, 1)
 
     if case is None:
-        case = _fallback_case_analysis(question, reranked)
+        case = _fallback_case_analysis(question, reranked, llm_error=llm_error)
 
     # ---------- Stage 4: Post-processing ----------
     t0 = time.time()
@@ -426,11 +459,17 @@ async def run_pipeline_stream(
     )
 
     context_str = build_context(reranked, graph_results=graph_results)
-    case = _call_llm_for_analysis(question, entities, context_str)
+    case, llm_error = _call_llm_for_analysis(question, entities, context_str)
     if case is None:
-        case = _fallback_case_analysis(question, reranked)
+        case = _fallback_case_analysis(question, reranked, llm_error=llm_error)
 
-    yield StageEvent(stage="stage3_llm_done", payload={"confidence": case.confidence})
+    yield StageEvent(
+        stage="stage3_llm_done",
+        payload={
+            "confidence": case.confidence,
+            "llm_error": llm_error,
+        },
+    )
 
     # Stage 4
     known_articles = collect_known_articles(reranked)

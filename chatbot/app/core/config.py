@@ -1,6 +1,6 @@
 """Cau hinh tap trung cho chatbot RAG BLHS.
 
-Doc cac bien moi truong tu chatbot/.env (uu tien) hoac bien he thong.
+Doc cac bien moi truong tu chatbot/.env (uu tien khi co) hoac bien he thong.
 Tat ca cac module khac chi import `settings` tu day.
 """
 from __future__ import annotations
@@ -8,9 +8,10 @@ from __future__ import annotations
 import os
 from functools import lru_cache
 from pathlib import Path
+from urllib.parse import urlparse
 
 from dotenv import load_dotenv
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 
 def _load_env() -> Path | None:
@@ -37,24 +38,60 @@ def _load_env() -> Path | None:
 
     for path in candidates:
         if path.is_file():
-            load_dotenv(path, override=False)
+            load_dotenv(path, override=True)
             return path
 
-    load_dotenv(override=False)
+    load_dotenv(override=True)
     return None
 
 
 _ENV_PATH = _load_env()
 
 
+def _getenv_required(name: str) -> str:
+    """Lay bien bat buoc va bao loi ro khi deploy thieu cau hinh."""
+    value = (os.getenv(name) or "").strip()
+    if not value:
+        raise ValueError(f"Thieu bien moi truong bat buoc: {name}")
+    return value
+
+
+def _neo4j_allow_localhost() -> bool:
+    """Cho phep bolt://localhost chi khi co co y (dev local)."""
+    return os.getenv("NEO4J_ALLOW_LOCALHOST", "").strip().lower() in ("1", "true", "yes")
+
+
+def _neo4j_uri_uses_loopback(uri: str) -> bool:
+    """True neu host la localhost / 127.0.0.1 / ::1."""
+    try:
+        parsed = urlparse(uri)
+        host = (parsed.hostname or "").lower()
+        return host in ("localhost", "127.0.0.1", "::1")
+    except ValueError:
+        u = uri.lower()
+        return "localhost" in u or "127.0.0.1" in u
+
+
 class Settings(BaseModel):
     """Bien moi truong cua dich vu."""
 
     # ----- Neo4j -----
-    neo4j_uri: str = Field(default_factory=lambda: os.getenv("NEO4J_URI", "bolt://localhost:7687"))
-    neo4j_user: str = Field(default_factory=lambda: os.getenv("NEO4J_USER", "neo4j"))
-    neo4j_password: str = Field(default_factory=lambda: os.getenv("NEO4J_PASSWORD", ""))
+    neo4j_uri: str = Field(default_factory=lambda: _getenv_required("NEO4J_URI"))
+    neo4j_user: str = Field(default_factory=lambda: _getenv_required("NEO4J_USER"))
+    neo4j_password: str = Field(default_factory=lambda: _getenv_required("NEO4J_PASSWORD"))
     neo4j_database: str | None = Field(default_factory=lambda: os.getenv("NEO4J_DATABASE") or None)
+
+    @model_validator(mode="after")
+    def _reject_localhost_uri_on_deploy(self):
+        # Nhieu nen tang dat template NEO4J_URI=bolt://localhost — can bao loi ro.
+        if _neo4j_uri_uses_loopback(self.neo4j_uri) and not _neo4j_allow_localhost():
+            raise ValueError(
+                "NEO4J_URI dang tro ve localhost; tren server deploy can URI Neo4j Aura/cloud. "
+                "Dat NEO4J_URI, NEO4J_USER, NEO4J_PASSWORD trong Environment Variables (Secrets) "
+                "cua nen tang va xoa gia tri mac dinh localhost. "
+                "Neu chay Neo4j tren may local thi them NEO4J_ALLOW_LOCALHOST=true vao .env."
+            )
+        return self
 
     # ----- OpenAI -----
     openai_api_key: str = Field(default_factory=lambda: os.getenv("OPENAI_API_KEY", ""))

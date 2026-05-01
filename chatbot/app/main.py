@@ -27,6 +27,7 @@ logger = logging.getLogger(__name__)
 async def lifespan(app: FastAPI):
     """Khoi tao tai nguyen 1 lan luc khoi dong."""
     logger.info("==== Chatbot RAG BLHS khoi dong ====")
+    logger.info("File .env da nap (neu co): %s", settings.env_file_path or "(khong tim thay)")
     logger.info("Embedding model: %s", settings.embedding_model)
     logger.info("Reranker enabled: %s", settings.enable_reranker)
     logger.info("OpenAI configured: %s", bool(settings.openai_api_key))
