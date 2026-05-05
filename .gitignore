@@ -1,0 +1,42 @@
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.pytest_cache/
+.coverage
+.mypy_cache/
+
+# Virtualenv
+venv/
+.venv/
+env/
+
+# Model cache (huge: BKAI ~500MB, bge-reranker ~2.27GB)
+.cache/
+huggingface_cache/
+
+# Streamlit
+.streamlit/
+
+# Eval reports
+eval/report.json
+eval/*.json
+
+# FastAPI Cloud link (chua app_id rieng)
+.fastapicloud/
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db

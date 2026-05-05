@@ -1,0 +1,131 @@
+# Test cases cho RAG pipeline. Moi case co:
+#   question        : cau hoi tu nguoi dung
+#   expected_articles: cac dieu luat phai xuat hien trong reranked top-k (de tinh recall)
+#   expected_actors  : (optional) so doi tuong
+#   expected_roles   : (optional) vai tro phai duoc nhan dien
+
+cases:
+  - id: cuop_100tr
+    question: "Toi cuop tai san tri gia 100 trieu thi bi xu phat the nao?"
+    expected_articles: [168]
+    expected_clauses: [2]
+    expected_actors: 1
+
+  - id: giet_2_nguoi
+    question: "Giet 2 nguoi co bi tu hinh khong?"
+    expected_articles: [123]
+    expected_actors: 1
+
+  - id: cuop_dong_pham
+    question: "A dung dao cuop xe may, B dung ngoai canh gac. A va B bi xu the nao?"
+    expected_articles: [168, 17]
+    expected_actors: 2
+    expected_roles: ["chinh pham", "giup suc"]
+
+  - id: trom_tai_san_50tr
+    question: "Trom tai san 50 trieu dong se bi xu phat ra sao?"
+    expected_articles: [173]
+
+  - id: lua_dao_chiem_doat_500tr
+    question: "Lua dao chiem doat tai san 500 trieu thi pham toi gi, hinh phat?"
+    expected_articles: [174]
+
+  - id: tham_o_1ty
+    question: "Tham o tai san nha nuoc 1 ty dong, can bo nha nuoc bi xu the nao?"
+    expected_articles: [353]
+
+  - id: hoi_lo_500tr
+    question: "Dua hoi lo 500 trieu cho can bo phai chiu hinh phat gi?"
+    expected_articles: [364]
+
+  - id: nhan_hoi_lo_2ty
+    question: "Can bo nhan hoi lo 2 ty dong bi xu the nao?"
+    expected_articles: [354]
+
+  - id: ma_tuy_van_chuyen
+    question: "Van chuyen 50g heroin vao Viet Nam bi xu the nao?"
+    expected_articles: [250]
+
+  - id: ma_tuy_su_dung
+    question: "Su dung trai phep ma tuy bi xu the nao?"
+    expected_articles: [255, 256]
+
+  - id: hiep_dam_tre_em
+    question: "Hiep dam nguoi duoi 16 tuoi bi xu phat ra sao?"
+    expected_articles: [142]
+
+  - id: lai_xe_chet_nguoi
+    question: "Lai xe vuot den do gay tai nan chet 1 nguoi bi xu the nao?"
+    expected_articles: [260]
+
+  - id: lai_xe_say_xin
+    question: "Lai xe co nong do con vuot 0.4 mg/lit khi tho gay tai nan se bi xu the nao?"
+    expected_articles: [260]
+
+  - id: cuop_co_to_chuc
+    question: "Cuop tai san co to chuc bi xu the nao?"
+    expected_articles: [168]
+
+  - id: lam_giay_to_gia
+    question: "Lam giay to gia, su dung con dau gia bi xu phat the nao?"
+    expected_articles: [341]
+
+  - id: chong_nguoi_thi_hanh_cong_vu
+    question: "Chong nguoi thi hanh cong vu bi xu the nao?"
+    expected_articles: [330]
+
+  - id: cuong_doat_tai_san
+    question: "Cuong doat tai san bang cach de doa bi xu phat ra sao?"
+    expected_articles: [170]
+
+  - id: cuop_giat
+    question: "Cuop giat dien thoai cua nguoi di duong bi xu phat the nao?"
+    expected_articles: [171]
+
+  - id: lam_dung_tin_nhiem
+    question: "Lam dung tin nhiem chiem doat tai san 200 trieu bi xu the nao?"
+    expected_articles: [175]
+
+  - id: trom_xe_may_2ty
+    question: "Trom 2 chiec xe may tri gia tong cong 2 ty dong bi xu phat ra sao?"
+    expected_articles: [173]
+
+  - id: vu_khi_quan_dung
+    question: "Tang tru vu khi quan dung trai phep bi xu the nao?"
+    expected_articles: [304]
+
+  - id: ban_dong_vat_quy
+    question: "Sat ha 1 con voi rung quy hiem bi xu phat ra sao?"
+    expected_articles: [244]
+
+  - id: khong_to_giac
+    question: "Khong to giac toi pham bi xu the nao?"
+    expected_articles: [390]
+
+  - id: che_giau_toi_pham
+    question: "Che giau toi pham giet nguoi bi xu phat ra sao?"
+    expected_articles: [389]
+
+  - id: gay_thuong_tich
+    question: "Co y gay thuong tich tre 50% bi xu the nao?"
+    expected_articles: [134]
+
+  - id: bao_hanh_gia_dinh
+    question: "Bao hanh, ngo dai vo con gay thuong tich 11% bi xu phat ra sao?"
+    expected_articles: [185, 134]
+
+  - id: cuop_co_vu_khi_giet_nguoi
+    question: "Cuop tai san co dung sung lam chet nguoi bi xu phat the nao?"
+    expected_articles: [168]
+
+  - id: dam_o_tre_em
+    question: "Dam o nguoi duoi 16 tuoi bi xu the nao?"
+    expected_articles: [146]
+
+  - id: dieu_17_dong_pham
+    question: "Theo Dieu 17 BLHS, nhung ai duoc xem la dong pham?"
+    expected_articles: [17]
+
+  - id: dieu_55_tong_hop_hp
+    question: "Khi pham nhieu toi thi tong hop hinh phat the nao theo Dieu 55?"
+    expected_articles: [55]
