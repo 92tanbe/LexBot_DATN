@@ -56,6 +56,8 @@ function MainContent() {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  /** Chế độ gửi lên backend: fast = tra cứu nhanh, thinking = pipeline phân tích đầy đủ */
+  const [queryMode, setQueryMode] = useState('fast');
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -70,13 +72,18 @@ function MainContent() {
     const question = text || inputValue;
     if (!question.trim()) return;
 
+    const modeUsed = queryMode;
+
     // Add user message
-    setMessages((prev) => [...prev, { role: 'user', content: question }]);
+    setMessages((prev) => [
+      ...prev,
+      { role: 'user', content: question, queryMode: modeUsed },
+    ]);
     setInputValue('');
     setIsLoading(true);
 
     try {
-      const response = await sendChatQuery(question);
+      const response = await sendChatQuery(question, modeUsed);
       setMessages((prev) => [
         ...prev,
         {
@@ -87,6 +94,7 @@ function MainContent() {
           rows: response.rows || [],
           people: response.people || [],
           caseAnalysis: response.case_analysis || null,
+          responseMode: modeUsed,
         },
       ]);
     } catch (error) {
@@ -143,7 +151,16 @@ function MainContent() {
             {messages.map((msg, idx) => (
               <div key={idx} className={`message-bubble ${msg.role === 'user' ? 'message-user' : 'message-bot'}`}>
                 {msg.role === 'user' ? (
-                  <div className="message-content">{msg.content}</div>
+                  <div className="message-content message-user-wrap">
+                    {msg.queryMode && (
+                      <div
+                        className={`user-mode-chip ${msg.queryMode === 'thinking' ? 'user-mode-chip--thinking' : ''}`}
+                      >
+                        {msg.queryMode === 'thinking' ? 'Phân tích · Thinking' : 'Tra cứu nhanh · PDF'}
+                      </div>
+                    )}
+                    <div>{msg.content}</div>
+                  </div>
                 ) : (
                   <div className="message-content">
                     <div className="message-bot-header">
@@ -154,7 +171,11 @@ function MainContent() {
                           <div className="message-bot-subtitle">Phân tích dựa trên dữ liệu pháp lý truy xuất được</div>
                         </div>
                       </div>
-                      <span className="message-bot-badge">Pro</span>
+                      <span
+                        className={`message-bot-badge ${msg.responseMode === 'thinking' ? 'message-bot-badge--thinking' : ''}`}
+                      >
+                        {msg.responseMode === 'thinking' ? 'Thinking' : 'Tra cứu nhanh'}
+                      </span>
                     </div>
 
                     <div className="message-answer">
@@ -299,6 +320,27 @@ function MainContent() {
           </div>
         )}
 
+        <div className="query-mode-row" role="group" aria-label="Chế độ trả lời">
+          <button
+            type="button"
+            className={`query-mode-btn query-mode-btn--fast ${queryMode === 'fast' ? 'query-mode-btn--active' : ''}`}
+            onClick={() => setQueryMode('fast')}
+            disabled={isLoading}
+          >
+            <span className="query-mode-btn-title">Tra cứu nhanh</span>
+            <span className="query-mode-btn-sub">Giáo trình / PDF</span>
+          </button>
+          <button
+            type="button"
+            className={`query-mode-btn query-mode-btn--thinking ${queryMode === 'thinking' ? 'query-mode-btn--active' : ''}`}
+            onClick={() => setQueryMode('thinking')}
+            disabled={isLoading}
+          >
+            <span className="query-mode-btn-title">Phân tích</span>
+            <span className="query-mode-btn-sub">Thinking · LLM đầy đủ</span>
+          </button>
+        </div>
+
         <div className="input-box">
           <button type="button" className="input-box-icon" aria-label="Đính kèm">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -318,19 +360,6 @@ function MainContent() {
           />
 
           <div className="input-box-actions">
-            <button type="button" className="input-action-btn">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="12" r="3" />
-                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
-              </svg>
-              <span>Công cụ</span>
-            </button>
-            <button type="button" className="input-action-btn input-action-dropdown">
-              <span>Nhanh</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M6 9l6 6 6-6" />
-              </svg>
-            </button>
             <button type="button" className="input-send-btn" onClick={() => handleSend()} disabled={isLoading || !inputValue.trim()}>
               <svg width="18" height="18" fill="none" viewBox="0 0 24 24">
                 <path d="M22 2L11 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />

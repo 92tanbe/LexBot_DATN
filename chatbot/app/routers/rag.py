@@ -9,7 +9,7 @@ from fastapi import APIRouter, HTTPException
 from fastapi.responses import StreamingResponse
 
 from app.models.schemas import ChatRequest, ChatResponse
-from app.pipeline.orchestrator import run_pipeline, run_pipeline_stream
+from app.pipeline.orchestrator import run_pipeline, run_pipeline_fast, run_pipeline_stream
 
 logger = logging.getLogger(__name__)
 
@@ -23,9 +23,10 @@ async def rag_query(request: ChatRequest) -> ChatResponse:
     Tuong thich voi backend /chat/query da forward sang day.
     """
     try:
-        # Chay dong bo trong threadpool de tranh chan event loop
+        # Chạy đồng bộ trong thread pool để không chặn event loop
+        runner = run_pipeline_fast if request.query_mode == "fast" else run_pipeline
         return await asyncio.to_thread(
-            run_pipeline,
+            runner,
             question=request.question,
             top_k=request.top_k,
             include_debug=request.include_debug,

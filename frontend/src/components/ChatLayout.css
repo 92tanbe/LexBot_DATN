@@ -420,6 +420,96 @@
   color: #64748b;
 }
 
+/* ─── Chọn chế độ tra cứu nhanh / phân tích (MainContent) ─── */
+.query-mode-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.query-mode-btn {
+  flex: 1;
+  min-width: 140px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(99, 102, 241, 0.22);
+  background: rgba(12, 17, 36, 0.65);
+  color: #94a3b8;
+  cursor: pointer;
+  text-align: left;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  transition:
+    border-color 0.2s,
+    background 0.2s,
+    color 0.2s,
+    box-shadow 0.2s;
+}
+
+.query-mode-btn:hover:not(:disabled) {
+  border-color: rgba(99, 102, 241, 0.45);
+  color: #cbd5f5;
+}
+
+.query-mode-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.query-mode-btn--fast.query-mode-btn--active {
+  border-color: rgba(251, 111, 146, 0.55);
+  background: rgba(251, 111, 146, 0.1);
+  color: #fde7ef;
+  box-shadow: 0 0 0 1px rgba(251, 111, 146, 0.12) inset;
+}
+
+.query-mode-btn--thinking.query-mode-btn--active {
+  border-color: rgba(147, 197, 253, 0.55);
+  background: rgba(96, 165, 250, 0.1);
+  color: #e0eeff;
+  box-shadow: 0 0 0 1px rgba(147, 197, 253, 0.12) inset;
+}
+
+.query-mode-btn-title {
+  display: block;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: inherit;
+}
+
+.query-mode-btn-sub {
+  display: block;
+  font-size: 0.72rem;
+  margin-top: 2px;
+  opacity: 0.85;
+  font-weight: 400;
+}
+
+.user-mode-chip {
+  display: inline-block;
+  margin-bottom: 8px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  background: rgba(251, 111, 146, 0.15);
+  color: #fecdd8;
+  border: 1px solid rgba(251, 111, 146, 0.28);
+}
+
+.user-mode-chip--thinking {
+  background: rgba(96, 165, 250, 0.15);
+  color: #bfdbfe;
+  border-color: rgba(96, 165, 250, 0.3);
+}
+
+.message-bot-badge--thinking {
+  background: rgba(96, 165, 250, 0.2);
+  border-color: rgba(96, 165, 250, 0.35);
+  color: #bfdbfe;
+}
+
 /* Input area */
 .input-area {
   width: 100%;

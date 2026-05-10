@@ -1,11 +1,13 @@
 import logging
 import os
 from datetime import datetime
+from typing import Literal
+from urllib.parse import urlparse
 
 import httpx
 from fastapi import APIRouter, HTTPException, BackgroundTasks, Depends
 from fastapi.security import OAuth2PasswordBearer
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from app.db.mongodb import chats_collection
 from app.core.security import decode_token
@@ -16,14 +18,36 @@ router = APIRouter(prefix="/chat", tags=["Chat"])
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login", auto_error=False)
 
-# Local development should default to the local chatbot microservice.
-# Production can override this via CHATBOT_SERVICE_URL.
-CHATBOT_URL = os.getenv("CHATBOT_SERVICE_URL", "http://127.0.0.1:8001/rag/query")
+
+def _resolve_chatbot_rag_url(raw: str) -> str:
+    """Nối path /rag/query khi env chỉ là base URL (ví dụ Railway: https://...app/)."""
+    value = (raw or "").strip()
+    if not value:
+        return "http://127.0.0.1:8001/rag/query"
+    base = value.rstrip("/")
+    path = (urlparse(base).path or "").rstrip("/")
+    if not path:
+        return f"{base}/rag/query"
+    if path.endswith("/rag"):
+        return f"{base}/query"
+    if path.endswith("/rag/query"):
+        return base
+    return base
+
+
+# Local: mặc định chatbot local. Production: CHATBOT_SERVICE_URL = base hoặc full .../rag/query
+CHATBOT_URL = _resolve_chatbot_rag_url(
+    os.getenv("CHATBOT_SERVICE_URL", "http://127.0.0.1:8001/rag/query")
+)
 CHATBOT_TIMEOUT = float(os.getenv("CHATBOT_TIMEOUT_SECONDS", "60"))
 
 class ChatRequest(BaseModel):
     question: str
     top_k: int = 5
+    query_mode: Literal["fast", "thinking"] = Field(
+        default="fast",
+        description="fast hoặc thinking — forward sang chatbot ChatRequest.query_mode",
+    )
 
 async def save_chat_to_db(user_id: str, question: str, response_data: dict):
     try:
@@ -54,9 +78,14 @@ async def chat_query(request: ChatRequest, background_tasks: BackgroundTasks, to
     try:
         logger.info("chat/query: forwarding to RAG url=%s timeout_s=%s", CHATBOT_URL, CHATBOT_TIMEOUT)
         async with httpx.AsyncClient(timeout=timeout) as client:
+            payload = {
+                "question": request.question,
+                "top_k": request.top_k,
+                "query_mode": request.query_mode,
+            }
             response = await client.post(
                 CHATBOT_URL,
-                json={"question": request.question, "top_k": request.top_k},
+                json=payload,
             )
 
             if response.status_code != 200:
@@ -86,8 +115,7 @@ async def chat_query(request: ChatRequest, background_tasks: BackgroundTasks, to
         detail = f"Không kết nối được Chatbot RAG tại {CHATBOT_URL!s}: {exc!s}."
         if "127.0.0.1" in CHATBOT_URL or "localhost" in CHATBOT_URL:
             detail += (
-                " Trên fastapicloud, backend và chatbot_rag là hai app riêng: "
-                "đặt biến CHATBOT_SERVICE_URL trỏ tới URL đầy đủ của RAG "
-                "(ví dụ https://<app-chatbot>.fastapicloud.dev/rag/query)."
+                " Trên FastAPI Cloud đặt CHATBOT_SERVICE_URL = base URL chatbot "
+                "(ví dụ https://...railway.app/) hoặc đầy đủ .../rag/query."
             )
         raise HTTPException(status_code=503, detail=detail)

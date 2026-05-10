@@ -1,14 +1,18 @@
 """Orchestrator 4 giai doan cho chatbot RAG BLHS.
 
-Quy trinh xu ly 1 cau hoi:
+API `query_mode` (POST /rag/query):
+
+    - "fast": tra cứu nhanh — hybrid retrieval (vector + full-text), không graph/Cypher/LLM phân tích đầy đủ (`run_pipeline_fast`).
+    - "thinking": pipeline 4 giai đoạn đầy đủ (`run_pipeline`).
+
+Stream SSE (/rag/query/stream) luon chay pipeline day du.
+
+Pipeline "thinking", thứ tự xử lý 1 câu hỏi:
+
     Stage 2 (Query understanding):  NER + decompose
     Stage 1 (Retrieval):            Hybrid retrieval cho moi sub-query
     Stage 3 (Generation):           Rerank + LLM structured output
     Stage 4 (Post-processing):      Validator + format response
-
-Co ho tro 2 mode:
-    - run(question, ...)        : non-stream, tra ve ChatResponse day du
-    - run_stream(question, ...) : async generator yield StageEvent SSE
 """
 from __future__ import annotations
 
@@ -262,6 +266,112 @@ def _to_citations(case: CaseAnalysis) -> list[Citation]:
     return cites
 
 
+def _plain_fast_chunks_answer(chunks: list[RetrievedChunk], max_items: int = 8) -> str:
+    """Gom cac doan trich thanh cau tra loi nhanh (plain text, FE hien thi don gian)."""
+    if not chunks:
+        return "Không tìm thấy đoạn văn bản pháp lý nào khớp nhanh với câu hỏi."
+
+    lines: list[str] = [
+        "Tra cứu nhanh — các đoạn liên quan nhất trong tài liệu đã chỉ mục (giống tra PDF/sách giáo khoa):",
+        "",
+    ]
+    for i, c in enumerate(chunks[:max_items], start=1):
+        ref_parts: list[str] = []
+        if c.article is not None:
+            ref_parts.append(f"Điều {c.article}")
+        if c.clause is not None:
+            ref_parts.append(f"khoản {c.clause}")
+        head = ", ".join(ref_parts) if ref_parts else "Tham chiếu"
+        if c.dieu_name:
+            head = f"{head} ({c.dieu_name})"
+
+        body = (c.text or "").strip().replace("\n\n", "\n").replace("\n", " ")
+        max_len = 480
+        if len(body) > max_len:
+            body = body[: max_len - 1] + "…"
+
+        lines.append(f"{i}. {head}")
+        lines.append(body)
+        lines.append("")
+    return "\n".join(lines).strip()
+
+
+def _fast_lookup_case_analysis(question: str, chunks: list[RetrievedChunk]) -> CaseAnalysis:
+    """Structured toi gian cho che do tra cuu (khong goi LLM phan tich toi danh day du)."""
+    hint = (
+        "Chế độ tra cứu nhanh: xếp hạng theo vector + full-text trên văn đã chỉ mục. "
+        'Chọn "Phân tích (thinking)" để phân luật chi tiết qua pipeline đầy đủ.'
+    )
+    if not chunks:
+        return CaseAnalysis(
+            summary="Không có đoạn văn bản khớp rõ với yêu cầu của bạn.",
+            actors=[],
+            confidence="low",
+            warnings=[hint],
+        )
+
+    citations_out: list[CitationOutput] = []
+    for c in chunks[:5]:
+        if c.article is None:
+            continue
+        citations_out.append(
+            CitationOutput(
+                article=int(c.article),
+                clause=c.clause,
+                rule_id=c.rule_id,
+                ten_toi=c.dieu_name,
+                snippet=(c.text or "")[:220],
+            )
+        )
+
+    with_article = [c for c in chunks if c.article is not None]
+    if not with_article:
+        return CaseAnalysis(
+            summary="Có các đoạn văn bản liên quan; trong chỉ mục hiện chưa gắn rõ số điều cụ thể.",
+            actors=[],
+            confidence="medium",
+            warnings=[hint],
+        )
+
+    top = with_article[0]
+    td = ToiDanhOutput(
+        dieu=int(top.article) if top.article is not None else 0,
+        khoan=top.clause,
+        ten_toi=(top.dieu_name or "Điều khoản liên quan")[:200],
+        nhom_toi=top.nhom_toi,
+        vai_tro="khong xac dinh",
+        ly_do="Trích xuất nhanh từ các đoạn có độ liên quan cao nhất trong cơ sở tri thức đã chỉ mục.",
+        citations=citations_out,
+    )
+    actor = ActorAnalysis(
+        name="Đoạn được trích xuất",
+        vai_tro="khong xac dinh",
+        toi_danh=[td],
+        nhan_xet="Phần chi tiết nằm trong danh sách các đoạn bên trên.",
+    )
+
+    ref_bits: list[str] = []
+    for c in chunks[:3]:
+        if c.article is not None:
+            bit = f"Điều {c.article}"
+            if c.clause is not None:
+                bit += f" k.{c.clause}"
+            ref_bits.append(bit)
+
+    summary = (
+        f"Tìm thấy {len(chunks)} đoạn có thể liên quan; nổi bật: {', '.join(ref_bits)}."
+        if ref_bits
+        else f"Tìm thấy {len(chunks)} đoạn có thể liên quan tới yêu cầu của bạn."
+    )
+
+    return CaseAnalysis(
+        summary=summary,
+        actors=[actor],
+        confidence="medium",
+        warnings=[hint],
+    )
+
+
 # --------------------------- Pipeline non-stream ----------------------------
 
 
@@ -359,6 +469,71 @@ def run_pipeline(
         debug.warnings.extend(warnings)
 
     final_answer = _render_final_answer(case)
+    citations = _to_citations(case)
+
+    return ChatResponse(
+        question=question,
+        final_answer=final_answer,
+        structured=case.model_dump(),
+        citations=citations,
+        confidence=case.confidence,
+        debug=debug,
+    )
+
+
+def run_pipeline_fast(
+    question: str,
+    top_k: int | None = None,
+    include_debug: bool = False,
+) -> ChatResponse:
+    """Che do tra cuu nhanh: retrieval hybrid (vector + full-text), khong Neo4j graph/Cypher hay LLM nang.
+
+    Phi hop khi chi can loc doan phap ly/PDF-da-chi-muc nhu sach giao trinh.
+    """
+    timings: dict[str, float] = {}
+    debug = ChatResponseDebug() if include_debug else None
+
+    t0 = time.time()
+    candidates = retrieve_for_query(
+        query=question.strip(),
+        fulltext_keywords=[question.strip()[:500]],
+        article_refs=None,
+        role_hints=None,
+        top_k=settings.candidate_top_k,
+    )
+    timings["stage1_retrieval_fast_ms"] = round((time.time() - t0) * 1000, 1)
+
+    if debug is not None:
+        debug.retrieved = list(candidates)
+        debug.timings_ms = timings
+
+    keep = top_k or min(8, settings.reranker_top_k)
+
+    if settings.enable_reranker:
+        t0 = time.time()
+        reranked = rerank(question, candidates, top_k=keep)
+        timings["stage3_rerank_ms"] = round((time.time() - t0) * 1000, 1)
+    else:
+        reranked = sorted(candidates, key=lambda c: c.rrf_score, reverse=True)[:keep]
+
+    if debug is not None:
+        debug.reranked = reranked
+        debug.timings_ms = timings
+
+    case = _fast_lookup_case_analysis(question, reranked)
+    known_articles = collect_known_articles(reranked)
+    known_rule_ids = collect_known_rule_ids(reranked)
+    case, warnings = validate_case_analysis(
+        case,
+        known_articles=known_articles,
+        known_rule_ids=known_rule_ids,
+    )
+
+    if debug is not None:
+        debug.warnings.extend(warnings)
+        debug.timings_ms = timings
+
+    final_answer = _plain_fast_chunks_answer(reranked)
     citations = _to_citations(case)
 
     return ChatResponse(

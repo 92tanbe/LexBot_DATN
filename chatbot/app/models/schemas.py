@@ -64,9 +64,16 @@ class Citation(BaseModel):
 # ---------------------------- API request/response --------------------------
 
 
+QueryMode = Literal["fast", "thinking"]
+
+
 class ChatRequest(BaseModel):
     question: str = Field(..., min_length=1, max_length=4000)
     top_k: int = Field(default=8, ge=1, le=30)
+    query_mode: QueryMode = Field(
+        default="fast",
+        description="fast=tra cứu nhanh (retrieval+gộp đoạn), thinking=pipeline đầy đủ (NER/graph/LLM phân tích).",
+    )
     include_debug: bool = Field(
         default=False,
         description="Tra ve them debug info (entities, retrieval, rerank)",

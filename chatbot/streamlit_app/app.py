@@ -176,7 +176,12 @@ def _call_http(api_url: str, question: str, top_k: int, include_debug: bool) -> 
 
     r = requests.post(
         f"{api_url.rstrip('/')}/rag/query",
-        json={"question": question, "top_k": top_k, "include_debug": include_debug},
+        json={
+            "question": question,
+            "top_k": top_k,
+            "include_debug": include_debug,
+            "query_mode": "thinking",
+        },
         timeout=120,
     )
     r.raise_for_status()
@@ -188,7 +193,12 @@ def _stream_http(api_url: str, question: str, top_k: int, include_debug: bool):
 
     with requests.post(
         f"{api_url.rstrip('/')}/rag/query/stream",
-        json={"question": question, "top_k": top_k, "include_debug": include_debug},
+        json={
+            "question": question,
+            "top_k": top_k,
+            "include_debug": include_debug,
+            "query_mode": "thinking",
+        },
         stream=True,
         timeout=300,
     ) as r:
