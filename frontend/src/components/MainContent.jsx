@@ -56,8 +56,8 @@ function MainContent() {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  /** Chế độ gửi lên backend: fast = tra cứu nhanh, thinking = pipeline phân tích đầy đủ */
-  const [queryMode, setQueryMode] = useState('fast');
+  /** Chế độ trả lời: pdf = trích file VB hợp nhất; fast/thinking = Neo4j RAG */
+  const [answerMode, setAnswerMode] = useState('pdf');
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -72,18 +72,19 @@ function MainContent() {
     const question = text || inputValue;
     if (!question.trim()) return;
 
-    const modeUsed = queryMode;
+    const modeUsed = answerMode === 'thinking' ? 'thinking' : 'fast';
+    const chatModeOpt = answerMode === 'pdf' ? { chatMode: 'tra_cuu_pdf' } : {};
 
     // Add user message
     setMessages((prev) => [
       ...prev,
-      { role: 'user', content: question, queryMode: modeUsed },
+      { role: 'user', content: question, answerMode },
     ]);
     setInputValue('');
     setIsLoading(true);
 
     try {
-      const response = await sendChatQuery(question, modeUsed);
+      const response = await sendChatQuery(question, modeUsed, chatModeOpt);
       setMessages((prev) => [
         ...prev,
         {
@@ -95,6 +96,7 @@ function MainContent() {
           people: response.people || [],
           caseAnalysis: response.case_analysis || null,
           responseMode: modeUsed,
+          answerMode,
         },
       ]);
     } catch (error) {
@@ -152,11 +154,17 @@ function MainContent() {
               <div key={idx} className={`message-bubble ${msg.role === 'user' ? 'message-user' : 'message-bot'}`}>
                 {msg.role === 'user' ? (
                   <div className="message-content message-user-wrap">
-                    {msg.queryMode && (
+                    {msg.answerMode && (
                       <div
-                        className={`user-mode-chip ${msg.queryMode === 'thinking' ? 'user-mode-chip--thinking' : ''}`}
+                        className={`user-mode-chip ${
+                          msg.answerMode === 'thinking' ? 'user-mode-chip--thinking' : ''
+                        }`}
                       >
-                        {msg.queryMode === 'thinking' ? 'Phân tích · Thinking' : 'Tra cứu nhanh · PDF'}
+                        {msg.answerMode === 'pdf'
+                          ? 'VB hợp nhất · PDF'
+                          : msg.answerMode === 'thinking'
+                            ? 'Neo4j · Phân tích'
+                            : 'Neo4j · Tra cứu nhanh'}
                       </div>
                     )}
                     <div>{msg.content}</div>
@@ -172,9 +180,19 @@ function MainContent() {
                         </div>
                       </div>
                       <span
-                        className={`message-bot-badge ${msg.responseMode === 'thinking' ? 'message-bot-badge--thinking' : ''}`}
+                        className={`message-bot-badge ${
+                          msg.answerMode === 'pdf'
+                            ? 'message-bot-badge--pdf'
+                            : msg.responseMode === 'thinking'
+                              ? 'message-bot-badge--thinking'
+                              : ''
+                        }`}
                       >
-                        {msg.responseMode === 'thinking' ? 'Thinking' : 'Tra cứu nhanh'}
+                        {msg.answerMode === 'pdf'
+                          ? 'PDF VB'
+                          : msg.responseMode === 'thinking'
+                            ? 'Thinking'
+                            : 'Neo4j nhanh'}
                       </span>
                     </div>
 
@@ -323,21 +341,30 @@ function MainContent() {
         <div className="query-mode-row" role="group" aria-label="Chế độ trả lời">
           <button
             type="button"
-            className={`query-mode-btn query-mode-btn--fast ${queryMode === 'fast' ? 'query-mode-btn--active' : ''}`}
-            onClick={() => setQueryMode('fast')}
+            className={`query-mode-btn query-mode-btn--fast ${answerMode === 'pdf' ? 'query-mode-btn--active' : ''}`}
+            onClick={() => setAnswerMode('pdf')}
             disabled={isLoading}
           >
-            <span className="query-mode-btn-title">Tra cứu nhanh</span>
-            <span className="query-mode-btn-sub">Giáo trình / PDF</span>
+            <span className="query-mode-btn-title">VB PDF</span>
+            <span className="query-mode-btn-sub">Trích văn hợp nhất</span>
           </button>
           <button
             type="button"
-            className={`query-mode-btn query-mode-btn--thinking ${queryMode === 'thinking' ? 'query-mode-btn--active' : ''}`}
-            onClick={() => setQueryMode('thinking')}
+            className={`query-mode-btn query-mode-btn--fast ${answerMode === 'fast' ? 'query-mode-btn--active' : ''}`}
+            onClick={() => setAnswerMode('fast')}
+            disabled={isLoading}
+          >
+            <span className="query-mode-btn-title">Tra cứu nhanh</span>
+            <span className="query-mode-btn-sub">Neo4j · embedding</span>
+          </button>
+          <button
+            type="button"
+            className={`query-mode-btn query-mode-btn--thinking ${answerMode === 'thinking' ? 'query-mode-btn--active' : ''}`}
+            onClick={() => setAnswerMode('thinking')}
             disabled={isLoading}
           >
             <span className="query-mode-btn-title">Phân tích</span>
-            <span className="query-mode-btn-sub">Thinking · LLM đầy đủ</span>
+            <span className="query-mode-btn-sub">Neo4j + LLM đầy đủ</span>
           </button>
         </div>
 

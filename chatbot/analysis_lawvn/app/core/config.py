@@ -57,7 +57,7 @@ def _getenv_required(name: str) -> str:
 
 
 def _optional_env(name: str) -> str | None:
-    """Bien tuy chon — chuoi rong tro thanh None."""
+    """Bien moi truong tu chon — chuoi rong -> None."""
     value = (os.getenv(name) or "").strip()
     return value if value else None
 
@@ -119,13 +119,6 @@ class Settings(BaseModel):
     enable_reranker: bool = Field(
         default_factory=lambda: os.getenv("ENABLE_RERANKER", "true").lower() == "true"
     )
-    # Giam RAM khi deploy (Railway): max_length nho hon + batch nho hon khi predict
-    reranker_max_length: int = Field(
-        default_factory=lambda: int(os.getenv("RERANKER_MAX_LENGTH", "512"))
-    )
-    reranker_predict_batch_size: int = Field(
-        default_factory=lambda: int(os.getenv("RERANKER_PREDICT_BATCH_SIZE", "16"))
-    )
 
     # ----- Vector index -----
     dieu_vector_index: str = Field(default="dieu_embedding")
@@ -143,7 +136,7 @@ class Settings(BaseModel):
         default_factory=lambda: os.getenv("ENABLE_LLM_HYDE", "true").lower() == "true"
     )
 
-    # PDF VB hop nhat (mode chat_mode=tra_cuu_pdf)
+    # ----- PDF tra cứu văn bản (VB hợp nhất BLHS, mode tra_cuu_pdf) -----
     blhs_pdf_path: str | None = Field(default_factory=lambda: _optional_env("BLHS_PDF_PATH"))
 
     # ----- App -----

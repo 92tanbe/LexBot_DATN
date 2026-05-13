@@ -1,0 +1,24 @@
+Stage 1 - Ingest: chunk_embed.py multi-level + vector index
+Stage 1 - Retrievers (vector, graph, fulltext, hybrid)
+Stage 2 - NER hybrid: underthesea + LLM
+Stage 2 - Cypher generator + Query decomposer
+Stage 3 - Reranker bge-reranker-v2-m3
+Stage 3 - Structured output + RAG prompt + LLM
+Stage 3 - Post-processing validator
+Stage 4 - FastAPI service /rag/query + /rag/query/stream
+Stage 4 - Streamlit demo
+Stage 4 - Evaluation + tests
+Ops: requirements.txt + README + smoke test
+
+
+# 1. Cài deps (lần đầu, sẽ tải ~1.5GB BKAI + reranker + underthesea)
+pip install -r chatbot/requirements.txt
+
+# 2. Embed dữ liệu vào Neo4j (411 + 1326 chunks)
+python -m ingestion.chunk_embed --level all --smoke
+
+# 3. Chạy 3 service song song
+uvicorn chatbot.app.main:app --port 8001        # RAG service
+uvicorn backend.app.main:app --port 8000        # backend (đã sẵn sàng forward)
+streamlit run chatbot/streamlit_app/app.py      # demo nội bộ
+# Frontend React tại frontend/ tự động dùng được qua /chat/query

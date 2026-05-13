@@ -63,24 +63,20 @@ class Citation(BaseModel):
 
 # ---------------------------- API request/response --------------------------
 
-
-QueryMode = Literal["fast", "thinking"]
-ChatMode = Literal["tra_cuu_pdf", "phan_tich"]
+ChatMode = Literal[
+    "phan_tich",
+    "tra_cuu_pdf",
+]
 
 
 class ChatRequest(BaseModel):
     question: str = Field(..., min_length=1, max_length=4000)
     top_k: int = Field(default=8, ge=1, le=30)
-    query_mode: QueryMode = Field(
-        default="fast",
-        description="fast=tra cứu nhanh (retrieval+gộp đoạn), thinking=pipeline đầy đủ (NER/graph/LLM phân tích).",
-    )
-    chat_mode: ChatMode | None = Field(
-        default=None,
+    chat_mode: ChatMode = Field(
+        default="tra_cuu_pdf",
         description=(
-            "tra_cuu_pdf: trích VB hợp nhất BLHS từ file PDF (dataset hoặc BLHS_PDF_PATH). "
-            "phan_tich: ép pipeline Neo4j+LLM như thinking. "
-            "None (mặc định): phân nhánh chỉ theo query_mode."
+            "tra_cuu_pdf (mac dinh): tra loi/chat nhanh + trich theo VB hop nhat trong file PDF (dataset). "
+            "phan_tich: bat pipeline RAG/Neo4j + LLM de phan tich tinh huong."
         ),
     )
     include_debug: bool = Field(
@@ -92,7 +88,7 @@ class ChatRequest(BaseModel):
 class StageEvent(BaseModel):
     """1 su kien streaming SSE."""
 
-    stage: str  # stage1_done, stage2_done, stage3_rerank_done, stage3_llm_done, stage4_done, ...
+    stage: str  # stage1_done (hieu query), stage2_done (retrieval), ...
     payload: dict = Field(default_factory=dict)
 
 

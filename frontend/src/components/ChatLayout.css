@@ -510,6 +510,12 @@
   color: #bfdbfe;
 }
 
+.message-bot-badge--pdf {
+  background: rgba(251, 143, 171, 0.16);
+  border-color: rgba(251, 143, 171, 0.32);
+  color: #fbcfe8;
+}
+
 /* Input area */
 .input-area {
   width: 100%;

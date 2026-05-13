@@ -50,7 +50,11 @@ def _resolve_chatbot_rag_url(raw: str) -> str:
 CHATBOT_URL = _resolve_chatbot_rag_url(
     os.getenv("CHATBOT_SERVICE_URL", "http://127.0.0.1:8001/rag/query")
 )
-CHATBOT_TIMEOUT = float(os.getenv("CHATBOT_TIMEOUT_SECONDS", "60"))
+# Railway/host free-tier cold start có thể >60s; kết nối TLS + chờ POST /rag/query cần timeout cao hơn.
+CHATBOT_TIMEOUT = float(os.getenv("CHATBOT_TIMEOUT_SECONDS", "120"))
+CHATBOT_CONNECT_TIMEOUT = float(
+    os.getenv("CHATBOT_CONNECT_TIMEOUT_SECONDS", "45")
+)
 
 class ChatRequest(BaseModel):
     question: str
@@ -58,6 +62,10 @@ class ChatRequest(BaseModel):
     query_mode: Literal["fast", "thinking"] = Field(
         default="fast",
         description="fast hoặc thinking — forward sang chatbot ChatRequest.query_mode",
+    )
+    chat_mode: Literal["tra_cuu_pdf", "phan_tich"] | None = Field(
+        default=None,
+        description="tra_cuu_pdf: trích VB từ PDF chatbot. None: không gửi chat_mode.",
     )
 
 async def save_chat_to_db(user_id: str, question: str, response_data: dict):
@@ -85,15 +93,23 @@ async def chat_query(request: ChatRequest, background_tasks: BackgroundTasks, to
         except:
             pass
 
-    timeout = httpx.Timeout(CHATBOT_TIMEOUT, connect=min(15.0, CHATBOT_TIMEOUT))
+    connect_cap = min(CHATBOT_CONNECT_TIMEOUT, CHATBOT_TIMEOUT)
+    timeout = httpx.Timeout(CHATBOT_TIMEOUT, connect=connect_cap)
     try:
-        logger.info("chat/query: forwarding to RAG url=%s timeout_s=%s", CHATBOT_URL, CHATBOT_TIMEOUT)
+        logger.info(
+            "chat/query: forwarding to RAG url=%s timeout_s=%s connect_s=%s",
+            CHATBOT_URL,
+            CHATBOT_TIMEOUT,
+            connect_cap,
+        )
         async with httpx.AsyncClient(timeout=timeout) as client:
             payload = {
                 "question": request.question,
                 "top_k": request.top_k,
                 "query_mode": request.query_mode,
             }
+            if request.chat_mode is not None:
+                payload["chat_mode"] = request.chat_mode
             response = await client.post(
                 CHATBOT_URL,
                 json=payload,
@@ -128,5 +144,11 @@ async def chat_query(request: ChatRequest, background_tasks: BackgroundTasks, to
             detail += (
                 " Trên FastAPI Cloud đặt CHATBOT_SERVICE_URL = base URL chatbot "
                 "(ví dụ https://...railway.app/) hoặc đầy đủ .../rag/query."
+            )
+        elif "railway.app" in CHATBOT_URL.lower():
+            detail += (
+                " Railway cold start có thể rất chậm — thử tăng CHATBOT_TIMEOUT_SECONDS "
+                f"(hiện {CHATBOT_TIMEOUT}s) và CHATBOT_CONNECT_TIMEOUT_SECONDS (hiện {CHATBOT_CONNECT_TIMEOUT}s), "
+                "hoặc gọi /health của chatbot một lần để đánh thức service."
             )
         raise HTTPException(status_code=503, detail=detail)

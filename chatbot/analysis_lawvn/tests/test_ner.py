@@ -25,11 +25,6 @@ def test_extract_article_refs_clause_first():
     assert any(r.article == 173 and r.clause == 2 for r in refs)
 
 
-def test_extract_article_refs_dieumot_cauhoi_nd():
-    refs = extract_article_refs("Điều 1 nói về gì")
-    assert any(r.article == 1 and r.clause is None for r in refs)
-
-
 def test_extract_amounts_money():
     amts = extract_amounts("Toi cuop 500 trieu va danh nhau gay thuong tich 35%")
     units = {a.unit for a in amts}

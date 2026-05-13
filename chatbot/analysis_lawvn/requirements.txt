@@ -13,6 +13,9 @@ sentence-transformers>=3.0
 torch>=2.2
 numpy>=1.26
 
+# Doc PDF (VB hợp nhất BLHS, mode tra_cuu_pdf)
+pypdf>=5.0
+
 # NLP tieng Viet
 underthesea>=6.8
 
@@ -23,9 +26,8 @@ requests>=2.32
 
 # Streamlit demo
 streamlit>=1.36
-
-# Đọc PDF VB hợp nhất BLHS (chat_mode tra_cuu_pdf)
-pypdf>=4.0
+# Tranh Starlette 1.x: loi static ':scales:' (WinError 123) khi chay Streamlit tren Windows
+starlette>=0.40,<1
 
 # Evaluation
 pyyaml>=6.0

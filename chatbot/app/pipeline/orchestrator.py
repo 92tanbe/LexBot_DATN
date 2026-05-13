@@ -1,11 +1,11 @@
 """Orchestrator 4 giai doan cho chatbot RAG BLHS.
 
-API `query_mode` (POST /rag/query):
+API `POST /rag/query`:
+    - ``chat_mode=tra_cuu_pdf``: trích văn từ file PDF VB hợp nhất (dataset / ``BLHS_PDF_PATH``), giống Streamlit ``analysis_lawvn``.
+    - ``chat_mode=phan_tich``: ép pipeline Neo4j + LLM đầy đủ.
+    - ``chat_mode`` None + ``query_mode``: ``fast`` = tra cứu nhanh (hybrid retrieval + đồ họa điều), ``thinking`` = pipeline đầy đủ.
 
-    - "fast": tra cứu nhanh — hybrid retrieval (vector + full-text), không graph/Cypher/LLM phân tích đầy đủ (`run_pipeline_fast`).
-    - "thinking": pipeline 4 giai đoạn đầy đủ (`run_pipeline`).
-
-Stream SSE (/rag/query/stream) luon chay pipeline day du.
+Stream ``/rag/query/stream``: hỗ trợ ``chat_mode`` (PDF chỉ một vài event: ``pdf_lookup_done`` → ``final``).
 
 Pipeline "thinking", thứ tự xử lý 1 câu hỏi (theo đúng thứ tự chạy):
 
@@ -16,6 +16,7 @@ Pipeline "thinking", thứ tự xử lý 1 câu hỏi (theo đúng thứ tự ch
 """
 from __future__ import annotations
 
+import asyncio
 import json
 import logging
 import re
@@ -31,6 +32,7 @@ from app.models.legal_output import (
     ToiDanhOutput,
 )
 from app.models.schemas import (
+    ChatMode,
     ChatResponse,
     ChatResponseDebug,
     Citation,
@@ -39,12 +41,15 @@ from app.models.schemas import (
 )
 from app.nlp.cypher_gen import execute_candidates, generate_candidates
 from app.nlp.decomposer import SubQuery, decompose
-from app.nlp.ner import CaseEntities, extract_entities
+from app.nlp.ner import CaseEntities, extract_article_refs, extract_entities
+from app.nlp.query_rewriter import RewrittenQuery, rewrite_queries
 from app.pipeline.context_builder import (
     build_context,
     collect_known_articles,
     collect_known_rule_ids,
 )
+from app.pipeline.fast_response import build_fast_response
+from app.pipeline.pdf_textbook import run_pdf_lookup_pipeline
 from app.pipeline.prompts import SYSTEM_PROMPT, build_user_prompt
 from app.postprocessing.validator import validate_case_analysis
 from app.retrievers import graph as graph_retriever
@@ -65,6 +70,21 @@ def _normalize_vi_rule(text: str) -> str:
     t = "".join(ch for ch in t if not unicodedata.combining(ch))
     t = re.sub(r"[^\w\s]", " ", t)
     return re.sub(r"\s+", " ", t).strip()
+
+
+def _retrieval_fulltext_keywords(rq: RewrittenQuery, crime_keywords: list[str]) -> list[str]:
+    """Ưu tiên câu rewrite cho full-text, sau ghép crime hints để không trùng lặp normalization."""
+    keywords = [rq.text]
+    keywords.extend(crime_keywords or [])
+    seen: set[str] = set()
+    out: list[str] = []
+    for item in keywords:
+        key = _normalize_vi_rule(item)
+        if not key or key in seen:
+            continue
+        seen.add(key)
+        out.append(item)
+    return out
 
 
 def _property_violence_article_candidates(question: str) -> list[int]:
@@ -373,10 +393,30 @@ def _plain_fast_chunks_answer(chunks: list[RetrievedChunk], max_items: int = 8) 
     return "\n".join(lines).strip()
 
 
-def _fast_lookup_case_analysis(question: str, chunks: list[RetrievedChunk]) -> CaseAnalysis:
+def _prioritize_explicit_article_chunks(
+    chunks: list[RetrievedChunk],
+    explicit_articles: set[int],
+) -> list[RetrievedChunk]:
+    """Đưa chunk trùng số điều được hỏi rõ trong câu lên đầu (sau rerank/RRF)."""
+    if not explicit_articles or not chunks:
+        return chunks
+
+    def sort_key(c: RetrievedChunk) -> tuple[int, float]:
+        matched = c.article is not None and int(c.article) in explicit_articles
+        score = float(c.rerank_score if c.rerank_score is not None else (c.rrf_score or 0.0))
+        return (1 if matched else 0, score)
+
+    return sorted(chunks, key=sort_key, reverse=True)
+
+
+def _fast_lookup_case_analysis(
+    question: str,
+    chunks: list[RetrievedChunk],
+    explicit_article_nums: set[int] | None = None,
+) -> CaseAnalysis:
     """Structured toi gian cho che do tra cuu (khong goi LLM phan tich toi danh day du)."""
     hint = (
-        "Chế độ tra cứu nhanh: xếp hạng theo vector + full-text trên văn đã chỉ mục. "
+        "Chế độ tra cứu nhanh: xếp hạng theo vector + full-text + truy graph khi có số Điều trong câu. "
         'Chọn "Phân tích (thinking)" để phân luật chi tiết qua pipeline đầy đủ.'
     )
     if not chunks:
@@ -411,6 +451,8 @@ def _fast_lookup_case_analysis(question: str, chunks: list[RetrievedChunk]) -> C
         )
 
     top = with_article[0]
+    explicit = explicit_article_nums or set()
+    top_has_explicit = bool(explicit) and top.article is not None and int(top.article) in explicit
     td = ToiDanhOutput(
         dieu=int(top.article) if top.article is not None else 0,
         khoan=top.clause,
@@ -444,7 +486,7 @@ def _fast_lookup_case_analysis(question: str, chunks: list[RetrievedChunk]) -> C
     return CaseAnalysis(
         summary=summary,
         actors=[actor],
-        confidence="medium",
+        confidence="high" if top_has_explicit else "medium",
         warnings=[hint],
     )
 
@@ -458,6 +500,10 @@ def run_pipeline(
     include_debug: bool = False,
 ) -> ChatResponse:
     """Chay pipeline 4 giai doan, tra ve ChatResponse day du."""
+    fast_response = build_fast_response(question, include_debug=include_debug)
+    if fast_response is not None:
+        return fast_response
+
     timings: dict[str, float] = {}
     debug = ChatResponseDebug() if include_debug else None
 
@@ -465,25 +511,30 @@ def run_pipeline(
     t0 = time.time()
     entities = extract_entities(question)
     sub_queries: list[SubQuery] = decompose(question, entities)
+    retrieval_queries = rewrite_queries(question, entities, sub_queries)
     cypher_candidates = generate_candidates(question, entities)
     timings["stage1_understanding_ms"] = round((time.time() - t0) * 1000, 1)
 
     if debug is not None:
         debug.entities = entities.model_dump()
         debug.sub_queries = [sq.text for sq in sub_queries]
+        debug.rewritten_queries = [f"{q.source}: {q.text}" for q in retrieval_queries]
         debug.cypher_used = [c.cypher.strip().splitlines()[0] for c in cypher_candidates[:6]]
 
     # ---------- Stage 2: Hybrid retrieval ----------
     t0 = time.time()
     refs = [(r.article, r.clause) for r in entities.article_refs]
     crime_keywords = entities.crime_hints[:3]
-    role_hints = list({sq.role_hint for sq in sub_queries if sq.role_hint})
+    role_hints = list(
+        {q.role_hint for q in retrieval_queries if q.role_hint}
+        | {sq.role_hint for sq in sub_queries if sq.role_hint}
+    )
 
     all_chunks: list[RetrievedChunk] = []
-    for sq in sub_queries:
+    for rq in retrieval_queries:
         chunks = retrieve_for_query(
-            query=sq.text,
-            fulltext_keywords=crime_keywords or [sq.text],
+            query=rq.text,
+            fulltext_keywords=_retrieval_fulltext_keywords(rq, crime_keywords),
             article_refs=refs,
             role_hints=role_hints,
             top_k=settings.candidate_top_k,
@@ -568,18 +619,25 @@ def run_pipeline_fast(
     top_k: int | None = None,
     include_debug: bool = False,
 ) -> ChatResponse:
-    """Che do tra cuu nhanh: retrieval hybrid (vector + full-text), khong Neo4j graph/Cypher hay LLM nang.
+    """Chế độ tra cứu nhanh: vector + full-text + graph theo số Điều (regex trong câu), không LLM đầy đủ."""
+    q0 = question.strip()
+    fast_first = build_fast_response(q0, include_debug=include_debug)
+    if fast_first is not None:
+        return fast_first
 
-    Phi hop khi chi can loc doan phap ly/PDF-da-chi-muc nhu sach giao trinh.
-    """
     timings: dict[str, float] = {}
     debug = ChatResponseDebug() if include_debug else None
 
+    q = q0
+    regex_refs = extract_article_refs(q)
+    refs = [(r.article, r.clause) for r in regex_refs]
+    explicit_article_nums = {r.article for r in regex_refs}
+
     t0 = time.time()
     candidates = retrieve_for_query(
-        query=question.strip(),
-        fulltext_keywords=[question.strip()[:500]],
-        article_refs=None,
+        query=q,
+        fulltext_keywords=[q[:500]],
+        article_refs=refs or None,
         role_hints=None,
         top_k=settings.candidate_top_k,
     )
@@ -598,11 +656,16 @@ def run_pipeline_fast(
     else:
         reranked = sorted(candidates, key=lambda c: c.rrf_score, reverse=True)[:keep]
 
+    if explicit_article_nums:
+        reranked = _prioritize_explicit_article_chunks(reranked, explicit_article_nums)
+
     if debug is not None:
         debug.reranked = reranked
         debug.timings_ms = timings
 
-    case = _fast_lookup_case_analysis(question, reranked)
+    case = _fast_lookup_case_analysis(
+        question, reranked, explicit_article_nums=explicit_article_nums or None
+    )
     known_articles = collect_known_articles(reranked)
     known_rule_ids = collect_known_rule_ids(reranked)
     case, warnings = validate_case_analysis(
@@ -635,38 +698,89 @@ async def run_pipeline_stream(
     question: str,
     top_k: int | None = None,
     include_debug: bool = True,
+    chat_mode: ChatMode | None = None,
 ) -> AsyncGenerator[StageEvent, None]:
-    """Async generator yield StageEvent qua tung giai doan.
+    """SSE: chat_mode tra_cuu_pdf → trích PDF; không thì pipeline phân tích + rewrite truy vấn."""
+    yield StageEvent(
+        stage="started",
+        payload={"question": question, "chat_mode": chat_mode},
+    )
 
-    Khong stream LLM token cap thap (de don gian),
-    chi stream theo MOC giai doan (theo thu tu Stage 1..4): stage1_done, stage2_done,
-    stage3_rerank_done, stage3_llm_done, stage4_done, final.
-    """
-    yield StageEvent(stage="started", payload={"question": question})
+    if chat_mode == "tra_cuu_pdf":
+        resp = await asyncio.to_thread(run_pdf_lookup_pipeline, question, include_debug)
+        structured = resp.structured if isinstance(resp.structured, dict) else {}
+        yield StageEvent(
+            stage="pdf_lookup_done",
+            payload={
+                "type": structured.get("type"),
+                "matched_as": structured.get("matched_as"),
+                "confidence": resp.confidence,
+                "intent": structured.get("intent"),
+            },
+        )
+        yield StageEvent(
+            stage="final",
+            payload={
+                "final_answer": resp.final_answer,
+                "structured": resp.structured,
+                "citations": [c.model_dump() for c in resp.citations],
+                "confidence": resp.confidence,
+                "debug": resp.debug.model_dump() if resp.debug else None,
+            },
+        )
+        return
+
+    fast_resp = await asyncio.to_thread(build_fast_response, question, include_debug)
+    if fast_resp is not None:
+        yield StageEvent(
+            stage="fast_path_done",
+            payload={
+                "intent": fast_resp.structured.get("intent"),
+                "confidence": fast_resp.confidence,
+            },
+        )
+        yield StageEvent(
+            stage="final",
+            payload={
+                "final_answer": fast_resp.final_answer,
+                "structured": fast_resp.structured,
+                "citations": [c.model_dump() for c in fast_resp.citations],
+                "confidence": fast_resp.confidence,
+                "debug": fast_resp.debug.model_dump() if fast_resp.debug else None,
+            },
+        )
+        return
 
     # Stage 1
     entities = extract_entities(question)
     sub_queries = decompose(question, entities)
+    retrieval_queries = rewrite_queries(question, entities, sub_queries)
     cypher_candidates = generate_candidates(question, entities)
     yield StageEvent(
         stage="stage1_done",
         payload={
             "entities": entities.model_dump(),
             "sub_queries": [sq.text for sq in sub_queries],
+            "rewritten_queries": [f"{q.source}: {q.text}" for q in retrieval_queries],
             "cypher_count": len(cypher_candidates),
         },
     )
 
     # Stage 2
     refs = [(r.article, r.clause) for r in entities.article_refs]
-    role_hints = list({sq.role_hint for sq in sub_queries if sq.role_hint})
+    crime_keywords = entities.crime_hints[:3]
+    role_hints = list(
+        {q.role_hint for q in retrieval_queries if q.role_hint}
+        | {sq.role_hint for sq in sub_queries if sq.role_hint}
+    )
     all_chunks: list[RetrievedChunk] = []
-    for sq in sub_queries:
+    for rq in retrieval_queries:
         chunks = retrieve_for_query(
-            query=sq.text,
-            fulltext_keywords=entities.crime_hints[:3] or [sq.text],
+            query=rq.text,
+            fulltext_keywords=_retrieval_fulltext_keywords(rq, crime_keywords),
             article_refs=refs,
             role_hints=role_hints,
+            top_k=settings.candidate_top_k,
         )
         all_chunks.extend(chunks)
 

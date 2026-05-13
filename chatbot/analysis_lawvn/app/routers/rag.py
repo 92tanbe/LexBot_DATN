@@ -9,7 +9,7 @@ from fastapi import APIRouter, HTTPException
 from fastapi.responses import StreamingResponse
 
 from app.models.schemas import ChatRequest, ChatResponse
-from app.pipeline.orchestrator import run_pipeline, run_pipeline_fast, run_pipeline_stream
+from app.pipeline.orchestrator import run_pipeline, run_pipeline_stream
 from app.pipeline.pdf_textbook import run_pdf_lookup_pipeline
 
 logger = logging.getLogger(__name__)
@@ -30,16 +30,10 @@ async def rag_query(request: ChatRequest) -> ChatResponse:
                 request.question,
                 request.include_debug,
             )
-        if request.chat_mode == "phan_tich":
-            return await asyncio.to_thread(
-                run_pipeline,
-                request.question,
-                request.top_k,
-                request.include_debug,
-            )
-        runner = run_pipeline_fast if request.query_mode == "fast" else run_pipeline
+
+        # Chay dong bo trong threadpool de tranh chan event loop
         return await asyncio.to_thread(
-            runner,
+            run_pipeline,
             question=request.question,
             top_k=request.top_k,
             include_debug=request.include_debug,
