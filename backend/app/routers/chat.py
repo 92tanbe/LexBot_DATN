@@ -20,10 +20,21 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login", auto_error=False)
 
 
 def _resolve_chatbot_rag_url(raw: str) -> str:
-    """Nối path /rag/query khi env chỉ là base URL (ví dụ Railway: https://...app/)."""
+    """Chuẩn hóa CHATBOT_SERVICE_URL và nối path /rag/query khi chỉ có base URL.
+
+    - Tự thêm https:// nếu env thiếu scheme (hay gặp trên dashboard: chỉ dán hostname).
+    """
     value = (raw or "").strip()
     if not value:
         return "http://127.0.0.1:8001/rag/query"
+    lowered = value.lower()
+    if not lowered.startswith(("http://", "https://")):
+        stub = value.lstrip("/")
+        if "localhost" in stub.lower() or "127.0.0.1" in stub:
+            value = f"http://{stub}"
+        else:
+            value = f"https://{stub}"
+
     base = value.rstrip("/")
     path = (urlparse(base).path or "").rstrip("/")
     if not path:

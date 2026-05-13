@@ -278,7 +278,6 @@ def _llm_extract(question: str) -> CaseEntities | None:
         logger.warning("LLM NER parse loi: %s", exc)
         return None
 
-
 # --------------------------- Public API ------------------------------------
 
 

@@ -83,7 +83,7 @@ class ChatRequest(BaseModel):
 class StageEvent(BaseModel):
     """1 su kien streaming SSE."""
 
-    stage: str  # stage1_done, stage2_done, ...
+    stage: str  # stage1_done, stage2_done, stage3_rerank_done, stage3_llm_done, stage4_done, ...
     payload: dict = Field(default_factory=dict)
 
 

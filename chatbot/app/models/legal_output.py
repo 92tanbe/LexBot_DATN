@@ -5,10 +5,46 @@ Nho do hau xu ly co the validate, downgrade confidence khi citation sai.
 """
 from __future__ import annotations
 
-from typing import Literal, Optional
+import re
+import unicodedata
+from typing import Literal
 
 from pydantic import BaseModel, Field, field_validator
 
+
+def normalize_vai_tro_value(raw: object) -> str:
+    """CHuyen 'chính phạm', 'nan nhan' (co dau) -> literal ASCII trong schema."""
+    if raw is None:
+        return "khong xac dinh"
+    s = str(raw).strip().lower()
+    if not s:
+        return "khong xac dinh"
+    s = s.replace("đ", "d")
+    nk = unicodedata.normalize("NFKD", s)
+    s = "".join(ch for ch in nk if not unicodedata.combining(ch))
+    s = re.sub(r"\s+", " ", s).strip()
+
+    alias_map = {
+        "bi hai": "nan nhan",
+    }
+    s = alias_map.get(s, s)
+
+    allowed = frozenset(
+        {
+            "chinh pham",
+            "dong pham",
+            "chu muu",
+            "giup suc",
+            "xui giuc",
+            "thuc hanh",
+            "tong hop",
+            "khong xac dinh",
+            "nan nhan",
+        }
+    )
+    if s in allowed:
+        return s
+    return "khong xac dinh"
 
 PenaltyType = Literal[
     "tu",
@@ -31,6 +67,7 @@ VaiTroLiteral = Literal[
     "thuc hanh",
     "tong hop",
     "khong xac dinh",
+    "nan nhan",
 ]
 
 ConfidenceLiteral = Literal["high", "medium", "low"]
@@ -64,12 +101,22 @@ class ToiDanhOutput(BaseModel):
     ly_do: str | None = None
     citations: list[CitationOutput] = Field(default_factory=list)
 
+    @field_validator("vai_tro", mode="before")
+    @classmethod
+    def _coerce_vai_tro_toi(cls, v: object) -> str:
+        return normalize_vai_tro_value(v)
+
 
 class ActorAnalysis(BaseModel):
     name: str
     vai_tro: VaiTroLiteral = "khong xac dinh"
     toi_danh: list[ToiDanhOutput] = Field(default_factory=list)
     nhan_xet: str | None = None
+
+    @field_validator("vai_tro", mode="before")
+    @classmethod
+    def _coerce_vai_tro_actor(cls, v: object) -> str:
+        return normalize_vai_tro_value(v)
 
 
 class CaseAnalysis(BaseModel):

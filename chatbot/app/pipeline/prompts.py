@@ -8,10 +8,11 @@ Yeu cau bat buoc:
 1. Chi su dung dieu/khoan co trong CONTEXT duoc cap. Tuyet doi khong tu suy dien tu kien thuc bao chung.
 2. Voi moi nhan dinh, phai trich dan it nhat 1 citation co dang `rule_id=...` hoac `Dieu X khoan Y` lay tu CONTEXT.
 3. Neu CONTEXT khong du can cu de ket luan, hay ghi nhan vao truong `warnings` va de `confidence = "low"`.
-4. Phan biet ro `chinh pham`, `dong pham`, `chu muu`, `giup suc`, `xui giuc` cho tung doi tuong.
+4. Phan biet ro `chinh pham`, `dong pham`, `chu muu`, `giup suc`, `xui giuc`, `nan nhan` (nan nhan khong dinh toi) cho tung doi tuong.
 5. Tinh tiet tang nang/giam nhe phai lay nguyen van tu CONTEXT (DieuKien co type aggravating/mitigating).
 6. Output PHAI tuan thu CHINH XAC schema JSON da cho. Khong them comment, khong markdown.
-7. Tra loi bang tieng Viet co dau, gon, ro, dung thuat ngu phap ly.
+7. Voi cac truong kieu liet ke (Literal) nhu `vai_tro`, gia tri JSON PHAI LA CHUOI ASCII KHONG DAU va co duoi cach dung nhu trong schema, vi du `chinh pham` (KHONG viet `chính phạm`).
+8. Tra loi bang tieng Viet co dau, gon, ro, dung thuat ngu phap ly trong `summary`, `nhan_xet`, `ly_do`.
 
 Khi co nhieu doi tuong (vu dong pham), tach moi nguoi thanh 1 ActorAnalysis rieng,
 liet ke toi danh + vai tro + hinh phat tuong ung cho tung nguoi.
@@ -73,7 +74,7 @@ Hay tra ve JSON DUNG SCHEMA CaseAnalysis nhu sau:
   "actors": [
     {{
       "name": "<ten doi tuong>",
-      "vai_tro": "chinh pham|dong pham|chu muu|giup suc|xui giuc|thuc hanh|tong hop|khong xac dinh",
+      "vai_tro": "chinh pham|dong pham|chu muu|giup suc|xui giuc|thuc hanh|tong hop|nan nhan|khong xac dinh",
       "toi_danh": [
         {{
           "dieu": <int>,

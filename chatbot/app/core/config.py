@@ -113,6 +113,13 @@ class Settings(BaseModel):
     enable_reranker: bool = Field(
         default_factory=lambda: os.getenv("ENABLE_RERANKER", "true").lower() == "true"
     )
+    # Giam RAM khi deploy (Railway): max_length nho hon + batch nho hon khi predict
+    reranker_max_length: int = Field(
+        default_factory=lambda: int(os.getenv("RERANKER_MAX_LENGTH", "512"))
+    )
+    reranker_predict_batch_size: int = Field(
+        default_factory=lambda: int(os.getenv("RERANKER_PREDICT_BATCH_SIZE", "16"))
+    )
 
     # ----- Vector index -----
     dieu_vector_index: str = Field(default="dieu_embedding")

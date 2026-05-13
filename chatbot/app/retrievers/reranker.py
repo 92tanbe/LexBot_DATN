@@ -52,7 +52,7 @@ def _load_reranker():
             logger.info("Load reranker model %s", settings.reranker_model)
             _reranker = CrossEncoder(
                 settings.reranker_model,
-                max_length=512,
+                max_length=settings.reranker_max_length,
                 device=settings.embedding_device,
             )
         except Exception as exc:  # noqa: BLE001
@@ -106,7 +106,11 @@ def rerank(
 
     pairs = [[query, _truncate(c.text)] for c in cands]
     try:
-        scores = model.predict(pairs, batch_size=16, show_progress_bar=False)
+        scores = model.predict(
+            pairs,
+            batch_size=settings.reranker_predict_batch_size,
+            show_progress_bar=False,
+        )
     except Exception as exc:  # noqa: BLE001
         logger.warning("Reranker predict loi: %s, fallback rrf", exc)
         for c in cands:
