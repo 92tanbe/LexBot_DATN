@@ -3,6 +3,7 @@
  * — Có 3 tabs giống demo.jsx: Chat · Graph Schema · Kiến trúc —
  */
 import { useState } from 'react';
+import { ChatWorkspaceProvider } from '../context/ChatWorkspaceContext';
 import TopBar from './TopBar';
 import Sidebar from './Sidebar';
 import MainContent from './MainContent';
@@ -39,10 +40,12 @@ function ChatLayout() {
       {/* ── Tab content ── */}
       <div className="cl-tab-content">
         {activeTab === 'chat' && (
-          <div className="chat-layout-body">
-            <Sidebar />
-            <MainContent />
-          </div>
+          <ChatWorkspaceProvider>
+            <div className="chat-layout-body">
+              <Sidebar />
+              <MainContent />
+            </div>
+          </ChatWorkspaceProvider>
         )}
 
         {activeTab === 'schema' && (

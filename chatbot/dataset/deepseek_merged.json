@@ -22060,6 +22060,1183 @@
                   }
                 }
               ]
+            },
+            {
+              "crime": {
+                "id": "252",
+                "name": "Tội chiếm đoạt chất ma túy",
+                "article": 252
+              },
+              "rules": [
+                {
+                  "rule_id": "252_r1",
+                  "clause": 1,
+                  "logic": "BASE",
+                  "priority": 1,
+                  "conditions": [
+                    {
+                      "type": "action",
+                      "text": "Chiếm đoạt chất ma túy dưới bất kỳ hình thức nào"
+                    },
+                    {
+                      "type": "base_condition",
+                      "point": "a",
+                      "text": "Đã bị xử phạt vi phạm hành chính về hành vi quy định tại Điều này hoặc đã bị kết án về tội này hoặc một trong các tội quy định tại các điều 248, 249, 250, 251 và 256a, chưa được xóa án tích mà còn vi phạm"
+                    },
+                    {
+                      "type": "base_condition",
+                      "point": "b",
+                      "text": "Nhựa thuốc phiện, nhựa cần sa hoặc cao côca từ 01 gam đến dưới 500 gam"
+                    },
+                    {
+                      "type": "base_condition",
+                      "point": "c",
+                      "text": "Heroine, Cocaine, Methamphetamine, Amphetamine, Ketamine, Fentanyl, MDMA hoặc XLR-11 từ 0,1 gam đến dưới 05 gam"
+                    },
+                    {
+                      "type": "base_condition",
+                      "point": "d",
+                      "text": "Lá cây côca; lá khát; lá, rễ, thân, cành, hoa, quả của cây cần sa hoặc bộ phận của cây khác có chứa chất ma túy từ 01 kg đến dưới 10 kg"
+                    },
+                    {
+                      "type": "base_condition",
+                      "point": "đ",
+                      "text": "Quả thuốc phiện khô từ 05 kg đến dưới 50 kg"
+                    },
+                    {
+                      "type": "base_condition",
+                      "point": "e",
+                      "text": "Quả thuốc phiện tươi từ 01 kg đến dưới 10 kg"
+                    },
+                    {
+                      "type": "base_condition",
+                      "point": "g",
+                      "text": "Các chất ma túy khác ở thể rắn từ 01 gam đến dưới 20 gam"
+                    },
+                    {
+                      "type": "base_condition",
+                      "point": "h",
+                      "text": "Các chất ma túy khác ở thể lỏng từ 10 ml đến dưới 100 ml"
+                    },
+                    {
+                      "type": "base_condition",
+                      "point": "i",
+                      "text": "Có 02 chất ma túy trở lên mà tổng khối lượng hoặc thể tích tương đương với một trong các điểm từ b đến h khoản này"
+                    }
+                  ],
+                  "penalty": {
+                    "min": 1,
+                    "max": 5
+                  }
+                },
+                {
+                  "rule_id": "252_r2",
+                  "clause": 2,
+                  "logic": "AGGRAVATION",
+                  "priority": 2,
+                  "conditions": [
+                    {
+                      "type": "aggravating",
+                      "point": "a",
+                      "text": "Có tổ chức"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "b",
+                      "text": "Phạm tội 02 lần trở lên"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "c",
+                      "text": "Lợi dụng chức vụ, quyền hạn"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "d",
+                      "text": "Lợi dụng danh nghĩa cơ quan, tổ chức"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "đ",
+                      "text": "Sử dụng người dưới 16 tuổi vào việc phạm tội"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "e",
+                      "text": "Nhựa thuốc phiện, nhựa cần sa hoặc cao côca từ 500 gam đến dưới 01 kg"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "g",
+                      "text": "Heroine, Cocaine, Methamphetamine, Amphetamine, Ketamine, Fentanyl, MDMA hoặc XLR-11 từ 05 gam đến dưới 30 gam"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "h",
+                      "text": "Lá cây côca; lá khát; lá, rễ, thân, cành, hoa, quả của cây cần sa hoặc bộ phận của cây khác có chứa chất ma túy từ 10 kg đến dưới 25 kg"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "i",
+                      "text": "Quả thuốc phiện khô từ 50 kg đến dưới 200 kg"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "k",
+                      "text": "Quả thuốc phiện tươi từ 10 kg đến dưới 50 kg"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "l",
+                      "text": "Các chất ma túy khác ở thể rắn từ 20 gam đến dưới 100 gam"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "m",
+                      "text": "Các chất ma túy khác ở thể lỏng từ 100 ml đến dưới 250 ml"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "n",
+                      "text": "Có 02 chất ma túy trở lên mà tổng khối lượng hoặc thể tích tương đương với một trong các điểm từ e đến m khoản này"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "o",
+                      "text": "Tái phạm nguy hiểm"
+                    }
+                  ],
+                  "penalty": {
+                    "min": 5,
+                    "max": 10
+                  }
+                },
+                {
+                  "rule_id": "252_r3",
+                  "clause": 3,
+                  "logic": "AGGRAVATION",
+                  "priority": 3,
+                  "conditions": [
+                    {
+                      "type": "aggravating",
+                      "point": "a",
+                      "text": "Nhựa thuốc phiện, nhựa cần sa hoặc cao côca từ 01 kg đến dưới 05 kg"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "b",
+                      "text": "Heroine, Cocaine, Methamphetamine, Amphetamine, Ketamine, Fentanyl, MDMA hoặc XLR-11 từ 30 gam đến dưới 100 gam"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "c",
+                      "text": "Lá cây côca; lá khát; lá, rễ, thân, cành, hoa, quả của cây cần sa hoặc bộ phận của cây khác có chứa chất ma túy từ 25 kg đến dưới 75 kg"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "d",
+                      "text": "Quả thuốc phiện khô từ 200 kg đến dưới 600 kg"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "đ",
+                      "text": "Quả thuốc phiện tươi từ 50 kg đến dưới 150 kg"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "e",
+                      "text": "Các chất ma túy khác ở thể rắn từ 100 gam đến dưới 300 gam"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "g",
+                      "text": "Các chất ma túy khác ở thể lỏng từ 250 ml đến dưới 750 ml"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "h",
+                      "text": "Có 02 chất ma túy trở lên mà tổng khối lượng hoặc thể tích tương đương với một trong các điểm từ a đến g khoản này"
+                    }
+                  ],
+                  "penalty": {
+                    "min": 10,
+                    "max": 15
+                  }
+                },
+                {
+                  "rule_id": "252_r4",
+                  "clause": 4,
+                  "logic": "AGGRAVATION",
+                  "priority": 4,
+                  "conditions": [
+                    {
+                      "type": "aggravating",
+                      "point": "a",
+                      "text": "Nhựa thuốc phiện, nhựa cần sa hoặc cao côca 05 kg trở lên"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "b",
+                      "text": "Heroine, Cocaine, Methamphetamine, Amphetamine, Ketamine, Fentanyl, MDMA hoặc XLR-11 100 gam trở lên"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "c",
+                      "text": "Lá cây côca; lá khát; lá, rễ, thân, cành, hoa, quả của cây cần sa hoặc bộ phận của cây khác có chứa chất ma túy 75 kg trở lên"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "d",
+                      "text": "Quả thuốc phiện khô 600 kg trở lên"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "đ",
+                      "text": "Quả thuốc phiện tươi 150 kg trở lên"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "e",
+                      "text": "Các chất ma túy khác ở thể rắn 300 gam trở lên"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "g",
+                      "text": "Các chất ma túy khác ở thể lỏng 750 ml trở lên"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "h",
+                      "text": "Có 02 chất ma túy trở lên mà tổng khối lượng hoặc thể tích tương đương với một trong các điểm từ a đến g khoản này"
+                    }
+                  ],
+                  "penalty": {
+                    "note": "Từ 15 năm đến 20 năm hoặc tù chung thân"
+                  }
+                },
+                {
+                  "rule_id": "252_r5",
+                  "clause": 5,
+                  "logic": "ADDITIONAL_PENALTY",
+                  "priority": 5,
+                  "conditions": [],
+                  "penalty": {
+                    "note": "Có thể bị phạt tiền từ 5.000.000 đồng đến 500.000.000 đồng, cấm đảm nhiệm chức vụ, cấm hành nghề hoặc làm công việc nhất định từ 01 năm đến 05 năm hoặc tịch thu một phần/toàn bộ tài sản"
+                  }
+                }
+              ]
+            },
+            {
+              "crime": {
+                "id": "253",
+                "name": "Tội tàng trữ, vận chuyển, mua bán hoặc chiếm đoạt tiền chất dùng vào việc sản xuất trái phép chất ma túy",
+                "article": 253
+              },
+              "rules": [
+                {
+                  "rule_id": "253_r1",
+                  "clause": 1,
+                  "logic": "BASE",
+                  "priority": 1,
+                  "conditions": [
+                    {
+                      "type": "action",
+                      "text": "Tàng trữ, vận chuyển, mua bán hoặc chiếm đoạt tiền chất dùng vào việc sản xuất trái phép chất ma túy"
+                    },
+                    {
+                      "type": "base_condition",
+                      "point": "a",
+                      "text": "Đã bị xử phạt vi phạm hành chính về một trong các hành vi quy định tại Điều này hoặc đã bị kết án về tội này, chưa được xóa án tích mà còn vi phạm"
+                    },
+                    {
+                      "type": "base_condition",
+                      "point": "b",
+                      "text": "Tiền chất ở thể rắn từ 50 gam đến dưới 200 gam"
+                    },
+                    {
+                      "type": "base_condition",
+                      "point": "c",
+                      "text": "Tiền chất ở thể lỏng từ 75 ml đến dưới 300 ml"
+                    }
+                  ],
+                  "penalty": {
+                    "min": 1,
+                    "max": 6
+                  }
+                },
+                {
+                  "rule_id": "253_r2",
+                  "clause": 2,
+                  "logic": "AGGRAVATION",
+                  "priority": 2,
+                  "conditions": [
+                    {
+                      "type": "aggravating",
+                      "point": "a",
+                      "text": "Có tổ chức"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "b",
+                      "text": "Phạm tội 02 lần trở lên"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "c",
+                      "text": "Lợi dụng chức vụ, quyền hạn"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "d",
+                      "text": "Lợi dụng danh nghĩa cơ quan, tổ chức"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "đ",
+                      "text": "Tiền chất ở thể rắn từ 200 gam đến dưới 500 gam"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "e",
+                      "text": "Tiền chất ở thể lỏng từ 300 ml đến dưới 750 ml"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "g",
+                      "text": "Sử dụng người dưới 16 tuổi vào việc phạm tội"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "h",
+                      "text": "Vận chuyển, mua bán qua biên giới"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "i",
+                      "text": "Tái phạm nguy hiểm"
+                    }
+                  ],
+                  "penalty": {
+                    "min": 6,
+                    "max": 13
+                  }
+                },
+                {
+                  "rule_id": "253_r3",
+                  "clause": 3,
+                  "logic": "AGGRAVATION",
+                  "priority": 3,
+                  "conditions": [
+                    {
+                      "type": "aggravating",
+                      "point": "a",
+                      "text": "Tiền chất ở thể rắn từ 500 gam đến dưới 1.200 gam"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "b",
+                      "text": "Tiền chất ở thể lỏng từ 750 ml đến dưới 1.800 ml"
+                    }
+                  ],
+                  "penalty": {
+                    "min": 13,
+                    "max": 20
+                  }
+                },
+                {
+                  "rule_id": "253_r4",
+                  "clause": 4,
+                  "logic": "AGGRAVATION",
+                  "priority": 4,
+                  "conditions": [
+                    {
+                      "type": "aggravating",
+                      "point": "a",
+                      "text": "Tiền chất ở thể rắn 1.200 gam trở lên"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "b",
+                      "text": "Tiền chất ở thể lỏng 1.800 ml trở lên"
+                    }
+                  ],
+                  "penalty": {
+                    "note": "20 năm hoặc tù chung thân"
+                  }
+                },
+                {
+                  "rule_id": "253_r5",
+                  "clause": 5,
+                  "logic": "CONVERSION_RULE",
+                  "priority": 5,
+                  "conditions": [
+                    {
+                      "type": "conversion",
+                      "text": "Trường hợp có cả tiền chất ở thể rắn và thể lỏng thì quy đổi: 01 gam tiền chất ở thể rắn tương đương 1,5 ml tiền chất ở thể lỏng; sau quy đổi thuộc khoản nào thì truy cứu theo khoản đó"
+                    }
+                  ],
+                  "penalty": {
+                    "note": "Áp dụng theo khoản tương ứng sau khi quy đổi"
+                  }
+                },
+                {
+                  "rule_id": "253_r6",
+                  "clause": 6,
+                  "logic": "ADDITIONAL_PENALTY",
+                  "priority": 6,
+                  "conditions": [],
+                  "penalty": {
+                    "note": "Có thể bị phạt tiền từ 5.000.000 đồng đến 50.000.000 đồng, cấm đảm nhiệm chức vụ, cấm hành nghề hoặc làm công việc nhất định từ 01 năm đến 05 năm hoặc tịch thu một phần/toàn bộ tài sản"
+                  }
+                }
+              ]
+            },
+            {
+              "crime": {
+                "id": "254",
+                "name": "Tội sản xuất, tàng trữ, vận chuyển hoặc mua bán phương tiện, dụng cụ dùng vào việc sản xuất hoặc sử dụng trái phép chất ma túy",
+                "article": 254
+              },
+              "rules": [
+                {
+                  "rule_id": "254_r1",
+                  "clause": 1,
+                  "logic": "BASE",
+                  "priority": 1,
+                  "conditions": [
+                    {
+                      "type": "action",
+                      "text": "Sản xuất, tàng trữ, vận chuyển hoặc mua bán phương tiện, dụng cụ dùng vào việc sản xuất hoặc sử dụng trái phép chất ma túy"
+                    },
+                    {
+                      "type": "base_condition",
+                      "point": "a",
+                      "text": "Đã bị xử phạt vi phạm hành chính về một trong các hành vi này hoặc đã bị kết án về tội này, chưa được xóa án tích mà còn vi phạm"
+                    },
+                    {
+                      "type": "base_condition",
+                      "point": "b",
+                      "text": "Có số lượng từ 06 đơn vị đến 19 đơn vị dụng cụ, phương tiện cùng loại hoặc khác loại"
+                    }
+                  ],
+                  "penalty": {
+                    "min": 1,
+                    "max": 5
+                  }
+                },
+                {
+                  "rule_id": "254_r2",
+                  "clause": 2,
+                  "logic": "AGGRAVATION",
+                  "priority": 2,
+                  "conditions": [
+                    {
+                      "type": "aggravating",
+                      "point": "a",
+                      "text": "Có tổ chức"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "b",
+                      "text": "Phạm tội 02 lần trở lên"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "c",
+                      "text": "Lợi dụng chức vụ, quyền hạn"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "d",
+                      "text": "Lợi dụng danh nghĩa cơ quan, tổ chức"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "đ",
+                      "text": "Có số lượng 20 đơn vị dụng cụ, phương tiện cùng loại hoặc khác loại trở lên"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "e",
+                      "text": "Vận chuyển, mua bán qua biên giới"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "g",
+                      "text": "Sử dụng người dưới 16 tuổi vào việc phạm tội"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "h",
+                      "text": "Tái phạm nguy hiểm"
+                    }
+                  ],
+                  "penalty": {
+                    "min": 5,
+                    "max": 10
+                  }
+                },
+                {
+                  "rule_id": "254_r3",
+                  "clause": 3,
+                  "logic": "ADDITIONAL_PENALTY",
+                  "priority": 3,
+                  "conditions": [],
+                  "penalty": {
+                    "note": "Có thể bị phạt tiền từ 5.000.000 đồng đến 500.000.000 đồng, cấm đảm nhiệm chức vụ, cấm hành nghề hoặc làm công việc nhất định từ 01 năm đến 05 năm hoặc tịch thu một phần/toàn bộ tài sản"
+                  }
+                }
+              ]
+            },
+            {
+              "crime": {
+                "id": "255",
+                "name": "Tội tổ chức sử dụng trái phép chất ma túy",
+                "article": 255
+              },
+              "rules": [
+                {
+                  "rule_id": "255_r1",
+                  "clause": 1,
+                  "logic": "BASE",
+                  "priority": 1,
+                  "conditions": [
+                    {
+                      "type": "action",
+                      "text": "Tổ chức sử dụng trái phép chất ma túy dưới bất kỳ hình thức nào"
+                    }
+                  ],
+                  "penalty": {
+                    "min": 3,
+                    "max": 7
+                  }
+                },
+                {
+                  "rule_id": "255_r2",
+                  "clause": 2,
+                  "logic": "AGGRAVATION",
+                  "priority": 2,
+                  "conditions": [
+                    {
+                      "type": "aggravating",
+                      "point": "a",
+                      "text": "Phạm tội 02 lần trở lên"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "b",
+                      "text": "Đối với 02 người trở lên"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "c",
+                      "text": "Đối với người từ đủ 13 tuổi đến dưới 18 tuổi"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "d",
+                      "text": "Đối với phụ nữ mà biết là có thai"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "đ",
+                      "text": "Đối với người đang cai nghiện"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "e",
+                      "text": "Gây tổn hại cho sức khỏe của người khác với tỷ lệ tổn thương cơ thể từ 31% đến 60%"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "g",
+                      "text": "Gây bệnh nguy hiểm cho người khác"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "h",
+                      "text": "Tái phạm nguy hiểm"
+                    }
+                  ],
+                  "penalty": {
+                    "min": 7,
+                    "max": 15
+                  }
+                },
+                {
+                  "rule_id": "255_r3",
+                  "clause": 3,
+                  "logic": "AGGRAVATION",
+                  "priority": 3,
+                  "conditions": [
+                    {
+                      "type": "aggravating",
+                      "point": "a",
+                      "text": "Gây tổn hại cho sức khỏe của người khác với tỷ lệ tổn thương cơ thể từ 61% trở lên hoặc gây chết người"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "b",
+                      "text": "Gây tổn hại cho sức khỏe cho 02 người trở lên mà tỷ lệ tổn thương cơ thể của mỗi người từ 31% đến 60%"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "c",
+                      "text": "Gây bệnh nguy hiểm cho 02 người trở lên"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "d",
+                      "text": "Đối với người dưới 13 tuổi"
+                    }
+                  ],
+                  "penalty": {
+                    "min": 15,
+                    "max": 20
+                  }
+                },
+                {
+                  "rule_id": "255_r4",
+                  "clause": 4,
+                  "logic": "AGGRAVATION",
+                  "priority": 4,
+                  "conditions": [
+                    {
+                      "type": "aggravating",
+                      "point": "a",
+                      "text": "Gây tổn hại cho sức khỏe của 02 người trở lên mà tỷ lệ tổn thương cơ thể của mỗi người từ 61% trở lên"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "b",
+                      "text": "Làm chết 02 người trở lên"
+                    }
+                  ],
+                  "penalty": {
+                    "note": "20 năm hoặc tù chung thân"
+                  }
+                },
+                {
+                  "rule_id": "255_r5",
+                  "clause": 5,
+                  "logic": "ADDITIONAL_PENALTY",
+                  "priority": 5,
+                  "conditions": [],
+                  "penalty": {
+                    "note": "Có thể bị phạt tiền từ 50.000.000 đồng đến 500.000.000 đồng, phạt quản chế, cấm cư trú từ 01 năm đến 05 năm hoặc tịch thu một phần/toàn bộ tài sản"
+                  }
+                }
+              ]
+            },
+            {
+              "crime": {
+                "id": "256",
+                "name": "Tội chứa chấp việc sử dụng trái phép chất ma túy",
+                "article": 256
+              },
+              "rules": [
+                {
+                  "rule_id": "256_r1",
+                  "clause": 1,
+                  "logic": "BASE",
+                  "priority": 1,
+                  "conditions": [
+                    {
+                      "type": "action",
+                      "text": "Cho thuê, cho mượn địa điểm hoặc có hành vi khác chứa chấp việc sử dụng trái phép chất ma túy"
+                    },
+                    {
+                      "type": "exclusion",
+                      "text": "Không thuộc trường hợp quy định tại Điều 255 của Bộ luật này"
+                    }
+                  ],
+                  "penalty": {
+                    "min": 2,
+                    "max": 7
+                  }
+                },
+                {
+                  "rule_id": "256_r2",
+                  "clause": 2,
+                  "logic": "AGGRAVATION",
+                  "priority": 2,
+                  "conditions": [
+                    {
+                      "type": "aggravating",
+                      "point": "a",
+                      "text": "Lợi dụng chức vụ, quyền hạn"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "b",
+                      "text": "Phạm tội 02 lần trở lên"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "c",
+                      "text": "Đối với người dưới 16 tuổi"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "d",
+                      "text": "Đối với 02 người trở lên"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "đ",
+                      "text": "Tái phạm nguy hiểm"
+                    }
+                  ],
+                  "penalty": {
+                    "min": 7,
+                    "max": 15
+                  }
+                },
+                {
+                  "rule_id": "256_r3",
+                  "clause": 3,
+                  "logic": "ADDITIONAL_PENALTY",
+                  "priority": 3,
+                  "conditions": [],
+                  "penalty": {
+                    "note": "Có thể bị phạt tiền từ 50.000.000 đồng đến 200.000.000 đồng hoặc tịch thu một phần/toàn bộ tài sản"
+                  }
+                }
+              ]
+            },
+            {
+              "crime": {
+                "id": "256a",
+                "name": "Tội sử dụng trái phép chất ma túy",
+                "article": "256a"
+              },
+              "rules": [
+                {
+                  "rule_id": "256a_r1",
+                  "clause": 1,
+                  "logic": "BASE",
+                  "priority": 1,
+                  "conditions": [
+                    {
+                      "type": "action",
+                      "text": "Sử dụng trái phép chất ma túy"
+                    },
+                    {
+                      "type": "base_condition",
+                      "point": "a",
+                      "text": "Đang trong thời hạn cai nghiện ma túy hoặc điều trị nghiện các chất ma túy bằng thuốc thay thế theo quy định của Luật Phòng, chống ma túy"
+                    },
+                    {
+                      "type": "base_condition",
+                      "point": "b",
+                      "text": "Đang trong thời hạn quản lý sau cai nghiện ma túy theo quy định của Luật Phòng, chống ma túy"
+                    },
+                    {
+                      "type": "base_condition",
+                      "point": "c",
+                      "text": "Đang trong thời hạn 02 năm kể từ ngày hết thời hạn quản lý sau cai nghiện ma túy và trong thời hạn quản lý người sử dụng trái phép chất ma túy theo quy định của Luật Phòng, chống ma túy"
+                    },
+                    {
+                      "type": "base_condition",
+                      "point": "d",
+                      "text": "Đang trong thời hạn 02 năm kể từ khi tự ý chấm dứt cai nghiện ma túy tự nguyện hoặc điều trị nghiện các chất ma túy bằng thuốc thay thế theo quy định của Luật Phòng, chống ma túy"
+                    }
+                  ],
+                  "penalty": {
+                    "min": 2,
+                    "max": 3
+                  }
+                },
+                {
+                  "rule_id": "256a_r2",
+                  "clause": 2,
+                  "logic": "AGGRAVATION",
+                  "priority": 2,
+                  "conditions": [
+                    {
+                      "type": "aggravating",
+                      "text": "Tái phạm về tội này"
+                    }
+                  ],
+                  "penalty": {
+                    "min": 3,
+                    "max": 5
+                  }
+                }
+              ]
+            },
+            {
+              "crime": {
+                "id": "257",
+                "name": "Tội cưỡng bức người khác sử dụng trái phép chất ma túy",
+                "article": 257
+              },
+              "rules": [
+                {
+                  "rule_id": "257_r1",
+                  "clause": 1,
+                  "logic": "BASE",
+                  "priority": 1,
+                  "conditions": [
+                    {
+                      "type": "action",
+                      "text": "Dùng vũ lực, đe dọa dùng vũ lực hoặc dùng thủ đoạn khác uy hiếp tinh thần của người khác để buộc họ sử dụng trái phép chất ma túy trái với ý muốn của họ"
+                    }
+                  ],
+                  "penalty": {
+                    "min": 2,
+                    "max": 7
+                  }
+                },
+                {
+                  "rule_id": "257_r2",
+                  "clause": 2,
+                  "logic": "AGGRAVATION",
+                  "priority": 2,
+                  "conditions": [
+                    {
+                      "type": "aggravating",
+                      "point": "a",
+                      "text": "Có tổ chức"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "b",
+                      "text": "Phạm tội 02 lần trở lên"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "c",
+                      "text": "Vì động cơ đê hèn hoặc vì tư lợi"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "d",
+                      "text": "Đối với người từ đủ 13 tuổi đến dưới 18 tuổi"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "đ",
+                      "text": "Đối với phụ nữ mà biết là có thai"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "e",
+                      "text": "Đối với 02 người trở lên"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "g",
+                      "text": "Đối với người đang cai nghiện"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "h",
+                      "text": "Gây tổn hại cho sức khỏe của người khác với tỷ lệ tổn thương cơ thể từ 31% đến 60%"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "i",
+                      "text": "Gây bệnh nguy hiểm cho người khác"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "k",
+                      "text": "Tái phạm nguy hiểm"
+                    }
+                  ],
+                  "penalty": {
+                    "min": 7,
+                    "max": 15
+                  }
+                },
+                {
+                  "rule_id": "257_r3",
+                  "clause": 3,
+                  "logic": "AGGRAVATION",
+                  "priority": 3,
+                  "conditions": [
+                    {
+                      "type": "aggravating",
+                      "point": "a",
+                      "text": "Gây tổn hại cho sức khỏe của người khác với tỷ lệ tổn thương cơ thể từ 61% trở lên hoặc gây chết người"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "b",
+                      "text": "Gây bệnh nguy hiểm cho 02 người trở lên"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "c",
+                      "text": "Đối với người dưới 13 tuổi"
+                    }
+                  ],
+                  "penalty": {
+                    "min": 15,
+                    "max": 20
+                  }
+                },
+                {
+                  "rule_id": "257_r4",
+                  "clause": 4,
+                  "logic": "AGGRAVATION",
+                  "priority": 4,
+                  "conditions": [
+                    {
+                      "type": "aggravating",
+                      "text": "Làm chết 02 người trở lên"
+                    }
+                  ],
+                  "penalty": {
+                    "note": "20 năm hoặc tù chung thân"
+                  }
+                },
+                {
+                  "rule_id": "257_r5",
+                  "clause": 5,
+                  "logic": "ADDITIONAL_PENALTY",
+                  "priority": 5,
+                  "conditions": [],
+                  "penalty": {
+                    "note": "Có thể bị phạt tiền từ 5.000.000 đồng đến 100.000.000 đồng"
+                  }
+                }
+              ]
+            },
+            {
+              "crime": {
+                "id": "258",
+                "name": "Tội lôi kéo người khác sử dụng trái phép chất ma túy",
+                "article": 258
+              },
+              "rules": [
+                {
+                  "rule_id": "258_r1",
+                  "clause": 1,
+                  "logic": "BASE",
+                  "priority": 1,
+                  "conditions": [
+                    {
+                      "type": "action",
+                      "text": "Rủ rê, dụ dỗ, xúi giục hoặc bằng các thủ đoạn khác nhằm lôi kéo người khác sử dụng trái phép chất ma túy"
+                    }
+                  ],
+                  "penalty": {
+                    "min": 1,
+                    "max": 5
+                  }
+                },
+                {
+                  "rule_id": "258_r2",
+                  "clause": 2,
+                  "logic": "AGGRAVATION",
+                  "priority": 2,
+                  "conditions": [
+                    {
+                      "type": "aggravating",
+                      "point": "a",
+                      "text": "Có tổ chức"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "b",
+                      "text": "Phạm tội 02 lần trở lên"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "c",
+                      "text": "Vì động cơ đê hèn hoặc vì tư lợi"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "d",
+                      "text": "Đối với người từ đủ 13 tuổi đến dưới 18 tuổi"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "đ",
+                      "text": "Đối với phụ nữ mà biết là có thai"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "e",
+                      "text": "Đối với 02 người trở lên"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "g",
+                      "text": "Đối với người đang cai nghiện"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "h",
+                      "text": "Gây tổn hại cho sức khỏe của người khác với tỷ lệ tổn thương cơ thể từ 31% đến 60%"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "i",
+                      "text": "Gây bệnh nguy hiểm cho người khác"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "k",
+                      "text": "Tái phạm nguy hiểm"
+                    }
+                  ],
+                  "penalty": {
+                    "min": 5,
+                    "max": 10
+                  }
+                },
+                {
+                  "rule_id": "258_r3",
+                  "clause": 3,
+                  "logic": "AGGRAVATION",
+                  "priority": 3,
+                  "conditions": [
+                    {
+                      "type": "aggravating",
+                      "point": "a",
+                      "text": "Gây tổn hại cho sức khỏe của người khác với tỷ lệ tổn thương cơ thể 61% trở lên hoặc gây chết người"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "b",
+                      "text": "Gây bệnh nguy hiểm cho 02 người trở lên"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "c",
+                      "text": "Đối với người dưới 13 tuổi"
+                    }
+                  ],
+                  "penalty": {
+                    "min": 10,
+                    "max": 15
+                  }
+                },
+                {
+                  "rule_id": "258_r4",
+                  "clause": 4,
+                  "logic": "AGGRAVATION",
+                  "priority": 4,
+                  "conditions": [
+                    {
+                      "type": "aggravating",
+                      "text": "Gây chết 02 người trở lên"
+                    }
+                  ],
+                  "penalty": {
+                    "note": "Từ 15 năm đến 20 năm hoặc tù chung thân"
+                  }
+                },
+                {
+                  "rule_id": "258_r5",
+                  "clause": 5,
+                  "logic": "ADDITIONAL_PENALTY",
+                  "priority": 5,
+                  "conditions": [],
+                  "penalty": {
+                    "note": "Có thể bị phạt tiền từ 5.000.000 đồng đến 100.000.000 đồng"
+                  }
+                }
+              ]
+            },
+            {
+              "crime": {
+                "id": "259",
+                "name": "Tội vi phạm quy định về quản lý chất ma túy, tiền chất, thuốc gây nghiện, thuốc hướng thần",
+                "article": 259
+              },
+              "rules": [
+                {
+                  "rule_id": "259_r1",
+                  "clause": 1,
+                  "logic": "BASE",
+                  "priority": 1,
+                  "conditions": [
+                    {
+                      "type": "subject",
+                      "text": "Người có trách nhiệm trong quản lý chất ma túy, tiền chất, thuốc gây nghiện, thuốc hướng thần"
+                    },
+                    {
+                      "type": "base_condition",
+                      "text": "Đã bị xử lý kỷ luật hoặc xử phạt vi phạm hành chính về một trong các hành vi quy định tại Điều này hoặc đã bị kết án về một trong các tội quy định tại Chương XX, chưa được xóa án tích mà còn vi phạm"
+                    },
+                    {
+                      "type": "action",
+                      "point": "a",
+                      "text": "Vi phạm quy định về xuất khẩu, nhập khẩu, tạm nhập, tái xuất, quá cảnh chất ma túy, tiền chất, thuốc gây nghiện hoặc thuốc hướng thần"
+                    },
+                    {
+                      "type": "action",
+                      "point": "b",
+                      "text": "Vi phạm quy định về nghiên cứu, giám định, sản xuất, bảo quản chất ma túy, tiền chất, thuốc gây nghiện hoặc thuốc hướng thần"
+                    },
+                    {
+                      "type": "action",
+                      "point": "c",
+                      "text": "Vi phạm quy định về giao nhận, vận chuyển chất ma túy, tiền chất, thuốc gây nghiện hoặc thuốc hướng thần"
+                    },
+                    {
+                      "type": "action",
+                      "point": "d",
+                      "text": "Vi phạm quy định về phân phối, mua bán, trao đổi chất ma túy, tiền chất, thuốc gây nghiện hoặc thuốc hướng thần"
+                    },
+                    {
+                      "type": "action",
+                      "point": "đ",
+                      "text": "Vi phạm quy định về quản lý, kiểm soát, lưu giữ chất ma túy, tiền chất, thuốc gây nghiện hoặc thuốc hướng thần tại khu vực cửa khẩu, khu vực biên giới, trên biển"
+                    },
+                    {
+                      "type": "action",
+                      "point": "e",
+                      "text": "Vi phạm quy định về cấp phát, cho phép sử dụng chất ma túy, thuốc gây nghiện hoặc thuốc hướng thần"
+                    }
+                  ],
+                  "penalty": {
+                    "note": "Phạt tiền từ 10.000.000 đồng đến 100.000.000 đồng hoặc phạt tù từ 01 năm đến 05 năm"
+                  }
+                },
+                {
+                  "rule_id": "259_r2",
+                  "clause": 2,
+                  "logic": "AGGRAVATION",
+                  "priority": 2,
+                  "conditions": [
+                    {
+                      "type": "aggravating",
+                      "point": "a",
+                      "text": "Có tổ chức"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "b",
+                      "text": "Phạm tội 02 lần trở lên"
+                    },
+                    {
+                      "type": "aggravating",
+                      "point": "c",
+                      "text": "Tái phạm nguy hiểm"
+                    }
+                  ],
+                  "penalty": {
+                    "min": 5,
+                    "max": 10
+                  }
+                },
+                {
+                  "rule_id": "259_r3",
+                  "clause": 3,
+                  "logic": "ADDITIONAL_PENALTY",
+                  "priority": 3,
+                  "conditions": [],
+                  "penalty": {
+                    "note": "Có thể bị phạt tiền từ 10.000.000 đồng đến 50.000.000 đồng, cấm đảm nhiệm chức vụ, cấm hành nghề hoặc làm công việc nhất định từ 01 năm đến 05 năm"
+                  }
+                }
+              ]
             }
           ]
         },

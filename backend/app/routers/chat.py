@@ -1,22 +1,30 @@
 import logging
 import os
 from datetime import datetime
-from typing import Literal
+from typing import Any
 from urllib.parse import urlparse
 
 import httpx
-from fastapi import APIRouter, HTTPException, BackgroundTasks, Depends
+from bson import ObjectId
+from bson.errors import InvalidId
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
-from pydantic import BaseModel, Field
 
-from app.db.mongodb import chats_collection
 from app.core.security import decode_token
+from app.db.mongodb import chats_collection
+from app.models.chat import (
+    ChatHistoryDetail,
+    ChatHistoryItem,
+    ChatHistoryListResponse,
+    ChatQueryRequest,
+)
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/chat", tags=["Chat"])
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login", auto_error=False)
+oauth2_required = OAuth2PasswordBearer(tokenUrl="auth/login", auto_error=True)
 
 
 def _resolve_chatbot_rag_url(raw: str) -> str:
@@ -56,32 +64,105 @@ CHATBOT_CONNECT_TIMEOUT = float(
     os.getenv("CHATBOT_CONNECT_TIMEOUT_SECONDS", "45")
 )
 
-class ChatRequest(BaseModel):
-    question: str
-    top_k: int = 5
-    query_mode: Literal["fast", "thinking"] = Field(
-        default="fast",
-        description="fast hoặc thinking — forward sang chatbot ChatRequest.query_mode",
-    )
-    chat_mode: Literal["tra_cuu_pdf", "phan_tich"] | None = Field(
-        default=None,
-        description="tra_cuu_pdf: trích VB từ PDF chatbot. None: không gửi chat_mode.",
-    )
 
-async def save_chat_to_db(user_id: str, question: str, response_data: dict):
+def _preview_from_response(response_data: dict[str, Any]) -> str:
+    text = str(response_data.get("final_answer") or "").strip()
+    if len(text) > 280:
+        return text[:277] + "..."
+    return text
+
+
+def _doc_created_at(doc: dict[str, Any]) -> datetime:
+    ts = doc.get("timestamp") or doc.get("created_at")
+    if isinstance(ts, datetime):
+        return ts
+    return datetime.utcnow()
+
+
+def _parse_object_id(chat_id: str) -> ObjectId:
+    try:
+        return ObjectId(chat_id)
+    except InvalidId as exc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="ID lịch sử không hợp lệ.",
+        ) from exc
+
+
+async def require_user_id(token: str = Depends(oauth2_required)) -> str:
+    """JWT bắt buộc — dùng cho GET lịch sử."""
+    payload = decode_token(token)
+    uid = payload.get("sub")
+    if not uid:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Token không chứa định danh người dùng.",
+        )
+    return str(uid)
+
+
+async def save_chat_to_db(
+    user_id: str,
+    question: str,
+    response_data: dict[str, Any],
+    *,
+    query_mode: str,
+    chat_mode: str | None,
+    conversation_id: str | None,
+) -> None:
     try:
         chat_document = {
             "user_id": user_id,
             "question": question,
             "response": response_data,
-            "timestamp": datetime.utcnow()
+            "timestamp": datetime.utcnow(),
+            "query_mode": query_mode,
+            "chat_mode": chat_mode,
+            "conversation_id": conversation_id,
         }
         await chats_collection.insert_one(chat_document)
     except Exception as e:
-        print(f"Error saving chat to db: {e}")
+        logger.warning("Lưu chat vào MongoDB thất bại: %s", e)
+
+
+def _mongo_doc_to_list_item(doc: dict[str, Any]) -> ChatHistoryItem:
+    resp = doc.get("response") or {}
+    if not isinstance(resp, dict):
+        resp = {}
+    return ChatHistoryItem(
+        id=str(doc["_id"]),
+        user_id=str(doc.get("user_id", "")),
+        question=str(doc.get("question", "")),
+        preview_answer=_preview_from_response(resp),
+        query_mode=doc.get("query_mode") or "fast",
+        chat_mode=doc.get("chat_mode"),
+        conversation_id=doc.get("conversation_id"),
+        created_at=_doc_created_at(doc),
+    )
+
+
+def _mongo_doc_to_detail(doc: dict[str, Any]) -> ChatHistoryDetail:
+    resp = doc.get("response") or {}
+    if not isinstance(resp, dict):
+        resp = {}
+    return ChatHistoryDetail(
+        id=str(doc["_id"]),
+        user_id=str(doc.get("user_id", "")),
+        question=str(doc.get("question", "")),
+        query_mode=doc.get("query_mode") or "fast",
+        chat_mode=doc.get("chat_mode"),
+        conversation_id=doc.get("conversation_id"),
+        created_at=_doc_created_at(doc),
+        response=resp,
+    )
+
 
 @router.post("/query")
-async def chat_query(request: ChatRequest, background_tasks: BackgroundTasks, token: str = Depends(oauth2_scheme)):
+async def chat_query(
+    request: ChatQueryRequest,
+    background_tasks: BackgroundTasks,
+    token: str = Depends(oauth2_scheme),
+):
     """
     Forward the chat query from the frontend directly to the RAG Chatbot Microservice.
     """
@@ -90,7 +171,7 @@ async def chat_query(request: ChatRequest, background_tasks: BackgroundTasks, to
         try:
             payload = decode_token(token)
             user_id = payload.get("sub", "guest")
-        except:
+        except Exception:
             pass
 
     connect_cap = min(CHATBOT_CONNECT_TIMEOUT, CHATBOT_TIMEOUT)
@@ -118,8 +199,8 @@ async def chat_query(request: ChatRequest, background_tasks: BackgroundTasks, to
             if response.status_code != 200:
                 error_detail = response.text[:2000] if response.text else ""
                 try:
-                    payload = response.json()
-                    error_detail = str(payload.get("detail", payload))[:2000]
+                    err_json = response.json()
+                    error_detail = str(err_json.get("detail", err_json))[:2000]
                 except Exception:
                     pass
                 logger.warning(
@@ -134,7 +215,15 @@ async def chat_query(request: ChatRequest, background_tasks: BackgroundTasks, to
                 )
 
             response_data = response.json()
-            background_tasks.add_task(save_chat_to_db, user_id, request.question, response_data)
+            background_tasks.add_task(
+                save_chat_to_db,
+                user_id,
+                request.question,
+                response_data,
+                query_mode=request.query_mode,
+                chat_mode=request.chat_mode,
+                conversation_id=request.conversation_id,
+            )
             return response_data
 
     except httpx.RequestError as exc:
@@ -152,3 +241,38 @@ async def chat_query(request: ChatRequest, background_tasks: BackgroundTasks, to
                 "hoặc gọi /health của chatbot một lần để đánh thức service."
             )
         raise HTTPException(status_code=503, detail=detail)
+
+
+@router.get("/history", response_model=ChatHistoryListResponse)
+async def list_chat_history(
+    skip: int = 0,
+    limit: int = 20,
+    conversation_id: str | None = None,
+    user_id: str = Depends(require_user_id),
+):
+    """Danh sách lịch sử chat của user đã đăng nhập (mới nhất trước)."""
+    lim = max(1, min(limit, 100))
+    sk = max(0, skip)
+    query_filter: dict[str, Any] = {"user_id": user_id}
+    if conversation_id:
+        query_filter["conversation_id"] = conversation_id
+
+    total = await chats_collection.count_documents(query_filter)
+    cursor = (
+        chats_collection.find(query_filter).sort("timestamp", -1).skip(sk).limit(lim)
+    )
+    docs = await cursor.to_list(length=lim)
+    items = [_mongo_doc_to_list_item(d) for d in docs]
+    return ChatHistoryListResponse(items=items, total=total, skip=sk, limit=lim)
+
+
+@router.get("/history/{chat_id}", response_model=ChatHistoryDetail)
+async def get_chat_history_detail(chat_id: str, user_id: str = Depends(require_user_id)):
+    """Chi tiết một lượt chat — chỉ chủ sở hữu mới đọc được."""
+    oid = _parse_object_id(chat_id)
+    doc = await chats_collection.find_one({"_id": oid})
+    if not doc:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Không tìm thấy lịch sử chat.")
+    if str(doc.get("user_id")) != str(user_id):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Không tìm thấy lịch sử chat.")
+    return _mongo_doc_to_detail(doc)

@@ -1,4 +1,5 @@
-const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:8000";
+import { API_BASE } from "./apiBase.js";
+import { parseResponseJson } from "./parseResponseJson.js";
 
 export async function loginUser(email, password) {
   const res = await fetch(`${API_BASE}/auth/login`, {
@@ -6,7 +7,7 @@ export async function loginUser(email, password) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
   });
-  const data = await res.json();
+  const data = await parseResponseJson(res);
   if (!res.ok) throw new Error(data.detail || "Đăng nhập thất bại");
   return data;
 }
@@ -17,7 +18,7 @@ export async function registerUser(username, email, password) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username, email, password }),
   });
-  const data = await res.json();
+  const data = await parseResponseJson(res);
   if (!res.ok) throw new Error(data.detail || "Đăng ký thất bại");
   return data;
 }

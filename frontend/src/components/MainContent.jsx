@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
+import { useChatWorkspace } from '../context/ChatWorkspaceContext';
 import { sendChatQuery } from '../services/chatService';
+import BotAnswerContent from './BotAnswerContent';
 
 const GOI_Y = [
   { icon: 'sparkle', label: 'Phân tích vi phạm giao thông' },
@@ -53,11 +55,17 @@ function getPeopleFromMessage(msg) {
 }
 
 function MainContent() {
-  const [messages, setMessages] = useState([]);
+  const {
+    messages,
+    setMessages,
+    answerMode,
+    setAnswerMode,
+    isLoading,
+    setIsLoading,
+    refreshHistoryList,
+    setSelectedHistoryId,
+  } = useChatWorkspace();
   const [inputValue, setInputValue] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  /** Chế độ trả lời: pdf = trích file VB hợp nhất; fast/thinking = Neo4j RAG */
-  const [answerMode, setAnswerMode] = useState('pdf');
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -74,6 +82,8 @@ function MainContent() {
 
     const modeUsed = answerMode === 'thinking' ? 'thinking' : 'fast';
     const chatModeOpt = answerMode === 'pdf' ? { chatMode: 'tra_cuu_pdf' } : {};
+
+    setSelectedHistoryId(null);
 
     // Add user message
     setMessages((prev) => [
@@ -99,6 +109,7 @@ function MainContent() {
           answerMode,
         },
       ]);
+      void refreshHistoryList();
     } catch (error) {
       setMessages((prev) => [
         ...prev,
@@ -197,19 +208,16 @@ function MainContent() {
                     </div>
 
                     <div className="message-answer">
-                      {String(msg.content || '')
-                        .split('\n')
-                        .filter(Boolean)
-                        .map((paragraph, paragraphIdx) => (
-                          <p key={paragraphIdx}>{paragraph}</p>
-                        ))}
+                      <BotAnswerContent text={msg.content} />
                     </div>
 
                     {getPeopleFromMessage(msg).length > 0 && (
                       <div className="message-section">
                         <div className="message-section-title">Phân tích theo từng đối tượng</div>
                         {msg.caseAnalysis?.case_summary && (
-                          <div className="case-summary-box">{msg.caseAnalysis.case_summary}</div>
+                          <div className="case-summary-box">
+                            <BotAnswerContent text={msg.caseAnalysis.case_summary} />
+                          </div>
                         )}
                         <div className="person-analysis-grid">
                           {getPeopleFromMessage(msg).map((person, personIdx) => (
@@ -303,7 +311,8 @@ function MainContent() {
 
                     {msg.explanation && (
                       <div className="message-explanation">
-                        <strong>Lưu ý:</strong> {msg.explanation}
+                        <strong>Lưu ý:</strong>{' '}
+                        <BotAnswerContent variant="inline" text={msg.explanation} />
                       </div>
                     )}
 

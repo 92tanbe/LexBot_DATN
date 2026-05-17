@@ -409,6 +409,46 @@ def _prioritize_explicit_article_chunks(
     return sorted(chunks, key=sort_key, reverse=True)
 
 
+def _chunk_rank_score(chunk: RetrievedChunk) -> float:
+    """Diem sap xep thu tu hien thi (rerank uu tien, sau do RRF)."""
+    if chunk.rerank_score is not None:
+        return float(chunk.rerank_score)
+    return float(chunk.rrf_score or 0.0)
+
+
+def _dedupe_chunks_by_article_clause(chunks: list[RetrievedChunk]) -> list[RetrievedChunk]:
+    """Giu mot chunk diem cao nhat cho moi cap (dieu, khoan)."""
+    by_key: dict[tuple[int, int | None], RetrievedChunk] = {}
+    for c in chunks:
+        if c.article is None:
+            continue
+        key = (int(c.article), c.clause)
+        prev = by_key.get(key)
+        if prev is None or _chunk_rank_score(c) > _chunk_rank_score(prev):
+            by_key[key] = c
+    return sorted(by_key.values(), key=_chunk_rank_score, reverse=True)
+
+
+def _chunks_for_explicit_article_lookup(
+    reranked: list[RetrievedChunk],
+    explicit_article_nums: set[int],
+) -> list[RetrievedChunk]:
+    """Neu nguoi dung neu ro so Dieu, chi tra ve cac chunk thuoc dung cac Dieu do.
+
+    Tra ve nguyen danh sach goc neu loc rong (metadata thieu / khong khop) de tranh mat ket qua.
+    """
+    if not explicit_article_nums:
+        return reranked
+    filtered = [
+        c
+        for c in reranked
+        if c.article is not None and int(c.article) in explicit_article_nums
+    ]
+    if not filtered:
+        return reranked
+    return _dedupe_chunks_by_article_clause(filtered)
+
+
 def _fast_lookup_case_analysis(
     question: str,
     chunks: list[RetrievedChunk],
@@ -633,6 +673,14 @@ def run_pipeline_fast(
     refs = [(r.article, r.clause) for r in regex_refs]
     explicit_article_nums = {r.article for r in regex_refs}
 
+    # Giong Streamlit anh 1: neu hoi ro "Dieu X..." thi tra cuu truc tiep tu PDF VB hop nhat
+    # (cung format "Theo VB hop nhat BLHS — trich trong file PDF..."), khong lay top-K embedding lech Dieu.
+    if explicit_article_nums:
+        pdf_resp = run_pdf_lookup_pipeline(question=q0, include_debug=include_debug)
+        pdf_struct = pdf_resp.structured if isinstance(pdf_resp.structured, dict) else {}
+        if pdf_struct.get("type") != "pdf_lookup_error":
+            return pdf_resp
+
     t0 = time.time()
     candidates = retrieve_for_query(
         query=q,
@@ -663,11 +711,15 @@ def run_pipeline_fast(
         debug.reranked = reranked
         debug.timings_ms = timings
 
+    chunks_for_response = _chunks_for_explicit_article_lookup(reranked, explicit_article_nums)
+
     case = _fast_lookup_case_analysis(
-        question, reranked, explicit_article_nums=explicit_article_nums or None
+        question,
+        chunks_for_response,
+        explicit_article_nums=explicit_article_nums or None,
     )
-    known_articles = collect_known_articles(reranked)
-    known_rule_ids = collect_known_rule_ids(reranked)
+    known_articles = collect_known_articles(chunks_for_response)
+    known_rule_ids = collect_known_rule_ids(chunks_for_response)
     case, warnings = validate_case_analysis(
         case,
         known_articles=known_articles,
@@ -678,7 +730,7 @@ def run_pipeline_fast(
         debug.warnings.extend(warnings)
         debug.timings_ms = timings
 
-    final_answer = _plain_fast_chunks_answer(reranked)
+    final_answer = _plain_fast_chunks_answer(chunks_for_response)
     citations = _to_citations(case)
 
     return ChatResponse(

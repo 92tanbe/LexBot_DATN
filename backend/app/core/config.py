@@ -1,13 +1,20 @@
+import logging
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
 
-URL_MONGODB = os.getenv("URL_MONGODB")
+_logger = logging.getLogger(__name__)
+
+# Production (FastAPI Cloud): bắt buộc URL_MONGODB trong env.
+# Local: nếu chưa set thì fallback MongoDB máy dev để uvicorn vẫn khởi động được.
+URL_MONGODB = (os.getenv("URL_MONGODB") or "").strip()
 if not URL_MONGODB:
-    raise RuntimeError(
-        "Biến môi trường URL_MONGODB chưa được cấu hình! "
-        "Vui lòng set URL_MONGODB trong Environment Variables trên fastapicloud dashboard."
+    URL_MONGODB = "mongodb://127.0.0.1:27017"
+    _logger.warning(
+        "URL_MONGODB chưa set — dùng %s (dev). "
+        "Thêm URL_MONGODB vào backend/.env nếu dùng Atlas hoặc cổng khác.",
+        URL_MONGODB,
     )
 
 SECRET_KEY = os.getenv("SECRET_KEY", "changethissecretkey")
