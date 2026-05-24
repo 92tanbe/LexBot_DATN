@@ -13,12 +13,22 @@ function formatApiError(detail) {
 }
 
 /**
- * Gửi câu hỏi RAG qua LexBot API.
- * Kiểu phản hồi: xem typedef RagChatResponse trong `src/schemas/chatSchemas.js`.
+ * Danh sách server chatbot khả dụng.
+ * @returns {Promise<{ providers: object[], default_provider: string }>}
+ */
+export async function fetchChatProviders() {
+  const res = await fetch(`${API_BASE}/chat/providers`);
+  const data = await parseResponseJson(res);
+  if (!res.ok) throw new Error(formatApiError(data.detail));
+  return data;
+}
+
+/**
+ * Gửi câu hỏi qua LexBot API (proxy tới microservice chatbot được chọn).
  * @param {string} question
  * @param {"fast"|"thinking"} [queryMode]
- * @param {{ chatMode?: "tra_cuu_pdf" | "phan_tich", conversationId?: string|null }} [opts]
- * @returns {Promise<object>} payload JSON từ RAG (final_answer, structured, …)
+ * @param {{ chatMode?: "tra_cuu_pdf" | "phan_tich", conversationId?: string|null, chatbotProvider?: "rag_v1"|"graph_v2" }} [opts]
+ * @returns {Promise<object>}
  */
 export async function sendChatQuery(question, queryMode = "fast", opts = {}) {
   const token = localStorage.getItem("lexbot_token");
@@ -28,8 +38,13 @@ export async function sendChatQuery(question, queryMode = "fast", opts = {}) {
   }
 
   const mode = queryMode === "thinking" ? "thinking" : "fast";
+  const provider = opts.chatbotProvider === "graph_v2" ? "graph_v2" : "rag_v1";
 
-  const body = { question, query_mode: mode };
+  const body = {
+    question,
+    query_mode: mode,
+    chatbot_provider: provider,
+  };
   if (opts.chatMode) {
     body.chat_mode = opts.chatMode;
   }
@@ -74,7 +89,6 @@ export async function fetchChatHistory(params = {}) {
 /**
  * Chi tiết một lượt chat đã lưu.
  * @param {string} chatId Mongo ObjectId dạng string
- * @returns {Promise<{ id: string, user_id: string, question: string, response: object, created_at: string, query_mode: string, chat_mode?: string|null, conversation_id?: string|null }>}
  */
 export async function fetchChatHistoryById(chatId) {
   const token = localStorage.getItem("lexbot_token");

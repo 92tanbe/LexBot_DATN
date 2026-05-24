@@ -1,8 +1,6 @@
 import logging
-import os
 from datetime import datetime
 from typing import Any
-from urllib.parse import urlparse
 
 import httpx
 from bson import ObjectId
@@ -16,8 +14,11 @@ from app.models.chat import (
     ChatHistoryDetail,
     ChatHistoryItem,
     ChatHistoryListResponse,
+    ChatProviderInfo,
+    ChatProvidersResponse,
     ChatQueryRequest,
 )
+from app.services.chatbot_providers import registry
 
 logger = logging.getLogger(__name__)
 
@@ -25,44 +26,6 @@ router = APIRouter(prefix="/chat", tags=["Chat"])
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login", auto_error=False)
 oauth2_required = OAuth2PasswordBearer(tokenUrl="auth/login", auto_error=True)
-
-
-def _resolve_chatbot_rag_url(raw: str) -> str:
-    """Chuẩn hóa CHATBOT_SERVICE_URL và nối path /rag/query khi chỉ có base URL.
-
-    - Tự thêm https:// nếu env thiếu scheme (hay gặp trên dashboard: chỉ dán hostname).
-    """
-    value = (raw or "").strip()
-    if not value:
-        return "http://127.0.0.1:8001/rag/query"
-    lowered = value.lower()
-    if not lowered.startswith(("http://", "https://")):
-        stub = value.lstrip("/")
-        if "localhost" in stub.lower() or "127.0.0.1" in stub:
-            value = f"http://{stub}"
-        else:
-            value = f"https://{stub}"
-
-    base = value.rstrip("/")
-    path = (urlparse(base).path or "").rstrip("/")
-    if not path:
-        return f"{base}/rag/query"
-    if path.endswith("/rag"):
-        return f"{base}/query"
-    if path.endswith("/rag/query"):
-        return base
-    return base
-
-
-# Local: mặc định chatbot local. Production: CHATBOT_SERVICE_URL = base hoặc full .../rag/query
-CHATBOT_URL = _resolve_chatbot_rag_url(
-    os.getenv("CHATBOT_SERVICE_URL", "http://127.0.0.1:8001/rag/query")
-)
-# Railway/host free-tier cold start có thể >60s; kết nối TLS + chờ POST /rag/query cần timeout cao hơn.
-CHATBOT_TIMEOUT = float(os.getenv("CHATBOT_TIMEOUT_SECONDS", "120"))
-CHATBOT_CONNECT_TIMEOUT = float(
-    os.getenv("CHATBOT_CONNECT_TIMEOUT_SECONDS", "45")
-)
 
 
 def _preview_from_response(response_data: dict[str, Any]) -> str:
@@ -108,6 +71,7 @@ async def save_chat_to_db(
     *,
     query_mode: str,
     chat_mode: str | None,
+    chatbot_provider: str,
     conversation_id: str | None,
 ) -> None:
     try:
@@ -118,6 +82,7 @@ async def save_chat_to_db(
             "timestamp": datetime.utcnow(),
             "query_mode": query_mode,
             "chat_mode": chat_mode,
+            "chatbot_provider": chatbot_provider,
             "conversation_id": conversation_id,
         }
         await chats_collection.insert_one(chat_document)
@@ -129,6 +94,7 @@ def _mongo_doc_to_list_item(doc: dict[str, Any]) -> ChatHistoryItem:
     resp = doc.get("response") or {}
     if not isinstance(resp, dict):
         resp = {}
+    provider = doc.get("chatbot_provider") or resp.get("chatbot_provider") or "rag_v1"
     return ChatHistoryItem(
         id=str(doc["_id"]),
         user_id=str(doc.get("user_id", "")),
@@ -136,6 +102,7 @@ def _mongo_doc_to_list_item(doc: dict[str, Any]) -> ChatHistoryItem:
         preview_answer=_preview_from_response(resp),
         query_mode=doc.get("query_mode") or "fast",
         chat_mode=doc.get("chat_mode"),
+        chatbot_provider=provider,
         conversation_id=doc.get("conversation_id"),
         created_at=_doc_created_at(doc),
     )
@@ -145,16 +112,38 @@ def _mongo_doc_to_detail(doc: dict[str, Any]) -> ChatHistoryDetail:
     resp = doc.get("response") or {}
     if not isinstance(resp, dict):
         resp = {}
+    provider = doc.get("chatbot_provider") or resp.get("chatbot_provider") or "rag_v1"
     return ChatHistoryDetail(
         id=str(doc["_id"]),
         user_id=str(doc.get("user_id", "")),
         question=str(doc.get("question", "")),
         query_mode=doc.get("query_mode") or "fast",
         chat_mode=doc.get("chat_mode"),
+        chatbot_provider=provider,
         conversation_id=doc.get("conversation_id"),
         created_at=_doc_created_at(doc),
         response=resp,
     )
+
+
+@router.get("/providers", response_model=ChatProvidersResponse)
+async def list_chat_providers():
+    """Danh sách microservice chatbot — frontend dùng để chọn server."""
+    items = registry.list_providers()
+    providers = [
+        ChatProviderInfo(
+            id=p.id,
+            name=p.name,
+            description=p.description,
+            base_url=p.base_url,
+            enabled=p.enabled,
+            modes=p.modes,
+            neo4j_uri_hint=p.neo4j_uri_hint,
+            neo4j_database=p.neo4j_database,
+        )
+        for p in items
+    ]
+    return ChatProvidersResponse(providers=providers, default_provider="rag_v1")
 
 
 @router.post("/query")
@@ -164,7 +153,7 @@ async def chat_query(
     token: str = Depends(oauth2_scheme),
 ):
     """
-    Forward the chat query from the frontend directly to the RAG Chatbot Microservice.
+    Forward câu hỏi tới microservice chatbot được chọn (RAG v1 hoặc Graph v2).
     """
     user_id = "guest"
     if token:
@@ -174,73 +163,43 @@ async def chat_query(
         except Exception:
             pass
 
-    connect_cap = min(CHATBOT_CONNECT_TIMEOUT, CHATBOT_TIMEOUT)
-    timeout = httpx.Timeout(CHATBOT_TIMEOUT, connect=connect_cap)
-    try:
-        logger.info(
-            "chat/query: forwarding to RAG url=%s timeout_s=%s connect_s=%s",
-            CHATBOT_URL,
-            CHATBOT_TIMEOUT,
-            connect_cap,
+    provider = request.chatbot_provider or "rag_v1"
+
+    if provider == "graph_v2" and request.chat_mode == "tra_cuu_pdf":
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=(
+                "Chế độ tra cứu PDF chỉ hỗ trợ trên LexBot RAG v1. "
+                "Hãy chuyển server hoặc chọn chế độ tra cứu/ phân tích khác."
+            ),
         )
-        async with httpx.AsyncClient(timeout=timeout) as client:
-            payload = {
-                "question": request.question,
-                "top_k": request.top_k,
-                "query_mode": request.query_mode,
-            }
-            if request.chat_mode is not None:
-                payload["chat_mode"] = request.chat_mode
-            response = await client.post(
-                CHATBOT_URL,
-                json=payload,
-            )
 
-            if response.status_code != 200:
-                error_detail = response.text[:2000] if response.text else ""
-                try:
-                    err_json = response.json()
-                    error_detail = str(err_json.get("detail", err_json))[:2000]
-                except Exception:
-                    pass
-                logger.warning(
-                    "chat/query: RAG returned HTTP %s from %s detail=%s",
-                    response.status_code,
-                    CHATBOT_URL,
-                    error_detail[:500],
-                )
-                raise HTTPException(
-                    status_code=response.status_code,
-                    detail=f"Chatbot Service Error from {CHATBOT_URL}: {error_detail}",
-                )
+    try:
+        response_data = await registry.forward(request)
+        background_tasks.add_task(
+            save_chat_to_db,
+            user_id,
+            request.question,
+            response_data,
+            query_mode=request.query_mode,
+            chat_mode=request.chat_mode,
+            chatbot_provider=provider,
+            conversation_id=request.conversation_id,
+        )
+        return response_data
 
-            response_data = response.json()
-            background_tasks.add_task(
-                save_chat_to_db,
-                user_id,
-                request.question,
-                response_data,
-                query_mode=request.query_mode,
-                chat_mode=request.chat_mode,
-                conversation_id=request.conversation_id,
-            )
-            return response_data
-
+    except ValueError as exc:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)) from exc
+    except httpx.HTTPStatusError as exc:
+        status_code = exc.response.status_code if exc.response is not None else 502
+        raise HTTPException(status_code=status_code, detail=str(exc)) from exc
     except httpx.RequestError as exc:
-        logger.warning("chat/query: cannot reach RAG url=%s error=%s", CHATBOT_URL, exc)
-        detail = f"Không kết nối được Chatbot RAG tại {CHATBOT_URL!s}: {exc!s}."
-        if "127.0.0.1" in CHATBOT_URL or "localhost" in CHATBOT_URL:
-            detail += (
-                " Trên FastAPI Cloud đặt CHATBOT_SERVICE_URL = base URL chatbot "
-                "(ví dụ https://...railway.app/) hoặc đầy đủ .../rag/query."
-            )
-        elif "railway.app" in CHATBOT_URL.lower():
-            detail += (
-                " Railway cold start có thể rất chậm — thử tăng CHATBOT_TIMEOUT_SECONDS "
-                f"(hiện {CHATBOT_TIMEOUT}s) và CHATBOT_CONNECT_TIMEOUT_SECONDS (hiện {CHATBOT_CONNECT_TIMEOUT}s), "
-                "hoặc gọi /health của chatbot một lần để đánh thức service."
-            )
-        raise HTTPException(status_code=503, detail=detail)
+        info = registry.get_provider(provider)
+        logger.warning("chat/query: cannot reach provider=%s error=%s", provider, exc)
+        raise HTTPException(
+            status_code=503,
+            detail=f"Không kết nối được {info.name} tại {info.base_url}: {exc!s}.",
+        ) from exc
 
 
 @router.get("/history", response_model=ChatHistoryListResponse)

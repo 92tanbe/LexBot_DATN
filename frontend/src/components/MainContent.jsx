@@ -2,6 +2,9 @@ import { useState, useRef, useEffect } from 'react';
 import { useChatWorkspace } from '../context/ChatWorkspaceContext';
 import { sendChatQuery } from '../services/chatService';
 import BotAnswerContent from './BotAnswerContent';
+import ServerSelector from './ServerSelector';
+import GraphV2AnalysisPanel from './GraphV2AnalysisPanel';
+import { providerShortLabel } from '../utils/chatbotProvider';
 
 const GOI_Y = [
   { icon: 'sparkle', label: 'Phân tích vi phạm giao thông' },
@@ -9,6 +12,28 @@ const GOI_Y = [
   { icon: 'sparkle', label: 'Mức phạt nồng độ cồn' },
   { icon: 'sparkle', label: 'Hình phạt tội hình sự' },
 ];
+
+function getModeChipLabel(answerMode, chatbotProvider) {
+  if (chatbotProvider === 'graph_v2') {
+    if (answerMode === 'thinking') return 'Graph v2 · Phân tích tình huống';
+    return 'Graph v2 · Tra cứu hybrid';
+  }
+  if (answerMode === 'pdf') return 'VB hợp nhất · PDF';
+  if (answerMode === 'thinking') return 'Neo4j · Phân tích';
+  return 'Neo4j · Tra cứu nhanh';
+}
+
+function getBotBadgeLabel(msg) {
+  if (msg.chatbotProvider === 'graph_v2') {
+    if (msg.graphMode === 'analyze' || msg.responseMode === 'thinking') {
+      return 'Graph v2 · Analyze';
+    }
+    return 'Graph v2 · Search';
+  }
+  if (msg.answerMode === 'pdf') return 'PDF VB';
+  if (msg.responseMode === 'thinking') return 'Thinking';
+  return 'Neo4j nhanh';
+}
 
 function formatRoleLabel(role) {
   const labels = {
@@ -60,11 +85,14 @@ function MainContent() {
     setMessages,
     answerMode,
     setAnswerMode,
+    chatbotProvider,
+    setChatbotProvider,
     isLoading,
     setIsLoading,
     refreshHistoryList,
     setSelectedHistoryId,
   } = useChatWorkspace();
+  const isGraphV2 = chatbotProvider === 'graph_v2';
   const [inputValue, setInputValue] = useState('');
   const messagesEndRef = useRef(null);
 
@@ -81,20 +109,27 @@ function MainContent() {
     if (!question.trim()) return;
 
     const modeUsed = answerMode === 'thinking' ? 'thinking' : 'fast';
-    const chatModeOpt = answerMode === 'pdf' ? { chatMode: 'tra_cuu_pdf' } : {};
+    const chatModeOpt = {};
+    if (!isGraphV2 && answerMode === 'pdf') {
+      chatModeOpt.chatMode = 'tra_cuu_pdf';
+    } else if (isGraphV2 && answerMode === 'thinking') {
+      chatModeOpt.chatMode = 'phan_tich';
+    }
 
     setSelectedHistoryId(null);
 
-    // Add user message
     setMessages((prev) => [
       ...prev,
-      { role: 'user', content: question, answerMode },
+      { role: 'user', content: question, answerMode, chatbotProvider },
     ]);
     setInputValue('');
     setIsLoading(true);
 
     try {
-      const response = await sendChatQuery(question, modeUsed, chatModeOpt);
+      const response = await sendChatQuery(question, modeUsed, {
+        ...chatModeOpt,
+        chatbotProvider,
+      });
       setMessages((prev) => [
         ...prev,
         {
@@ -105,8 +140,14 @@ function MainContent() {
           rows: response.rows || [],
           people: response.people || [],
           caseAnalysis: response.case_analysis || null,
+          legalReasoning: response.legal_reasoning || [],
+          missingFacts: response.missing_facts || [],
+          citations: response.citations || [],
+          warnings: response.warnings || [],
           responseMode: modeUsed,
           answerMode,
+          chatbotProvider: response.chatbot_provider || chatbotProvider,
+          graphMode: response.graph_mode || null,
         },
       ]);
       void refreshHistoryList();
@@ -157,7 +198,12 @@ function MainContent() {
               </svg>
             </div>
             <h2 className="welcome-title">Xin chào! Tôi là LexBot</h2>
-            <p className="welcome-subtitle">Hãy mô tả tình huống vi phạm để tôi phân tích!</p>
+            <p className="welcome-subtitle">
+              Chọn server chatbot và mô tả tình huống vi phạm để phân tích.
+            </p>
+            <p className="welcome-server-hint">
+              Đang dùng: <strong>{providerShortLabel(chatbotProvider)}</strong>
+            </p>
           </div>
         ) : (
           <>
@@ -171,11 +217,7 @@ function MainContent() {
                           msg.answerMode === 'thinking' ? 'user-mode-chip--thinking' : ''
                         }`}
                       >
-                        {msg.answerMode === 'pdf'
-                          ? 'VB hợp nhất · PDF'
-                          : msg.answerMode === 'thinking'
-                            ? 'Neo4j · Phân tích'
-                            : 'Neo4j · Tra cứu nhanh'}
+                        {getModeChipLabel(msg.answerMode, msg.chatbotProvider || chatbotProvider)}
                       </div>
                     )}
                     <div>{msg.content}</div>
@@ -196,14 +238,12 @@ function MainContent() {
                             ? 'message-bot-badge--pdf'
                             : msg.responseMode === 'thinking'
                               ? 'message-bot-badge--thinking'
-                              : ''
+                              : msg.chatbotProvider === 'graph_v2'
+                                ? 'message-bot-badge--graph'
+                                : ''
                         }`}
                       >
-                        {msg.answerMode === 'pdf'
-                          ? 'PDF VB'
-                          : msg.responseMode === 'thinking'
-                            ? 'Thinking'
-                            : 'Neo4j nhanh'}
+                        {getBotBadgeLabel(msg)}
                       </span>
                     </div>
 
@@ -309,6 +349,10 @@ function MainContent() {
                       </div>
                     )}
 
+                    {msg.chatbotProvider === 'graph_v2' && (
+                      <GraphV2AnalysisPanel message={msg} />
+                    )}
+
                     {msg.explanation && (
                       <div className="message-explanation">
                         <strong>Lưu ý:</strong>{' '}
@@ -347,24 +391,36 @@ function MainContent() {
           </div>
         )}
 
+        <ServerSelector
+          value={chatbotProvider}
+          onChange={setChatbotProvider}
+          disabled={isLoading}
+        />
+
         <div className="query-mode-row" role="group" aria-label="Chế độ trả lời">
-          <button
-            type="button"
-            className={`query-mode-btn query-mode-btn--fast ${answerMode === 'pdf' ? 'query-mode-btn--active' : ''}`}
-            onClick={() => setAnswerMode('pdf')}
-            disabled={isLoading}
-          >
-            <span className="query-mode-btn-title">VB PDF</span>
-            <span className="query-mode-btn-sub">Trích văn hợp nhất</span>
-          </button>
+          {!isGraphV2 && (
+            <button
+              type="button"
+              className={`query-mode-btn query-mode-btn--fast ${answerMode === 'pdf' ? 'query-mode-btn--active' : ''}`}
+              onClick={() => setAnswerMode('pdf')}
+              disabled={isLoading}
+            >
+              <span className="query-mode-btn-title">VB PDF</span>
+              <span className="query-mode-btn-sub">Trích văn hợp nhất</span>
+            </button>
+          )}
           <button
             type="button"
             className={`query-mode-btn query-mode-btn--fast ${answerMode === 'fast' ? 'query-mode-btn--active' : ''}`}
             onClick={() => setAnswerMode('fast')}
             disabled={isLoading}
           >
-            <span className="query-mode-btn-title">Tra cứu nhanh</span>
-            <span className="query-mode-btn-sub">Neo4j · embedding</span>
+            <span className="query-mode-btn-title">
+              {isGraphV2 ? 'Tra cứu hybrid' : 'Tra cứu nhanh'}
+            </span>
+            <span className="query-mode-btn-sub">
+              {isGraphV2 ? 'POST /search' : 'Neo4j · embedding'}
+            </span>
           </button>
           <button
             type="button"
@@ -373,7 +429,9 @@ function MainContent() {
             disabled={isLoading}
           >
             <span className="query-mode-btn-title">Phân tích</span>
-            <span className="query-mode-btn-sub">Neo4j + LLM đầy đủ</span>
+            <span className="query-mode-btn-sub">
+              {isGraphV2 ? 'POST /analyze-scenario' : 'Neo4j + LLM đầy đủ'}
+            </span>
           </button>
         </div>
 

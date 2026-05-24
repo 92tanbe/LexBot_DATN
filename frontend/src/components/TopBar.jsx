@@ -5,8 +5,12 @@
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
+import { useChatWorkspace } from '../context/ChatWorkspaceContext';
+import { providerShortLabel } from '../utils/chatbotProvider';
+
 function TopBar() {
   const { user, logout } = useAuth();
+  const { chatbotProvider } = useChatWorkspace();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -39,7 +43,7 @@ function TopBar() {
         <div className="tb-badges">
           <span className="tb-badge tb-badge--indigo">
             <span className="tb-pulse-dot" />
-            Neo4j Connected
+            {providerShortLabel(chatbotProvider)}
           </span>
           <span className="tb-badge tb-badge--green">BLHS 2025</span>
           <span className="tb-badge tb-badge--amber">Nghị định GT</span>

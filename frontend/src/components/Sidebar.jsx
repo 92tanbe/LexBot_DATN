@@ -4,6 +4,7 @@
 import { useRef } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useChatWorkspace } from "../context/ChatWorkspaceContext";
+import { providerShortLabel } from "../utils/chatbotProvider";
 
 const QUICK_LOOKUPS = [
   "Điều 260 BLHS",
@@ -141,6 +142,11 @@ function Sidebar() {
                 >
                   <span className="chat-list-item-title">{truncate(item.question, 52)}</span>
                   <span className="chat-list-item-meta">
+                    {item.chatbot_provider && (
+                      <span className="chat-list-item-provider">
+                        {providerShortLabel(item.chatbot_provider)}
+                      </span>
+                    )}
                     {formatHistoryTime(item.created_at)}
                     {item.preview_answer ? ` · ${truncate(item.preview_answer, 36)}` : ""}
                   </span>

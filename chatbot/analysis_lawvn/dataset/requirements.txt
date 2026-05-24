@@ -1,8 +1,0 @@
-fastapi[standard]
-uvicorn
-neo4j
-python-dotenv
-openai>=1.0.0
-pydantic
-pytest
-pinrag

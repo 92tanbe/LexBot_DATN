@@ -12,6 +12,10 @@
  */
 
 /**
+ * @typedef {"rag_v1"|"graph_v2"} ChatbotProvider
+ */
+
+/**
  * Body POST /chat/query (LexBot API → forward RAG).
  * @typedef {{
  *   question: string,
@@ -19,6 +23,7 @@
  *   query_mode?: QueryMode,
  *   chat_mode?: ChatMode,
  *   conversation_id?: string|null,
+ *   chatbot_provider?: ChatbotProvider,
  * }} ChatQueryRequestBody
  */
 

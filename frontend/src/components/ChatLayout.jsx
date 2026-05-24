@@ -21,46 +21,46 @@ function ChatLayout() {
   const [activeTab, setActiveTab] = useState('chat');
 
   return (
-    <div className="chat-layout">
-      <TopBar />
+    <ChatWorkspaceProvider>
+      <div className="chat-layout">
+        <TopBar />
 
-      {/* ── Tab bar ── */}
-      <nav className="cl-tabs">
-        {TABS.map((t) => (
-          <button
-            key={t.id}
-            className={`cl-tab ${activeTab === t.id ? 'cl-tab--active' : ''}`}
-            onClick={() => setActiveTab(t.id)}
-          >
-            {t.label}
-          </button>
-        ))}
-      </nav>
+        {/* ── Tab bar ── */}
+        <nav className="cl-tabs">
+          {TABS.map((t) => (
+            <button
+              key={t.id}
+              className={`cl-tab ${activeTab === t.id ? 'cl-tab--active' : ''}`}
+              onClick={() => setActiveTab(t.id)}
+            >
+              {t.label}
+            </button>
+          ))}
+        </nav>
 
-      {/* ── Tab content ── */}
-      <div className="cl-tab-content">
-        {activeTab === 'chat' && (
-          <ChatWorkspaceProvider>
+        {/* ── Tab content ── */}
+        <div className="cl-tab-content">
+          {activeTab === 'chat' && (
             <div className="chat-layout-body">
               <Sidebar />
               <MainContent />
             </div>
-          </ChatWorkspaceProvider>
-        )}
+          )}
 
-        {activeTab === 'schema' && (
-          <div className="cl-page-wrapper">
-            <GraphSchema />
-          </div>
-        )}
+          {activeTab === 'schema' && (
+            <div className="cl-page-wrapper">
+              <GraphSchema />
+            </div>
+          )}
 
-        {activeTab === 'about' && (
-          <div className="cl-page-wrapper">
-            <AboutPage />
-          </div>
-        )}
+          {activeTab === 'about' && (
+            <div className="cl-page-wrapper">
+              <AboutPage />
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </ChatWorkspaceProvider>
   );
 }
 

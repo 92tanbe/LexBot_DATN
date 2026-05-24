@@ -6,3 +6,4 @@ openai>=1.0.0
 pydantic
 pytest
 pinrag
+pypdf>=5.0

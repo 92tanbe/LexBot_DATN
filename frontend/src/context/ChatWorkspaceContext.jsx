@@ -8,6 +8,10 @@ import {
 } from "react";
 import { useAuth } from "./AuthContext";
 import { fetchChatHistory, fetchChatHistoryById } from "../services/chatService";
+import {
+  loadStoredChatbotProvider,
+  saveChatbotProvider,
+} from "../utils/chatbotProvider";
 
 const ChatWorkspaceContext = createContext(null);
 
@@ -20,6 +24,8 @@ function historyDetailToMessages(detail) {
   const chatMode = detail.chat_mode;
   const queryMode =
     detail.query_mode === "thinking" ? "thinking" : "fast";
+  const chatbotProvider =
+    detail.chatbot_provider === "graph_v2" ? "graph_v2" : "rag_v1";
 
   let answerMode = "fast";
   if (chatMode === "tra_cuu_pdf") answerMode = "pdf";
@@ -36,6 +42,7 @@ function historyDetailToMessages(detail) {
       role: "user",
       content: String(detail.question || ""),
       answerMode,
+      chatbotProvider,
     },
     {
       role: "bot",
@@ -45,8 +52,14 @@ function historyDetailToMessages(detail) {
       rows: Array.isArray(r.rows) ? r.rows : [],
       people: Array.isArray(r.people) ? r.people : [],
       caseAnalysis: r.case_analysis ?? structured,
+      legalReasoning: Array.isArray(r.legal_reasoning) ? r.legal_reasoning : [],
+      missingFacts: Array.isArray(r.missing_facts) ? r.missing_facts : [],
+      citations: Array.isArray(r.citations) ? r.citations : [],
+      warnings: Array.isArray(r.warnings) ? r.warnings : [],
       responseMode: chatMode === "phan_tich" ? "thinking" : modeUsed,
       answerMode,
+      chatbotProvider: r.chatbot_provider || chatbotProvider,
+      graphMode: r.graph_mode || null,
     },
   ];
 }
@@ -55,6 +68,7 @@ export function ChatWorkspaceProvider({ children }) {
   const { user, token } = useAuth();
   const [messages, setMessages] = useState([]);
   const [answerMode, setAnswerMode] = useState("pdf");
+  const [chatbotProvider, setChatbotProviderState] = useState(loadStoredChatbotProvider);
   const [isLoading, setIsLoading] = useState(false);
   const [historyItems, setHistoryItems] = useState([]);
   const [historyLoading, setHistoryLoading] = useState(false);
@@ -80,9 +94,27 @@ export function ChatWorkspaceProvider({ children }) {
     }
   }, [token, user]);
 
+  const setChatbotProvider = useCallback((provider) => {
+    const next = provider === "graph_v2" ? "graph_v2" : "rag_v1";
+    if (next === chatbotProvider) return;
+    saveChatbotProvider(next);
+    setChatbotProviderState(next);
+    if (next === "graph_v2" && answerMode === "pdf") {
+      setAnswerMode("fast");
+    }
+    setMessages([]);
+    setSelectedHistoryId(null);
+  }, [answerMode, chatbotProvider]);
+
   useEffect(() => {
     refreshHistoryList();
   }, [refreshHistoryList]);
+
+  useEffect(() => {
+    if (chatbotProvider === "graph_v2" && answerMode === "pdf") {
+      setAnswerMode("fast");
+    }
+  }, [chatbotProvider, answerMode]);
 
   useEffect(() => {
     if (!user || !token) {
@@ -112,6 +144,14 @@ export function ChatWorkspaceProvider({ children }) {
         if (first && first.answerMode) {
           setAnswerMode(first.answerMode);
         }
+        if (first && first.chatbotProvider) {
+          setChatbotProviderState(
+            first.chatbotProvider === "graph_v2" ? "graph_v2" : "rag_v1"
+          );
+          saveChatbotProvider(
+            first.chatbotProvider === "graph_v2" ? "graph_v2" : "rag_v1"
+          );
+        }
       } catch (e) {
         setHistoryError(e instanceof Error ? e.message : "Không mở được lịch sử");
       } finally {
@@ -127,6 +167,8 @@ export function ChatWorkspaceProvider({ children }) {
       setMessages,
       answerMode,
       setAnswerMode,
+      chatbotProvider,
+      setChatbotProvider,
       isLoading,
       setIsLoading,
       historyItems,
@@ -142,6 +184,7 @@ export function ChatWorkspaceProvider({ children }) {
     [
       messages,
       answerMode,
+      chatbotProvider,
       isLoading,
       historyItems,
       historyLoading,
@@ -151,6 +194,7 @@ export function ChatWorkspaceProvider({ children }) {
       refreshHistoryList,
       loadHistoryEntry,
       startNewChat,
+      setChatbotProvider,
     ]
   );
 
