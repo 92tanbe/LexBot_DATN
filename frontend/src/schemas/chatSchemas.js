@@ -79,6 +79,19 @@
  *   hints?: unknown,
  *   rows?: unknown[],
  *   people?: unknown[],
+ *   facts?: {
+ *     exhibits?: Array<{
+ *       status: "seized"|"consumed"|"not_seized"|"mentioned"|string,
+ *       description: string,
+ *       quantity?: {
+ *         value?: number,
+ *         unit?: string,
+ *         raw_text: string,
+ *         object?: string,
+ *       },
+ *       source_text?: string,
+ *     }>,
+ *   },
  *   case_analysis?: Record<string, unknown>|null,
  * }} RagChatResponse
  */

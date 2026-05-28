@@ -57,15 +57,6 @@ function formatCrimeGroupLabel(classification) {
   return labels[classification] || 'Khả năng pháp lý';
 }
 
-function formatTriState(value) {
-  const labels = {
-    co: 'Có',
-    khong: 'Không',
-    chua_ro: 'Chưa rõ',
-  };
-  return labels[value] || 'Chưa rõ';
-}
-
 function buildCrimeReference(crime) {
   const clauseText = crime?.clause ? `, khoản ${crime.clause}` : '';
   return `Điều ${crime?.article}${clauseText}`;
@@ -140,8 +131,11 @@ function MainContent() {
           rows: response.rows || [],
           people: response.people || [],
           caseAnalysis: response.case_analysis || null,
+          exhibits: Array.isArray(response.facts?.exhibits) ? response.facts.exhibits : [],
+          clarifyingQuestions: response.clarifying_questions || [],
           legalReasoning: response.legal_reasoning || [],
           missingFacts: response.missing_facts || [],
+          candidateArticles: response.candidate_articles || [],
           citations: response.citations || [],
           warnings: response.warnings || [],
           responseMode: modeUsed,
