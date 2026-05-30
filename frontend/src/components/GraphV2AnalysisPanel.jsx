@@ -28,6 +28,14 @@ function formatExhibitQuantity(quantity) {
   return parts.join(" ");
 }
 
+function formatMissingFact(fact) {
+  if (typeof fact === "string") return fact;
+  if (!fact || typeof fact !== "object") return "Dữ kiện chưa rõ";
+  const label = fact.label || fact.key || "Dữ kiện";
+  const desc = fact.description || fact.question || "";
+  return desc ? `${label}: ${desc}` : String(label);
+}
+
 /**
  * Hiển thị phản hồi từ BLHS Graph v2 (facts.exhibits, legal_reasoning, missing_facts, citations).
  * @param {{ message: object }} props
@@ -141,7 +149,7 @@ function GraphV2AnalysisPanel({ message }) {
           <strong>Dữ kiện còn thiếu:</strong>
           <ul className="graph-missing-list">
             {missing.map((fact, idx) => (
-              <li key={`mf-${idx}`}>{fact}</li>
+              <li key={`mf-${idx}`}>{formatMissingFact(fact)}</li>
             ))}
           </ul>
         </div>
@@ -149,7 +157,7 @@ function GraphV2AnalysisPanel({ message }) {
 
       {clarifyingQuestions.length > 0 && (
         <div className="message-section">
-          <div className="message-section-title">Câu hỏi cần làm rõ</div>
+          <div className="message-section-title">Cần bổ sung thông tin</div>
           <ul className="graph-detail-list">
             {clarifyingQuestions.map((question, idx) => (
               <li key={`cq-${idx}`}>{question}</li>

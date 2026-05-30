@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useChatWorkspace } from '../context/ChatWorkspaceContext';
-import { sendChatQuery } from '../services/chatService';
+import { sendChatQuery, sendLegalChatMessage } from '../services/chatService';
 import BotAnswerContent from './BotAnswerContent';
 import ServerSelector from './ServerSelector';
 import GraphV2AnalysisPanel from './GraphV2AnalysisPanel';
@@ -24,6 +24,11 @@ function getModeChipLabel(answerMode, chatbotProvider) {
 }
 
 function getBotBadgeLabel(msg) {
+  if (msg.caseStatus === 'collecting_facts') return 'Đang bổ sung dữ kiện';
+  if (msg.caseStatus === 'insufficient_information') return 'Thiếu dữ kiện';
+  if (msg.caseStatus === 'ready_to_answer' || msg.caseStatus === 'answered') {
+    return 'Pháp lý nhiều lượt';
+  }
   if (msg.chatbotProvider === 'graph_v2') {
     if (msg.graphMode === 'analyze' || msg.responseMode === 'thinking') {
       return 'Graph v2 · Analyze';
@@ -33,6 +38,16 @@ function getBotBadgeLabel(msg) {
   if (msg.answerMode === 'pdf') return 'PDF VB';
   if (msg.responseMode === 'thinking') return 'Thinking';
   return 'Neo4j nhanh';
+}
+
+function getLegalStatusText(status) {
+  const labels = {
+    collecting_facts: 'Chưa phải kết luận cuối cùng. Backend đang cần thêm dữ kiện để phân tích chắc hơn.',
+    ready_to_answer: 'Câu trả lời pháp lý chính dựa trên dữ kiện đã cung cấp.',
+    answered: 'Câu trả lời pháp lý chính dựa trên dữ kiện đã cung cấp.',
+    insufficient_information: 'Backend chưa đủ dữ kiện để kết luận; nội dung dưới đây chỉ là phân tích sơ bộ.',
+  };
+  return labels[status] || '';
 }
 
 function formatRoleLabel(role) {
@@ -82,6 +97,9 @@ function MainContent() {
     setIsLoading,
     refreshHistoryList,
     setSelectedHistoryId,
+    startNewChat,
+    caseId,
+    setCaseId,
   } = useChatWorkspace();
   const isGraphV2 = chatbotProvider === 'graph_v2';
   const [inputValue, setInputValue] = useState('');
@@ -117,15 +135,28 @@ function MainContent() {
     setIsLoading(true);
 
     try {
-      const response = await sendChatQuery(question, modeUsed, {
-        ...chatModeOpt,
-        chatbotProvider,
-      });
+      const response = isGraphV2
+        ? await sendLegalChatMessage(question, {
+            caseId,
+            topK: 8,
+            includeDebug: false,
+            answerStyle: 'auto',
+          })
+        : await sendChatQuery(question, modeUsed, {
+            ...chatModeOpt,
+            chatbotProvider,
+          });
+      if (isGraphV2 && response.case_id) {
+        setCaseId(response.case_id);
+      }
       setMessages((prev) => [
         ...prev,
         {
           role: 'bot',
           content: response.final_answer,
+          caseId: response.case_id || null,
+          caseStatus: response.status || null,
+          confidence: typeof response.confidence === 'number' ? response.confidence : null,
           explanation: response.explanation,
           hints: response.hints,
           rows: response.rows || [],
@@ -140,11 +171,13 @@ function MainContent() {
           warnings: response.warnings || [],
           responseMode: modeUsed,
           answerMode,
-          chatbotProvider: response.chatbot_provider || chatbotProvider,
-          graphMode: response.graph_mode || null,
+          chatbotProvider: isGraphV2 ? 'graph_v2' : response.chatbot_provider || chatbotProvider,
+          graphMode: isGraphV2 ? 'legal_chat' : response.graph_mode || null,
         },
       ]);
-      void refreshHistoryList();
+      if (!isGraphV2) {
+        void refreshHistoryList();
+      }
     } catch (error) {
       setMessages((prev) => [
         ...prev,
@@ -163,12 +196,12 @@ function MainContent() {
   };
 
   return (
-    <main className="main-content" style={{ display: 'flex', flexDirection: 'column' }}>
+    <main className="main-content">
       
       {/* ── Chat History or Welcome Screen ── */}
-      <div className="chat-history" style={{ flex: 1, overflowY: 'auto', padding: '20px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      <div className="chat-history">
         {messages.length === 0 ? (
-          <div className="welcome-block" style={{ margin: 'auto' }}>
+          <div className="welcome-block">
             <div className="welcome-icon" aria-hidden="true">
               <svg width="72" height="72" viewBox="0 0 72 72" fill="none">
                 <defs>
@@ -242,6 +275,12 @@ function MainContent() {
                     </div>
 
                     <div className="message-answer">
+                      {getLegalStatusText(msg.caseStatus) && (
+                        <div className={`legal-status-note legal-status-note--${msg.caseStatus}`}>
+                          {getLegalStatusText(msg.caseStatus)}
+                          {msg.caseId ? <span> Mã vụ việc: {msg.caseId}</span> : null}
+                        </div>
+                      )}
                       <BotAnswerContent text={msg.content} />
                     </div>
 
@@ -369,7 +408,23 @@ function MainContent() {
       </div>
 
       {/* ── Input Area ── */}
-      <div className="input-area" style={{ flexShrink: 0 }}>
+      <div className="input-area">
+        {(messages.length > 0 || caseId) && (
+          <div className="chat-action-row">
+            <button
+              type="button"
+              className="new-case-btn"
+              onClick={startNewChat}
+              disabled={isLoading}
+            >
+              Vụ việc mới
+            </button>
+            {caseId && (
+              <span className="case-id-chip">case_id: {caseId}</span>
+            )}
+          </div>
+        )}
+
         {messages.length === 0 && (
           <div className="suggestion-chips">
             {GOI_Y.map((item, i) => (
@@ -413,7 +468,7 @@ function MainContent() {
               {isGraphV2 ? 'Tra cứu hybrid' : 'Tra cứu nhanh'}
             </span>
             <span className="query-mode-btn-sub">
-              {isGraphV2 ? 'POST /search' : 'Neo4j · embedding'}
+              {isGraphV2 ? 'POST /chat/legal' : 'Neo4j · embedding'}
             </span>
           </button>
           <button
@@ -424,7 +479,7 @@ function MainContent() {
           >
             <span className="query-mode-btn-title">Phân tích</span>
             <span className="query-mode-btn-sub">
-              {isGraphV2 ? 'POST /analyze-scenario' : 'Neo4j + LLM đầy đủ'}
+              {isGraphV2 ? 'Hỏi làm rõ nhiều lượt' : 'Neo4j + LLM đầy đủ'}
             </span>
           </button>
         </div>
@@ -437,14 +492,14 @@ function MainContent() {
             </svg>
           </button>
 
-          <input
-            type="text"
+          <textarea
             className="input-field"
             placeholder="Mô tả tình huống vi phạm..."
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={handleKeyDown}
             disabled={isLoading}
+            rows={1}
           />
 
           <div className="input-box-actions">

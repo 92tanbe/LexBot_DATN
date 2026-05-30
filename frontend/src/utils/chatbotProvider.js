@@ -3,7 +3,8 @@ const STORAGE_KEY = "lexbot_chatbot_provider";
 /** @returns {"rag_v1"|"graph_v2"} */
 export function loadStoredChatbotProvider() {
   const raw = localStorage.getItem(STORAGE_KEY);
-  return raw === "graph_v2" ? "graph_v2" : "rag_v1";
+  if (raw === "rag_v1") return "rag_v1";
+  return "graph_v2";
 }
 
 /** @param {"rag_v1"|"graph_v2"} provider */

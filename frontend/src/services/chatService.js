@@ -63,6 +63,37 @@ export async function sendChatQuery(question, queryMode = "fast", opts = {}) {
 }
 
 /**
+ * Gửi tin nhắn tới BLHS Graph legal chatbot nhiều lượt.
+ * @param {string} message
+ * @param {{ caseId?: string|null, topK?: number, includeDebug?: boolean, answerStyle?: "auto"|"balanced"|"conversational"|"brief"|"educational"|"structured" }} [opts]
+ * @returns {Promise<import("../schemas/chatSchemas.js").LegalChatResponse>}
+ */
+export async function sendLegalChatMessage(message, opts = {}) {
+  const token = localStorage.getItem("lexbot_token");
+  const headers = { "Content-Type": "application/json" };
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+
+  const body = {
+    message,
+    case_id: opts.caseId || null,
+    top_k: Number.isFinite(opts.topK) ? opts.topK : 8,
+    include_debug: opts.includeDebug === true,
+    answer_style: opts.answerStyle || "auto",
+  };
+
+  const res = await fetch(`${API_BASE}/chat/legal`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+  });
+  const data = await parseResponseJson(res);
+  if (!res.ok) throw new Error(formatApiError(data.detail));
+  return data;
+}
+
+/**
  * Danh sách lịch sử chat (cần Bearer token).
  * @param {{ skip?: number, limit?: number, conversationId?: string|null }} [params]
  * @returns {Promise<{ items: object[], total: number, skip: number, limit: number }>}

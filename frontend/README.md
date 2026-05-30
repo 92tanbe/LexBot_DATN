@@ -1,4 +1,35 @@
-# React + Vite
+# LexBot Frontend
+
+## API configuration
+
+Create `.env` from `.env.example` when the backend is not served through the
+Vite dev proxy:
+
+```env
+VITE_API_BASE_URL=http://127.0.0.1:8000
+```
+
+The main Graph v2 chat flow calls:
+
+```http
+POST ${VITE_API_BASE_URL}/chat/legal
+```
+
+The request keeps the `case_id` returned by the backend so follow-up messages
+continue the same legal case. The older `/chat/query` flow remains available
+for RAG v1 screens and history compatibility.
+
+For production, configure the backend CORS allowlist to include the deployed
+frontend origin.
+
+## Development
+
+```bash
+npm install
+npm run dev
+npm run build
+npm run lint
+```
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 

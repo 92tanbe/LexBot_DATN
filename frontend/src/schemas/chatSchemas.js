@@ -16,6 +16,50 @@
  */
 
 /**
+ * @typedef {"collecting_facts"|"ready_to_answer"|"answered"|"insufficient_information"} CaseStatus
+ */
+
+/**
+ * @typedef {{
+ *   key: string,
+ *   label: string,
+ *   description: string,
+ *   critical?: boolean,
+ *   domain?: string|null,
+ *   question?: string|null,
+ * }} MissingFactItem
+ */
+
+/**
+ * Body POST /chat/legal.
+ * @typedef {{
+ *   message: string,
+ *   case_id?: string|null,
+ *   top_k?: number,
+ *   include_debug?: boolean,
+ *   answer_style?: "auto"|"balanced"|"conversational"|"brief"|"educational"|"structured",
+ * }} LegalChatRequest
+ */
+
+/**
+ * Response POST /chat/legal.
+ * @typedef {{
+ *   case_id: string,
+ *   status: CaseStatus,
+ *   facts: Record<string, unknown>,
+ *   missing_facts: MissingFactItem[],
+ *   clarifying_questions: string[],
+ *   candidate_articles: unknown[],
+ *   legal_reasoning: unknown[],
+ *   final_answer: string,
+ *   confidence: number,
+ *   citations: unknown[],
+ *   warnings: string[],
+ *   debug?: Record<string, unknown>|null,
+ * }} LegalChatResponse
+ */
+
+/**
  * Body POST /chat/query (LexBot API → forward RAG).
  * @typedef {{
  *   question: string,

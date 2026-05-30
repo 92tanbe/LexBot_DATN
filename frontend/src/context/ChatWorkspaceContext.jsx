@@ -47,6 +47,9 @@ function historyDetailToMessages(detail) {
     {
       role: "bot",
       content: String(r.final_answer || ""),
+      caseId: r.case_id || null,
+      caseStatus: r.status || null,
+      confidence: typeof r.confidence === "number" ? r.confidence : null,
       explanation: r.explanation,
       hints: r.hints,
       rows: Array.isArray(r.rows) ? r.rows : [],
@@ -70,7 +73,7 @@ function historyDetailToMessages(detail) {
 export function ChatWorkspaceProvider({ children }) {
   const { user, token } = useAuth();
   const [messages, setMessages] = useState([]);
-  const [answerMode, setAnswerMode] = useState("pdf");
+  const [answerMode, setAnswerMode] = useState("fast");
   const [chatbotProvider, setChatbotProviderState] = useState(loadStoredChatbotProvider);
   const [isLoading, setIsLoading] = useState(false);
   const [historyItems, setHistoryItems] = useState([]);
@@ -78,6 +81,7 @@ export function ChatWorkspaceProvider({ children }) {
   const [historyOpening, setHistoryOpening] = useState(false);
   const [historyError, setHistoryError] = useState(null);
   const [selectedHistoryId, setSelectedHistoryId] = useState(null);
+  const [caseId, setCaseId] = useState(null);
 
   const refreshHistoryList = useCallback(async () => {
     if (!token || !user) {
@@ -107,6 +111,7 @@ export function ChatWorkspaceProvider({ children }) {
     }
     setMessages([]);
     setSelectedHistoryId(null);
+    setCaseId(null);
   }, [answerMode, chatbotProvider]);
 
   useEffect(() => {
@@ -125,12 +130,14 @@ export function ChatWorkspaceProvider({ children }) {
       setHistoryItems([]);
       setSelectedHistoryId(null);
       setHistoryError(null);
+      setCaseId(null);
     }
   }, [user, token]);
 
   const startNewChat = useCallback(() => {
     setMessages([]);
     setSelectedHistoryId(null);
+    setCaseId(null);
   }, []);
 
   const loadHistoryEntry = useCallback(
@@ -143,6 +150,7 @@ export function ChatWorkspaceProvider({ children }) {
         setSelectedHistoryId(id);
         const msgs = historyDetailToMessages(detail);
         setMessages(msgs);
+        setCaseId(msgs[1]?.caseId || null);
         const first = msgs[0];
         if (first && first.answerMode) {
           setAnswerMode(first.answerMode);
@@ -183,6 +191,8 @@ export function ChatWorkspaceProvider({ children }) {
       refreshHistoryList,
       loadHistoryEntry,
       startNewChat,
+      caseId,
+      setCaseId,
     }),
     [
       messages,
@@ -198,6 +208,7 @@ export function ChatWorkspaceProvider({ children }) {
       loadHistoryEntry,
       startNewChat,
       setChatbotProvider,
+      caseId,
     ]
   );
 
