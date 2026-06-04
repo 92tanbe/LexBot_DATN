@@ -9,6 +9,13 @@ from pydantic import BaseModel, Field, field_validator
 QueryModeType = Literal["fast", "thinking"]
 ChatModeType = Literal["tra_cuu_pdf", "phan_tich"]
 ChatbotProviderType = Literal["rag_v1", "graph_v2"]
+AnswerStyleType = Literal["auto", "balanced", "conversational", "brief", "educational", "structured"]
+CaseStatusType = Literal[
+    "collecting_facts",
+    "ready_to_answer",
+    "answered",
+    "insufficient_information",
+]
 
 
 class ChatQueryRequest(BaseModel):
@@ -59,6 +66,44 @@ class ChatProvidersResponse(BaseModel):
 
     providers: list[ChatProviderInfo]
     default_provider: ChatbotProviderType = "rag_v1"
+
+
+class MissingFactItem(BaseModel):
+    """Một dữ kiện còn thiếu trong flow pháp luật nhiều lượt."""
+
+    key: str = ""
+    label: str = ""
+    description: str = ""
+    critical: bool = False
+    domain: str | None = None
+    question: str | None = None
+
+
+class LegalChatRequest(BaseModel):
+    """Body POST /chat/legal: proxy tới BLHS Graph chatbot nhiều lượt."""
+
+    message: str = Field(..., min_length=1, max_length=8000)
+    case_id: str | None = Field(default=None, max_length=128)
+    top_k: int = Field(default=8, ge=1, le=30)
+    include_debug: bool = False
+    answer_style: AnswerStyleType = "auto"
+
+
+class LegalChatResponse(BaseModel):
+    """Response POST /chat/legal từ BLHS Graph chatbot."""
+
+    case_id: str
+    status: CaseStatusType
+    facts: dict[str, Any] = Field(default_factory=dict)
+    missing_facts: list[MissingFactItem | dict[str, Any] | str] = Field(default_factory=list)
+    clarifying_questions: list[str] = Field(default_factory=list)
+    candidate_articles: list[dict[str, Any]] = Field(default_factory=list)
+    legal_reasoning: list[dict[str, Any]] = Field(default_factory=list)
+    final_answer: str = ""
+    confidence: float = 0.0
+    citations: list[dict[str, Any]] = Field(default_factory=list)
+    warnings: list[str] = Field(default_factory=list)
+    debug: dict[str, Any] | None = None
 
 
 class ChatHistoryItem(BaseModel):

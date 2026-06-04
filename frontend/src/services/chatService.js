@@ -12,6 +12,12 @@ function formatApiError(detail) {
   }
 }
 
+function throwApiError(res, detail) {
+  const err = new Error(formatApiError(detail));
+  err.status = res.status;
+  throw err;
+}
+
 /**
  * Danh sách server chatbot khả dụng.
  * @returns {Promise<{ providers: object[], default_provider: string }>}
@@ -19,7 +25,7 @@ function formatApiError(detail) {
 export async function fetchChatProviders() {
   const res = await fetch(`${API_BASE}/chat/providers`);
   const data = await parseResponseJson(res);
-  if (!res.ok) throw new Error(formatApiError(data.detail));
+  if (!res.ok) throwApiError(res, data.detail);
   return data;
 }
 
@@ -58,7 +64,38 @@ export async function sendChatQuery(question, queryMode = "fast", opts = {}) {
     body: JSON.stringify(body),
   });
   const data = await parseResponseJson(res);
-  if (!res.ok) throw new Error(formatApiError(data.detail));
+  if (!res.ok) throwApiError(res, data.detail);
+  return data;
+}
+
+/**
+ * Gửi tin nhắn tới BLHS Graph legal chatbot nhiều lượt.
+ * @param {string} message
+ * @param {{ caseId?: string|null, topK?: number, includeDebug?: boolean, answerStyle?: "auto"|"balanced"|"conversational"|"brief"|"educational"|"structured" }} [opts]
+ * @returns {Promise<import("../schemas/chatSchemas.js").LegalChatResponse>}
+ */
+export async function sendLegalChatMessage(message, opts = {}) {
+  const token = localStorage.getItem("lexbot_token");
+  const headers = { "Content-Type": "application/json" };
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+
+  const body = {
+    message,
+    case_id: opts.caseId || null,
+    top_k: Number.isFinite(opts.topK) ? opts.topK : 8,
+    include_debug: opts.includeDebug === true,
+    answer_style: opts.answerStyle || "auto",
+  };
+
+  const res = await fetch(`${API_BASE}/chat/legal`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+  });
+  const data = await parseResponseJson(res);
+  if (!res.ok) throwApiError(res, data.detail);
   return data;
 }
 
@@ -113,7 +150,7 @@ export async function fetchChatHistory(params = {}) {
     headers: { Authorization: `Bearer ${token}` },
   });
   const data = await parseResponseJson(res);
-  if (!res.ok) throw new Error(formatApiError(data.detail));
+  if (!res.ok) throwApiError(res, data.detail);
   return data;
 }
 
@@ -130,6 +167,6 @@ export async function fetchChatHistoryById(chatId) {
     headers: { Authorization: `Bearer ${token}` },
   });
   const data = await parseResponseJson(res);
-  if (!res.ok) throw new Error(formatApiError(data.detail));
+  if (!res.ok) throwApiError(res, data.detail);
   return data;
 }

@@ -22,6 +22,24 @@ for RAG v1 screens and history compatibility.
 For production, configure the backend CORS allowlist to include the deployed
 frontend origin.
 
+Production deployment needs these env vars:
+
+Frontend (Vercel):
+
+```env
+VITE_API_BASE_URL=https://<lexbot-api-production-host>
+```
+
+Backend (FastAPI Cloud):
+
+```env
+CHATBOT_GRAPH_V2_URL=https://<blhs-graph-v2-production-host>
+CORS_ORIGINS=https://lex-bot-datn.vercel.app
+```
+
+The frontend should call the LexBot backend, not the BLHS Graph service
+directly. LexBot backend exposes `/chat/legal` and proxies to
+`${CHATBOT_GRAPH_V2_URL}/chat/legal`.
 ## Development
 
 ```bash

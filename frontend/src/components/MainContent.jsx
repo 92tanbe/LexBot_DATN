@@ -42,12 +42,17 @@ function getBotBadgeLabel(msg) {
 
 function getLegalStatusText(status) {
   const labels = {
-    collecting_facts: 'Chưa phải kết luận cuối cùng. Backend đang cần thêm dữ kiện để phân tích chắc hơn.',
+    collecting_facts: 'Chưa đủ dữ kiện để kết luận. Vui lòng bổ sung các thông tin bên dưới.',
     ready_to_answer: 'Câu trả lời pháp lý chính dựa trên dữ kiện đã cung cấp.',
     answered: 'Câu trả lời pháp lý chính dựa trên dữ kiện đã cung cấp.',
     insufficient_information: 'Backend chưa đủ dữ kiện để kết luận; nội dung dưới đây chỉ là phân tích sơ bộ.',
   };
   return labels[status] || '';
+}
+
+function shouldRenderFinalAnswer(msg) {
+  if (msg.caseStatus === 'collecting_facts') return false;
+  return Boolean(String(msg.content || '').trim());
 }
 
 function formatRoleLabel(role) {
@@ -281,7 +286,9 @@ function MainContent() {
                           {msg.caseId ? <span> Mã vụ việc: {msg.caseId}</span> : null}
                         </div>
                       )}
-                      <BotAnswerContent text={msg.content} />
+                      {shouldRenderFinalAnswer(msg) && (
+                        <BotAnswerContent text={msg.content} />
+                      )}
                     </div>
 
                     {getPeopleFromMessage(msg).length > 0 && (

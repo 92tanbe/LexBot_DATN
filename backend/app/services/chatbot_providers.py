@@ -1,7 +1,7 @@
 """Adapter gọi nhiều microservice chatbot — mỗi provider có endpoint và schema riêng.
 
 - rag_v1: service DATN gốc — POST /rag/query (question, query_mode, chat_mode)
-- graph_v2: BLHS Graph Chatbot v2 — POST /search hoặc /analyze-scenario (scenario/query)
+- graph_v2: BLHS Graph Chatbot v2 — POST /chat/legal, /search hoặc /analyze-scenario
 """
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ from urllib.parse import urlparse
 
 import httpx
 
-from app.models.chat import ChatQueryRequest
+from app.models.chat import ChatQueryRequest, LegalChatRequest
 
 logger = logging.getLogger(__name__)
 
@@ -171,6 +171,71 @@ def _normalize_graph_v2_analyze(data: dict[str, Any], question: str) -> dict[str
     }
 
 
+def _to_plain_dict(item: Any) -> dict[str, Any] | None:
+    if hasattr(item, "model_dump"):
+        return item.model_dump()
+    if isinstance(item, dict):
+        return item
+    return None
+
+
+def _normalize_dict_list(raw: Any) -> list[dict[str, Any]]:
+    items: list[dict[str, Any]] = []
+    for item in raw or []:
+        plain = _to_plain_dict(item)
+        if plain is not None:
+            items.append(plain)
+    return items
+
+
+def _normalize_missing_facts(raw: Any) -> list[Any]:
+    items: list[Any] = []
+    for item in raw or []:
+        plain = _to_plain_dict(item)
+        items.append(plain if plain is not None else item)
+    return items
+
+
+def _normalize_graph_v2_legal_chat(data: dict[str, Any], message: str) -> dict[str, Any]:
+    facts = data.get("facts")
+    if hasattr(facts, "model_dump"):
+        facts = facts.model_dump()
+    elif not isinstance(facts, dict):
+        facts = {}
+
+    status = data.get("status") or "insufficient_information"
+    if status not in {
+        "collecting_facts",
+        "ready_to_answer",
+        "answered",
+        "insufficient_information",
+    }:
+        status = "insufficient_information"
+
+    try:
+        confidence = float(data.get("confidence") or 0.0)
+    except (TypeError, ValueError):
+        confidence = 0.0
+
+    return {
+        "question": message,
+        "case_id": str(data.get("case_id") or ""),
+        "status": status,
+        "facts": facts,
+        "missing_facts": _normalize_missing_facts(data.get("missing_facts")),
+        "clarifying_questions": list(data.get("clarifying_questions") or []),
+        "candidate_articles": _normalize_dict_list(data.get("candidate_articles")),
+        "legal_reasoning": _normalize_dict_list(data.get("legal_reasoning")),
+        "final_answer": str(data.get("final_answer") or ""),
+        "confidence": confidence,
+        "citations": _normalize_citations(data.get("citations")),
+        "warnings": list(data.get("warnings") or []),
+        "debug": data.get("debug") if isinstance(data.get("debug"), dict) else None,
+        "chatbot_provider": "graph_v2",
+        "graph_mode": "legal_chat",
+    }
+
+
 class ChatbotProviderRegistry:
     """Đăng ký và route request tới đúng microservice chatbot."""
 
@@ -239,6 +304,19 @@ class ChatbotProviderRegistry:
         if provider_id == "graph_v2":
             return await self._forward_graph_v2(request)
         return await self._forward_rag_v1(request)
+
+    async def forward_legal_chat(self, request: LegalChatRequest) -> dict[str, Any]:
+        url = f"{self._graph_v2_base}/chat/legal"
+        payload = {
+            "message": request.message,
+            "case_id": request.case_id,
+            "top_k": request.top_k,
+            "include_debug": request.include_debug,
+            "answer_style": request.answer_style,
+        }
+        logger.info("chatbot graph_v2: POST %s (legal chat)", url)
+        data = await self._post_json(url, payload)
+        return _normalize_graph_v2_legal_chat(data, request.message)
 
     async def _forward_rag_v1(self, request: ChatQueryRequest) -> dict[str, Any]:
         payload: dict[str, Any] = {

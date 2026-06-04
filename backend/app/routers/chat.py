@@ -17,6 +17,8 @@ from app.models.chat import (
     ChatProviderInfo,
     ChatProvidersResponse,
     ChatQueryRequest,
+    LegalChatRequest,
+    LegalChatResponse,
 )
 from app.services.chatbot_providers import registry
 
@@ -196,6 +198,48 @@ async def chat_query(
     except httpx.RequestError as exc:
         info = registry.get_provider(provider)
         logger.warning("chat/query: cannot reach provider=%s error=%s", provider, exc)
+        raise HTTPException(
+            status_code=503,
+            detail=f"Không kết nối được {info.name} tại {info.base_url}: {exc!s}.",
+        ) from exc
+
+
+@router.post("/legal", response_model=LegalChatResponse)
+async def legal_chat(
+    request: LegalChatRequest,
+    background_tasks: BackgroundTasks,
+    token: str = Depends(oauth2_scheme),
+):
+    """
+    Proxy tới BLHS Graph v2 /chat/legal để hỗ trợ hội thoại pháp luật nhiều lượt.
+    """
+    user_id = "guest"
+    if token:
+        try:
+            payload = decode_token(token)
+            user_id = payload.get("sub", "guest")
+        except Exception:
+            pass
+
+    try:
+        response_data = await registry.forward_legal_chat(request)
+        background_tasks.add_task(
+            save_chat_to_db,
+            user_id,
+            request.message,
+            response_data,
+            query_mode="thinking",
+            chat_mode="phan_tich",
+            chatbot_provider="graph_v2",
+            conversation_id=response_data.get("case_id") or request.case_id,
+        )
+        return response_data
+    except httpx.HTTPStatusError as exc:
+        status_code = exc.response.status_code if exc.response is not None else 502
+        raise HTTPException(status_code=status_code, detail=str(exc)) from exc
+    except httpx.RequestError as exc:
+        info = registry.get_provider("graph_v2")
+        logger.warning("chat/legal: cannot reach provider=%s error=%s", info.id, exc)
         raise HTTPException(
             status_code=503,
             detail=f"Không kết nối được {info.name} tại {info.base_url}: {exc!s}.",

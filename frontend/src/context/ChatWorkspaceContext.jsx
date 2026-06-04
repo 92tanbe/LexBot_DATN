@@ -71,7 +71,7 @@ function historyDetailToMessages(detail) {
 }
 
 export function ChatWorkspaceProvider({ children }) {
-  const { user, token } = useAuth();
+  const { user, token, logout } = useAuth();
   const [messages, setMessages] = useState([]);
   const [answerMode, setAnswerMode] = useState("fast");
   const [chatbotProvider, setChatbotProviderState] = useState(loadStoredChatbotProvider);
@@ -94,12 +94,18 @@ export function ChatWorkspaceProvider({ children }) {
       const data = await fetchChatHistory({ skip: 0, limit: 50 });
       setHistoryItems(Array.isArray(data.items) ? data.items : []);
     } catch (e) {
+      if (e?.status === 401) {
+        logout();
+        setHistoryError(null);
+        setHistoryItems([]);
+        return;
+      }
       setHistoryError(e instanceof Error ? e.message : "Không tải được lịch sử");
       setHistoryItems([]);
     } finally {
       setHistoryLoading(false);
     }
-  }, [token, user]);
+  }, [token, user, logout]);
 
   const setChatbotProvider = useCallback((provider) => {
     const next = provider === "graph_v2" ? "graph_v2" : "rag_v1";
@@ -164,12 +170,19 @@ export function ChatWorkspaceProvider({ children }) {
           );
         }
       } catch (e) {
+        if (e?.status === 401) {
+          logout();
+          setHistoryError(null);
+          setHistoryItems([]);
+          setSelectedHistoryId(null);
+          return;
+        }
         setHistoryError(e instanceof Error ? e.message : "Không mở được lịch sử");
       } finally {
         setHistoryOpening(false);
       }
     },
-    [token]
+    [token, logout]
   );
 
   const value = useMemo(
