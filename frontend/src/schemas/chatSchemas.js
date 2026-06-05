@@ -16,6 +16,10 @@
  */
 
 /**
+ * @typedef {"auto"|"fast"|"thinking"|"agentic"} AgenticMode
+ */
+
+/**
  * @typedef {"collecting_facts"|"ready_to_answer"|"answered"|"insufficient_information"} CaseStatus
  */
 
@@ -38,6 +42,7 @@
  *   top_k?: number,
  *   include_debug?: boolean,
  *   answer_style?: "auto"|"balanced"|"conversational"|"brief"|"educational"|"structured",
+ *   mode?: AgenticMode,
  * }} LegalChatRequest
  */
 
@@ -56,6 +61,9 @@
  *   citations: unknown[],
  *   warnings: string[],
  *   debug?: Record<string, unknown>|null,
+ *   possible_penalty_frames?: unknown[],
+ *   chatbot_provider?: ChatbotProvider,
+ *   graph_mode?: string,
  * }} LegalChatResponse
  */
 

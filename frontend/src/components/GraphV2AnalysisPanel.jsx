@@ -5,8 +5,39 @@ function formatClassificationLabel(classification) {
     crime_candidate: "Tội danh ứng viên",
     supporting_rule: "Điều luật hỗ trợ",
     general_rule: "Quy tắc chung",
+    matched: "Đã khớp",
   };
   return labels[classification] || classification || "Phân tích pháp lý";
+}
+
+function getReasoningArticle(item) {
+  return (
+    item.article_code ||
+    item.article ||
+    item.matched_article ||
+    item.rule_id ||
+    ""
+  );
+}
+
+function getReasoningTitle(item) {
+  return (
+    item.title ||
+    item.crime_name ||
+    item.matched_crime ||
+    item.matched_condition ||
+    ""
+  );
+}
+
+function getReasoningBody(item) {
+  return (
+    item.why_relevant ||
+    item.reason ||
+    item.reasoning ||
+    item.matched_penalty_frame ||
+    ""
+  );
 }
 
 function formatExhibitStatus(status) {
@@ -113,18 +144,29 @@ function GraphV2AnalysisPanel({ message }) {
               <article key={`reason-${idx}`} className="graph-reasoning-card">
                 <div className="graph-reasoning-header">
                   <span className="graph-reasoning-tag">
-                    {formatClassificationLabel(item.classification)}
+                    {formatClassificationLabel(item.classification || item.status)}
                   </span>
-                  <span className="graph-reasoning-article">
-                    Điều {item.article_code}
-                    {item.title ? ` · ${item.title}` : ""}
-                  </span>
+                  {(getReasoningArticle(item) || getReasoningTitle(item)) && (
+                    <span className="graph-reasoning-article">
+                      {getReasoningArticle(item)
+                        ? `Điều ${getReasoningArticle(item)}`
+                        : "Căn cứ pháp lý"}
+                      {getReasoningTitle(item) ? ` · ${getReasoningTitle(item)}` : ""}
+                    </span>
+                  )}
                 </div>
                 {item.crime_name && (
                   <div className="graph-reasoning-crime">{item.crime_name}</div>
                 )}
-                {item.why_relevant && (
-                  <div className="graph-reasoning-why">{item.why_relevant}</div>
+                {getReasoningBody(item) && (
+                  <div className="graph-reasoning-why">{getReasoningBody(item)}</div>
+                )}
+                {Array.isArray(item.reasoning_steps) && item.reasoning_steps.length > 0 && (
+                  <ul className="graph-reasoning-missing">
+                    {item.reasoning_steps.map((step, stepIdx) => (
+                      <li key={`reason-step-${stepIdx}`}>{step}</li>
+                    ))}
+                  </ul>
                 )}
                 {Array.isArray(item.missing_elements) && item.missing_elements.length > 0 && (
                   <ul className="graph-reasoning-missing">

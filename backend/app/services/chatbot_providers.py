@@ -1,7 +1,7 @@
 """Adapter gọi nhiều microservice chatbot — mỗi provider có endpoint và schema riêng.
 
 - rag_v1: service DATN gốc — POST /rag/query (question, query_mode, chat_mode)
-- graph_v2: BLHS Graph Chatbot v2 — POST /chat/legal, /search hoặc /analyze-scenario
+- graph_v2: BLHS Agentic Graph RAG — POST /api/agentic-rag/query
 """
 from __future__ import annotations
 
@@ -21,6 +21,26 @@ ChatbotProviderId = Literal["rag_v1", "graph_v2"]
 
 DEFAULT_RAG_V1_URL = "http://127.0.0.1:8001"
 DEFAULT_GRAPH_V2_URL = "https://lexbot-production-bb10.up.railway.app"
+
+AGENTIC_STATUS_MAP = {
+    "need_more_info": "collecting_facts",
+    "answered": "answered",
+    "candidate": "answered",
+    "not_found": "insufficient_information",
+    "error": "insufficient_information",
+}
+
+AGENTIC_CONFIDENCE_MAP = {
+    "high": 0.85,
+    "medium": 0.65,
+    "low": 0.35,
+}
+
+MISSING_FIELD_DESCRIPTIONS = {
+    "act": "Thiếu hành vi cụ thể",
+    "substance": "Thiếu loại chất/tang vật cụ thể",
+    "quantity": "Thiếu khối lượng hoặc số lượng cụ thể",
+}
 
 
 def _uri_host_hint(raw: str) -> str:
@@ -96,9 +116,17 @@ def _float_confidence_to_label(value: Any) -> str:
     return "low"
 
 
-def _normalize_citations(raw: list[Any] | None) -> list[dict[str, Any]]:
+def _as_list(raw: Any) -> list[Any]:
+    if raw is None:
+        return []
+    if isinstance(raw, list):
+        return raw
+    return [raw]
+
+
+def _normalize_citations(raw: Any) -> list[dict[str, Any]]:
     items: list[dict[str, Any]] = []
-    for item in raw or []:
+    for item in _as_list(raw):
         if not isinstance(item, dict):
             continue
         article = item.get("article") or item.get("article_code")
@@ -115,6 +143,120 @@ def _normalize_citations(raw: list[Any] | None) -> list[dict[str, Any]]:
             entry["snippet"] = item["snippet"]
         items.append(entry)
     return items
+
+
+def _agentic_confidence_to_float(value: Any) -> float:
+    if isinstance(value, str):
+        return AGENTIC_CONFIDENCE_MAP.get(value.lower(), 0.0)
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return 0.0
+
+
+def _normalize_agentic_missing_fields(raw: Any) -> list[dict[str, Any]]:
+    items: list[dict[str, Any]] = []
+    for item in _as_list(raw):
+        if isinstance(item, dict):
+            key = str(item.get("key") or item.get("field") or item.get("name") or "")
+            description = str(
+                item.get("description")
+                or item.get("question")
+                or MISSING_FIELD_DESCRIPTIONS.get(key, "Thiếu dữ kiện cần thiết")
+            )
+            items.append(
+                {
+                    "key": key,
+                    "label": str(item.get("label") or "Dữ kiện còn thiếu"),
+                    "description": description,
+                    "critical": bool(item.get("critical", True)),
+                    "domain": item.get("domain") or "drug_crime",
+                }
+            )
+            continue
+        key = str(item)
+        items.append(
+            {
+                "key": key,
+                "label": "Dữ kiện còn thiếu",
+                "description": MISSING_FIELD_DESCRIPTIONS.get(
+                    key,
+                    f"Thiếu dữ kiện: {key}" if key else "Thiếu dữ kiện cần thiết",
+                ),
+                "critical": True,
+                "domain": "drug_crime",
+            }
+        )
+    return items
+
+
+def _normalize_agentic_reasoning(raw: Any) -> list[dict[str, Any]]:
+    if raw is None:
+        return []
+    if isinstance(raw, list):
+        return _normalize_dict_list(raw)
+    if isinstance(raw, dict):
+        return [raw]
+    return [{"reasoning": str(raw)}]
+
+
+def _normalize_candidate_frames(raw: Any) -> list[dict[str, Any]]:
+    items: list[dict[str, Any]] = []
+    for item in _as_list(raw):
+        if isinstance(item, dict):
+            plain = dict(item)
+            if "article_code" not in plain and plain.get("article") is not None:
+                plain["article_code"] = str(plain["article"])
+            if "title" not in plain:
+                plain["title"] = plain.get("crime_name") or plain.get("matched_crime") or ""
+            items.append(plain)
+        else:
+            items.append({"title": str(item)})
+    return items
+
+
+def _normalize_graph_v2_agentic(data: dict[str, Any], message: str) -> dict[str, Any]:
+    facts = data.get("facts")
+    if hasattr(facts, "model_dump"):
+        facts = facts.model_dump()
+    elif not isinstance(facts, dict):
+        facts = {}
+
+    agentic_status = str(data.get("status") or "error")
+    status = AGENTIC_STATUS_MAP.get(agentic_status, "insufficient_information")
+    answer = str(data.get("answer") or data.get("final_answer") or "")
+    candidate_frames = _normalize_candidate_frames(data.get("candidate_frames"))
+
+    missing_facts = _normalize_agentic_missing_fields(
+        data.get("missing_fields") or data.get("missing_facts")
+    )
+    clarifying_questions = list(data.get("clarifying_questions") or [])
+    if status == "collecting_facts" and answer:
+        clarifying_questions = clarifying_questions or [answer]
+
+    debug = data.get("debug") if isinstance(data.get("debug"), dict) else {}
+    if data.get("agent_trace") is not None:
+        debug = dict(debug)
+        debug["agent_trace"] = data.get("agent_trace")
+
+    return {
+        "question": message,
+        "case_id": str(data.get("conversation_id") or data.get("case_id") or ""),
+        "status": status,
+        "facts": facts,
+        "missing_facts": missing_facts,
+        "clarifying_questions": clarifying_questions,
+        "candidate_articles": candidate_frames,
+        "legal_reasoning": _normalize_agentic_reasoning(data.get("reasoning")),
+        "final_answer": answer,
+        "confidence": _agentic_confidence_to_float(data.get("confidence")),
+        "citations": _normalize_citations(data.get("citations")),
+        "warnings": list(data.get("warnings") or []),
+        "debug": debug or None,
+        "possible_penalty_frames": candidate_frames,
+        "chatbot_provider": "graph_v2",
+        "graph_mode": "agentic",
+    }
 
 
 def _normalize_graph_v2_search(data: dict[str, Any], question: str) -> dict[str, Any]:
@@ -267,7 +409,7 @@ class ChatbotProviderRegistry:
         rag_desc = "Pipeline RAG gốc — Neo4j Aura riêng + embedding + PDF VB hợp nhất"
         if rag_neo4j_hint:
             rag_desc += f" · DB `{rag_neo4j_db}` @ {rag_neo4j_hint}"
-        graph_desc = "Phân tích tình huống graph-first trên Railway — Neo4j Aura riêng"
+        graph_desc = "Agentic Graph RAG trên Railway — Neo4j Aura riêng"
         if graph_neo4j_hint:
             graph_desc += f" · DB `{graph_neo4j_db}` @ {graph_neo4j_hint}"
         return [
@@ -283,11 +425,11 @@ class ChatbotProviderRegistry:
             ),
             ProviderInfo(
                 id="graph_v2",
-                name="BLHS Graph v2",
+                name="BLHS Graph v2 · Agentic RAG",
                 description=graph_desc,
                 base_url=self._graph_v2_base,
                 enabled=True,
-                modes=["fast", "thinking"],
+                modes=["auto", "fast", "agentic"],
                 neo4j_uri_hint=graph_neo4j_hint,
                 neo4j_database=graph_neo4j_db,
             ),
@@ -306,17 +448,17 @@ class ChatbotProviderRegistry:
         return await self._forward_rag_v1(request)
 
     async def forward_legal_chat(self, request: LegalChatRequest) -> dict[str, Any]:
-        url = f"{self._graph_v2_base}/chat/legal"
+        url = f"{self._graph_v2_base}/api/agentic-rag/query"
         payload = {
             "message": request.message,
-            "case_id": request.case_id,
-            "top_k": request.top_k,
+            "conversation_id": request.case_id,
+            "mode": request.mode,
             "include_debug": request.include_debug,
-            "answer_style": request.answer_style,
+            "top_k": request.top_k,
         }
-        logger.info("chatbot graph_v2: POST %s (legal chat)", url)
+        logger.info("chatbot graph_v2: POST %s (agentic legal chat)", url)
         data = await self._post_json(url, payload)
-        return _normalize_graph_v2_legal_chat(data, request.message)
+        return _normalize_graph_v2_agentic(data, request.message)
 
     async def _forward_rag_v1(self, request: ChatQueryRequest) -> dict[str, Any]:
         payload: dict[str, Any] = {
@@ -339,33 +481,25 @@ class ChatbotProviderRegistry:
         return data
 
     async def _forward_graph_v2(self, request: ChatQueryRequest) -> dict[str, Any]:
-        # graph_v2 không có chat_mode PDF — map sang search hoặc analyze-scenario
-        use_analyze = (
-            request.chat_mode == "phan_tich"
-            or request.query_mode == "thinking"
-        )
+        mode = request.mode
+        if mode is None:
+            mode = (
+                "agentic"
+                if request.chat_mode == "phan_tich" or request.query_mode == "thinking"
+                else "auto"
+            )
 
-        if use_analyze:
-            url = f"{self._graph_v2_base}/analyze-scenario"
-            payload = {
-                "scenario": request.question,
-                "top_k": request.top_k,
-                "include_debug": False,
-            }
-            logger.info("chatbot graph_v2: POST %s (analyze-scenario)", url)
-            data = await self._post_json(url, payload)
-            return _normalize_graph_v2_analyze(data, request.question)
-
-        url = f"{self._graph_v2_base}/search"
+        url = f"{self._graph_v2_base}/api/agentic-rag/query"
         payload = {
-            "query": request.question,
-            "top_k": request.top_k,
-            "search_type": "hybrid",
+            "message": request.question,
+            "conversation_id": request.conversation_id,
+            "mode": mode,
             "include_debug": False,
+            "top_k": request.top_k,
         }
-        logger.info("chatbot graph_v2: POST %s (search)", url)
+        logger.info("chatbot graph_v2: POST %s mode=%s", url, mode)
         data = await self._post_json(url, payload)
-        return _normalize_graph_v2_search(data, request.question)
+        return _normalize_graph_v2_agentic(data, request.question)
 
     async def _post_json(self, url: str, payload: dict[str, Any]) -> dict[str, Any]:
         async with httpx.AsyncClient(timeout=self.timeout) as client:

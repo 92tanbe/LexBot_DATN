@@ -15,8 +15,8 @@ const GOI_Y = [
 
 function getModeChipLabel(answerMode, chatbotProvider) {
   if (chatbotProvider === 'graph_v2') {
-    if (answerMode === 'thinking') return 'Graph v2 · Phân tích tình huống';
-    return 'Graph v2 · Tra cứu hybrid';
+    if (answerMode === 'thinking') return 'Agentic · Hỏi làm rõ';
+    return 'Auto · Tra cứu/Phân tích';
   }
   if (answerMode === 'pdf') return 'VB hợp nhất · PDF';
   if (answerMode === 'thinking') return 'Neo4j · Phân tích';
@@ -30,10 +30,10 @@ function getBotBadgeLabel(msg) {
     return 'Pháp lý nhiều lượt';
   }
   if (msg.chatbotProvider === 'graph_v2') {
-    if (msg.graphMode === 'analyze' || msg.responseMode === 'thinking') {
-      return 'Graph v2 · Analyze';
+    if (msg.graphMode === 'agentic' || msg.responseMode === 'thinking') {
+      return 'Graph v2 · Agentic RAG';
     }
-    return 'Graph v2 · Search';
+    return 'Graph v2 · Agentic RAG';
   }
   if (msg.answerMode === 'pdf') return 'PDF VB';
   if (msg.responseMode === 'thinking') return 'Thinking';
@@ -144,8 +144,9 @@ function MainContent() {
         ? await sendLegalChatMessage(question, {
             caseId,
             topK: 8,
-            includeDebug: false,
+            includeDebug: answerMode === 'thinking',
             answerStyle: 'auto',
+            mode: answerMode === 'thinking' ? 'agentic' : 'auto',
           })
         : await sendChatQuery(question, modeUsed, {
             ...chatModeOpt,
@@ -177,12 +178,10 @@ function MainContent() {
           responseMode: modeUsed,
           answerMode,
           chatbotProvider: isGraphV2 ? 'graph_v2' : response.chatbot_provider || chatbotProvider,
-          graphMode: isGraphV2 ? 'legal_chat' : response.graph_mode || null,
+          graphMode: isGraphV2 ? response.graph_mode || 'agentic' : response.graph_mode || null,
         },
       ]);
-      if (!isGraphV2) {
-        void refreshHistoryList();
-      }
+      void refreshHistoryList();
     } catch (error) {
       setMessages((prev) => [
         ...prev,
@@ -472,10 +471,10 @@ function MainContent() {
             disabled={isLoading}
           >
             <span className="query-mode-btn-title">
-              {isGraphV2 ? 'Tra cứu hybrid' : 'Tra cứu nhanh'}
+              {isGraphV2 ? 'Auto' : 'Tra cứu nhanh'}
             </span>
             <span className="query-mode-btn-sub">
-              {isGraphV2 ? 'POST /chat/legal' : 'Neo4j · embedding'}
+              {isGraphV2 ? 'Tra cứu/Phân tích' : 'Neo4j · embedding'}
             </span>
           </button>
           <button
@@ -486,7 +485,7 @@ function MainContent() {
           >
             <span className="query-mode-btn-title">Phân tích</span>
             <span className="query-mode-btn-sub">
-              {isGraphV2 ? 'Hỏi làm rõ nhiều lượt' : 'Neo4j + LLM đầy đủ'}
+              {isGraphV2 ? 'Agentic · Hỏi làm rõ' : 'Neo4j + LLM đầy đủ'}
             </span>
           </button>
         </div>

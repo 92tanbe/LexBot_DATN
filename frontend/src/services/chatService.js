@@ -71,7 +71,7 @@ export async function sendChatQuery(question, queryMode = "fast", opts = {}) {
 /**
  * Gửi tin nhắn tới BLHS Graph legal chatbot nhiều lượt.
  * @param {string} message
- * @param {{ caseId?: string|null, topK?: number, includeDebug?: boolean, answerStyle?: "auto"|"balanced"|"conversational"|"brief"|"educational"|"structured" }} [opts]
+ * @param {{ caseId?: string|null, topK?: number, includeDebug?: boolean, answerStyle?: "auto"|"balanced"|"conversational"|"brief"|"educational"|"structured", mode?: "auto"|"fast"|"thinking"|"agentic" }} [opts]
  * @returns {Promise<import("../schemas/chatSchemas.js").LegalChatResponse>}
  */
 export async function sendLegalChatMessage(message, opts = {}) {
@@ -87,6 +87,7 @@ export async function sendLegalChatMessage(message, opts = {}) {
     top_k: Number.isFinite(opts.topK) ? opts.topK : 8,
     include_debug: opts.includeDebug === true,
     answer_style: opts.answerStyle || "auto",
+    mode: opts.mode || "auto",
   };
 
   const res = await fetch(`${API_BASE}/chat/legal`, {

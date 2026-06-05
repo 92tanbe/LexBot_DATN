@@ -10,6 +10,7 @@ QueryModeType = Literal["fast", "thinking"]
 ChatModeType = Literal["tra_cuu_pdf", "phan_tich"]
 ChatbotProviderType = Literal["rag_v1", "graph_v2"]
 AnswerStyleType = Literal["auto", "balanced", "conversational", "brief", "educational", "structured"]
+AgenticModeType = Literal["auto", "fast", "thinking", "agentic"]
 CaseStatusType = Literal[
     "collecting_facts",
     "ready_to_answer",
@@ -33,12 +34,16 @@ class ChatQueryRequest(BaseModel):
     )
     chatbot_provider: ChatbotProviderType = Field(
         default="rag_v1",
-        description="rag_v1 = LexBot RAG (/rag/query); graph_v2 = BLHS Graph (/analyze-scenario).",
+        description="rag_v1 = LexBot RAG (/rag/query); graph_v2 = Agentic Graph RAG.",
     )
     conversation_id: str | None = Field(
         default=None,
         max_length=128,
         description="ID phiên hội thoại do client tạo (ví dụ UUID) để nhóm các lượt chat.",
+    )
+    mode: AgenticModeType | None = Field(
+        default=None,
+        description="Mode Agentic Graph RAG khi chatbot_provider=graph_v2.",
     )
 
 
@@ -80,17 +85,18 @@ class MissingFactItem(BaseModel):
 
 
 class LegalChatRequest(BaseModel):
-    """Body POST /chat/legal: proxy tới BLHS Graph chatbot nhiều lượt."""
+    """Body POST /chat/legal: proxy tới Agentic Graph RAG nhiều lượt."""
 
     message: str = Field(..., min_length=1, max_length=8000)
     case_id: str | None = Field(default=None, max_length=128)
     top_k: int = Field(default=8, ge=1, le=30)
     include_debug: bool = False
     answer_style: AnswerStyleType = "auto"
+    mode: AgenticModeType = "auto"
 
 
 class LegalChatResponse(BaseModel):
-    """Response POST /chat/legal từ BLHS Graph chatbot."""
+    """Response POST /chat/legal đã normalize từ Agentic Graph RAG."""
 
     case_id: str
     status: CaseStatusType
@@ -104,6 +110,9 @@ class LegalChatResponse(BaseModel):
     citations: list[dict[str, Any]] = Field(default_factory=list)
     warnings: list[str] = Field(default_factory=list)
     debug: dict[str, Any] | None = None
+    possible_penalty_frames: list[dict[str, Any]] = Field(default_factory=list)
+    chatbot_provider: ChatbotProviderType = "graph_v2"
+    graph_mode: str = "agentic"
 
 
 class ChatHistoryItem(BaseModel):

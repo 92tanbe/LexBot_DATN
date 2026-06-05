@@ -33,13 +33,13 @@ VITE_API_BASE_URL=https://<lexbot-api-production-host>
 Backend (FastAPI Cloud):
 
 ```env
-CHATBOT_GRAPH_V2_URL=https://<blhs-graph-v2-production-host>
+CHATBOT_GRAPH_V2_URL=https://<graph-rag-agentic-service>.up.railway.app
 CORS_ORIGINS=https://lex-bot-datn.vercel.app
 ```
 
 The frontend should call the LexBot backend, not the BLHS Graph service
 directly. LexBot backend exposes `/chat/legal` and proxies to
-`${CHATBOT_GRAPH_V2_URL}/chat/legal`.
+`${CHATBOT_GRAPH_V2_URL}/api/agentic-rag/query`.
 ## Development
 
 ```bash

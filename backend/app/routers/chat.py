@@ -211,7 +211,7 @@ async def legal_chat(
     token: str = Depends(oauth2_scheme),
 ):
     """
-    Proxy tới BLHS Graph v2 /chat/legal để hỗ trợ hội thoại pháp luật nhiều lượt.
+    Proxy tới Agentic Graph RAG qua DATN backend để hỗ trợ hội thoại pháp luật nhiều lượt.
     """
     user_id = "guest"
     if token:

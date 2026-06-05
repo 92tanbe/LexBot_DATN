@@ -14,9 +14,9 @@ const FALLBACK_PROVIDERS = [
   },
   {
     id: "graph_v2",
-    name: "BLHS Graph v2",
-    description: "Neo4j Aura #2 — graph-first trên Railway",
-    modes: ["fast", "thinking"],
+    name: "BLHS Graph v2 · Agentic RAG",
+    description: "Agentic Graph RAG trên Railway",
+    modes: ["auto", "fast", "agentic"],
     enabled: true,
     neo4j_database: "blhsgraph",
     neo4j_uri_hint: "",
