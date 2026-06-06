@@ -185,7 +185,15 @@ function MainContent() {
     } catch (error) {
       setMessages((prev) => [
         ...prev,
-        { role: 'bot', content: `Lỗi: ${error.message}`, isError: true },
+        {
+          role: 'bot',
+          content: `Lỗi: ${error.message}`,
+          isError: true,
+          responseMode: modeUsed,
+          answerMode,
+          chatbotProvider,
+          graphMode: isGraphV2 ? 'agentic' : null,
+        },
       ]);
     } finally {
       setIsLoading(false);

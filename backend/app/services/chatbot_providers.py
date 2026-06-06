@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 ChatbotProviderId = Literal["rag_v1", "graph_v2"]
 
 DEFAULT_RAG_V1_URL = "http://127.0.0.1:8001"
-DEFAULT_GRAPH_V2_URL = "https://lexbot-production-bb10.up.railway.app"
+DEFAULT_GRAPH_V2_URL = ""
 
 AGENTIC_STATUS_MAP = {
     "need_more_info": "collecting_facts",
@@ -69,6 +69,8 @@ def _provider_neo4j_meta(provider_id: ChatbotProviderId) -> tuple[str, str]:
 def _normalize_base_url(raw: str, default: str) -> str:
     """Chuẩn hóa base URL — thêm https:// nếu thiếu scheme."""
     value = (raw or "").strip() or default
+    if not value:
+        return ""
     lowered = value.lower()
     if not lowered.startswith(("http://", "https://")):
         stub = value.lstrip("/")
@@ -398,6 +400,15 @@ class ChatbotProviderRegistry:
             os.getenv("CHATBOT_CONNECT_TIMEOUT_SECONDS", "45")
         )
 
+    def _require_graph_v2_base(self) -> str:
+        if not self._graph_v2_base:
+            raise RuntimeError(
+                "CHATBOT_GRAPH_V2_URL chưa được cấu hình trên DATN backend. "
+                "Hãy trỏ biến này tới service Agentic Graph RAG mới, ví dụ "
+                "https://<graph-rag-agentic-service>.up.railway.app."
+            )
+        return self._graph_v2_base
+
     @property
     def timeout(self) -> httpx.Timeout:
         connect_cap = min(self._connect_timeout, self._timeout)
@@ -448,7 +459,8 @@ class ChatbotProviderRegistry:
         return await self._forward_rag_v1(request)
 
     async def forward_legal_chat(self, request: LegalChatRequest) -> dict[str, Any]:
-        url = f"{self._graph_v2_base}/api/agentic-rag/query"
+        graph_base = self._require_graph_v2_base()
+        url = f"{graph_base}/api/agentic-rag/query"
         payload = {
             "message": request.message,
             "conversation_id": request.case_id,
@@ -489,7 +501,8 @@ class ChatbotProviderRegistry:
                 else "auto"
             )
 
-        url = f"{self._graph_v2_base}/api/agentic-rag/query"
+        graph_base = self._require_graph_v2_base()
+        url = f"{graph_base}/api/agentic-rag/query"
         payload = {
             "message": request.question,
             "conversation_id": request.conversation_id,
