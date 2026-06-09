@@ -5,12 +5,14 @@
 
 /* ───── Layout tổng ───── */
 .chat-layout {
-  min-height: 100vh;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 0;
   background: #060b18;
   color: #e2e8f0;
   font-family: 'Be Vietnam Pro', sans-serif;
   position: relative;
-  overflow-x: hidden;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
 }
@@ -47,6 +49,7 @@
   flex: 1;
   display: flex;
   min-height: 0;
+  overflow: hidden;
   position: relative;
   z-index: 1;
 }
@@ -195,6 +198,7 @@
 .sidebar {
   width: 290px;
   min-width: 290px;
+  min-height: 0;
   background: rgba(12,17,36,0.85);
   border-right: 1px solid rgba(99,102,241,0.14);
   display: flex;
@@ -308,6 +312,7 @@
   display: flex;
   flex-direction: column;
   padding: 4px 0;
+  min-height: 0;
 }
 
 /* Chat list */
@@ -316,6 +321,7 @@
   margin: 0;
   padding: 0 12px 14px;
   overflow-y: auto;
+  overscroll-behavior: contain;
   flex: 1;
   min-height: 0;
   scrollbar-width: thin;
@@ -503,7 +509,7 @@
   justify-content: center;
   padding: 32px 24px;
   min-height: 0;
-  overflow-y: auto;
+  overflow: hidden;
   position: relative;
   z-index: 1;
 }
@@ -1315,6 +1321,7 @@
   display: flex;
   flex-direction: column;
   min-height: 0;
+  overflow: hidden;
   position: relative;
   z-index: 1;
 }
@@ -2088,6 +2095,7 @@
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+  overscroll-behavior: contain;
   width: 100%;
   padding: 28px max(18px, calc((100% - 860px) / 2)) 18px;
   display: flex;
@@ -2257,6 +2265,7 @@
   max-height: 180px;
   resize: none;
   overflow-y: auto;
+  overscroll-behavior: contain;
   font-size: 1.08rem;
   line-height: 1.58;
   white-space: pre-wrap;
