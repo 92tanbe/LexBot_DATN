@@ -32,9 +32,36 @@ oauth2_required = OAuth2PasswordBearer(tokenUrl="auth/login", auto_error=True)
 
 def _preview_from_response(response_data: dict[str, Any]) -> str:
     text = str(response_data.get("final_answer") or "").strip()
+    if not text:
+        questions = response_data.get("clarifying_questions")
+        if isinstance(questions, list) and questions:
+            text = str(questions[0] or "").strip()
     if len(text) > 280:
         return text[:277] + "..."
     return text
+
+
+def _safe_ai_http_error_detail(exc: httpx.HTTPStatusError) -> Any:
+    status_code = exc.response.status_code if exc.response is not None else 502
+    raw_detail: Any = str(exc)
+    if exc.response is not None:
+        try:
+            body = exc.response.json()
+            raw_detail = body.get("detail", body) if isinstance(body, dict) else body
+        except Exception:
+            raw_detail = exc.response.text[:1000] if exc.response.text else str(exc)
+
+    if status_code == status.HTTP_409_CONFLICT:
+        return {
+            "message": "Phiên vụ việc đã có phiên bản mới. Hãy tải lại câu hỏi làm rõ mới nhất rồi gửi lại.",
+            "ai_detail": raw_detail,
+        }
+    if status_code == status.HTTP_422_UNPROCESSABLE_ENTITY:
+        return {
+            "message": "Dữ liệu trả lời câu hỏi làm rõ không hợp lệ.",
+            "ai_detail": raw_detail,
+        }
+    return raw_detail
 
 
 def _doc_created_at(doc: dict[str, Any]) -> datetime:
@@ -77,6 +104,13 @@ async def save_chat_to_db(
     conversation_id: str | None,
 ) -> None:
     try:
+        clarification = response_data.get("clarification")
+        if not isinstance(clarification, dict):
+            clarification = {}
+        latest_questions = clarification.get("questions")
+        if not isinstance(latest_questions, list):
+            latest_questions = []
+
         chat_document = {
             "user_id": user_id,
             "question": question,
@@ -86,6 +120,12 @@ async def save_chat_to_db(
             "chat_mode": chat_mode,
             "chatbot_provider": chatbot_provider,
             "conversation_id": conversation_id,
+            "ai_case_id": response_data.get("case_id") or conversation_id,
+            "ai_case_version": response_data.get("case_version"),
+            "question_set_id": clarification.get("question_set_id"),
+            "latest_clarification_questions": latest_questions,
+            "final_answer": response_data.get("final_answer"),
+            "status": response_data.get("status"),
         }
         await chats_collection.insert_one(chat_document)
     except Exception as e:
@@ -196,7 +236,10 @@ async def chat_query(
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=str(exc)) from exc
     except httpx.HTTPStatusError as exc:
         status_code = exc.response.status_code if exc.response is not None else 502
-        raise HTTPException(status_code=status_code, detail=str(exc)) from exc
+        raise HTTPException(
+            status_code=status_code,
+            detail=_safe_ai_http_error_detail(exc),
+        ) from exc
     except httpx.RequestError as exc:
         info = registry.get_provider(provider)
         logger.warning("chat/query: cannot reach provider=%s error=%s", provider, exc)
@@ -228,7 +271,7 @@ async def legal_chat(
         background_tasks.add_task(
             save_chat_to_db,
             user_id,
-            request.message,
+            request.message or "Bổ sung dữ kiện",
             response_data,
             query_mode="thinking",
             chat_mode="phan_tich",
@@ -240,7 +283,10 @@ async def legal_chat(
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=str(exc)) from exc
     except httpx.HTTPStatusError as exc:
         status_code = exc.response.status_code if exc.response is not None else 502
-        raise HTTPException(status_code=status_code, detail=str(exc)) from exc
+        raise HTTPException(
+            status_code=status_code,
+            detail=_safe_ai_http_error_detail(exc),
+        ) from exc
     except httpx.RequestError as exc:
         info = registry.get_provider("graph_v2")
         logger.warning("chat/legal: cannot reach provider=%s error=%s", info.id, exc)

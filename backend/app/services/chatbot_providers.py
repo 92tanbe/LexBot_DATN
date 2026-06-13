@@ -1,7 +1,7 @@
 """Adapter gọi nhiều microservice chatbot — mỗi provider có endpoint và schema riêng.
 
 - rag_v1: service DATN gốc — POST /rag/query (question, query_mode, chat_mode)
-- graph_v2: BLHS Agentic Graph RAG — POST /api/agentic-rag/query
+- graph_v2: BLHS Graph RAG — POST /chat/legal cho hội thoại pháp luật nhiều lượt
 """
 from __future__ import annotations
 
@@ -347,34 +347,57 @@ def _normalize_graph_v2_legal_chat(data: dict[str, Any], message: str) -> dict[s
     elif not isinstance(facts, dict):
         facts = {}
 
-    status = data.get("status") or "insufficient_information"
+    raw_status = str(data.get("status") or "")
+    status = raw_status or "insufficient_information"
     if status not in {
         "collecting_facts",
         "ready_to_answer",
         "answered",
         "insufficient_information",
     }:
-        status = "insufficient_information"
+        status = AGENTIC_STATUS_MAP.get(status, "insufficient_information")
 
     try:
         confidence = float(data.get("confidence") or 0.0)
     except (TypeError, ValueError):
         confidence = 0.0
 
+    try:
+        case_version = int(data.get("case_version") or 0)
+    except (TypeError, ValueError):
+        case_version = 0
+
+    clarification = data.get("clarification")
+    if not isinstance(clarification, dict):
+        clarification = None
+
+    candidate_articles = _normalize_dict_list(data.get("candidate_articles"))
+    if not candidate_articles:
+        candidate_articles = _normalize_candidate_frames(data.get("candidate_frames"))
+
     return {
         "question": message,
-        "case_id": str(data.get("case_id") or ""),
+        "case_id": str(data.get("case_id") or data.get("conversation_id") or ""),
+        "case_version": case_version,
         "status": status,
         "facts": facts,
+        "provisional_findings": _normalize_dict_list(data.get("provisional_findings")),
         "missing_facts": _normalize_missing_facts(data.get("missing_facts")),
+        "clarification": clarification,
         "clarifying_questions": list(data.get("clarifying_questions") or []),
-        "candidate_articles": _normalize_dict_list(data.get("candidate_articles")),
-        "legal_reasoning": _normalize_dict_list(data.get("legal_reasoning")),
-        "final_answer": str(data.get("final_answer") or ""),
+        "candidate_articles": candidate_articles,
+        "legal_reasoning": _normalize_agentic_reasoning(
+            data.get("legal_reasoning") or data.get("reasoning")
+        ),
+        "final_answer": str(data.get("final_answer") or data.get("answer") or ""),
         "confidence": confidence,
         "citations": _normalize_citations(data.get("citations")),
         "warnings": list(data.get("warnings") or []),
         "debug": data.get("debug") if isinstance(data.get("debug"), dict) else None,
+        "possible_penalty_frames": _normalize_dict_list(
+            data.get("possible_penalty_frames")
+        )
+        or _normalize_candidate_frames(data.get("candidate_frames")),
         "chatbot_provider": "graph_v2",
         "graph_mode": "legal_chat",
     }
@@ -460,17 +483,22 @@ class ChatbotProviderRegistry:
 
     async def forward_legal_chat(self, request: LegalChatRequest) -> dict[str, Any]:
         graph_base = self._require_graph_v2_base()
-        url = f"{graph_base}/api/agentic-rag/query"
+        url = f"{graph_base}/chat/legal"
         payload = {
             "message": request.message,
-            "conversation_id": request.case_id,
-            "mode": request.mode,
+            "case_id": request.case_id,
+            "case_version": request.case_version,
+            "answers": [
+                answer.model_dump(mode="json", exclude_none=False)
+                for answer in request.answers
+            ],
             "include_debug": request.include_debug,
             "top_k": request.top_k,
+            "answer_style": request.answer_style,
         }
-        logger.info("chatbot graph_v2: POST %s (agentic legal chat)", url)
+        logger.info("chatbot graph_v2: POST %s (structured legal chat)", url)
         data = await self._post_json(url, payload)
-        return _normalize_graph_v2_agentic(data, request.message)
+        return _normalize_graph_v2_legal_chat(data, request.message)
 
     async def _forward_rag_v1(self, request: ChatQueryRequest) -> dict[str, Any]:
         payload: dict[str, Any] = {
@@ -493,26 +521,20 @@ class ChatbotProviderRegistry:
         return data
 
     async def _forward_graph_v2(self, request: ChatQueryRequest) -> dict[str, Any]:
-        mode = request.mode
-        if mode is None:
-            mode = (
-                "agentic"
-                if request.chat_mode == "phan_tich" or request.query_mode == "thinking"
-                else "auto"
-            )
-
         graph_base = self._require_graph_v2_base()
-        url = f"{graph_base}/api/agentic-rag/query"
+        url = f"{graph_base}/chat/legal"
         payload = {
             "message": request.question,
-            "conversation_id": request.conversation_id,
-            "mode": mode,
+            "case_id": request.conversation_id,
+            "case_version": None,
+            "answers": [],
             "include_debug": False,
             "top_k": request.top_k,
+            "answer_style": "auto",
         }
-        logger.info("chatbot graph_v2: POST %s mode=%s", url, mode)
+        logger.info("chatbot graph_v2: POST %s (legacy /chat/query bridge)", url)
         data = await self._post_json(url, payload)
-        return _normalize_graph_v2_agentic(data, request.question)
+        return _normalize_graph_v2_legal_chat(data, request.question)
 
     async def _post_json(self, url: str, payload: dict[str, Any]) -> dict[str, Any]:
         async with httpx.AsyncClient(timeout=self.timeout) as client:

@@ -24,6 +24,10 @@
  */
 
 /**
+ * @typedef {"single_choice"|"multi_choice"|"number"|"text"|"date"|"boolean"|"actor_matrix"} ClarificationInputType
+ */
+
+/**
  * @typedef {{
  *   key: string,
  *   label: string,
@@ -35,10 +39,62 @@
  */
 
 /**
+ * @typedef {{
+ *   id: string,
+ *   label: string,
+ *   requires_value?: boolean,
+ *   value_type?: "text"|"number"|"date"|null,
+ *   placeholder?: string|null,
+ * }} ClarificationOption
+ */
+
+/**
+ * @typedef {{
+ *   id: string,
+ *   fact_path?: string,
+ *   group?: string,
+ *   text: string,
+ *   input_type: ClarificationInputType,
+ *   options?: ClarificationOption[],
+ *   required?: boolean,
+ *   critical?: boolean,
+ *   allow_free_text?: boolean,
+ *   unit?: string|null,
+ *   min_value?: number|null,
+ *   max_value?: number|null,
+ *   reason?: string,
+ *   affected_articles?: string[],
+ *   actor_id?: string|null,
+ *   depends_on_question_id?: string|null,
+ *   depends_on_option_ids?: string[],
+ * }} ClarificationQuestion
+ */
+
+/**
+ * @typedef {{
+ *   type: "form",
+ *   question_set_id: string,
+ *   can_submit_partial: boolean,
+ *   questions: ClarificationQuestion[],
+ * }} ClarificationForm
+ */
+
+/**
+ * @typedef {{
+ *   question_id: string,
+ *   selected_option_ids: string[],
+ *   value?: unknown,
+ *   free_text?: string|null,
+ * }} ClarificationAnswer
+ */
+
+/**
  * Body POST /chat/legal.
  * @typedef {{
  *   message: string,
  *   case_id?: string|null,
+ *   case_version?: number|null,
+ *   answers?: ClarificationAnswer[],
  *   top_k?: number,
  *   include_debug?: boolean,
  *   answer_style?: "auto"|"balanced"|"conversational"|"brief"|"educational"|"structured",
@@ -50,9 +106,12 @@
  * Response POST /chat/legal.
  * @typedef {{
  *   case_id: string,
+ *   case_version: number,
  *   status: CaseStatus,
  *   facts: Record<string, unknown>,
+ *   provisional_findings: unknown[],
  *   missing_facts: MissingFactItem[],
+ *   clarification?: ClarificationForm|null,
  *   clarifying_questions: string[],
  *   candidate_articles: unknown[],
  *   legal_reasoning: unknown[],

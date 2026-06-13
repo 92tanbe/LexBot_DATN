@@ -73,11 +73,19 @@ function formatMissingFact(fact) {
  */
 function GraphV2AnalysisPanel({ message }) {
   const exhibits = Array.isArray(message.exhibits) ? message.exhibits : [];
-  const clarifyingQuestions = Array.isArray(message.clarifyingQuestions)
+  const hasStructuredClarification =
+    message.clarification &&
+    typeof message.clarification === "object" &&
+    Array.isArray(message.clarification.questions) &&
+    message.clarification.questions.length > 0;
+  const clarifyingQuestions = !hasStructuredClarification && Array.isArray(message.clarifyingQuestions)
     ? message.clarifyingQuestions
     : [];
   const reasoning = Array.isArray(message.legalReasoning) ? message.legalReasoning : [];
   const missing = Array.isArray(message.missingFacts) ? message.missingFacts : [];
+  const provisionalFindings = Array.isArray(message.provisionalFindings)
+    ? message.provisionalFindings
+    : [];
   const candidateArticles = Array.isArray(message.candidateArticles)
     ? message.candidateArticles
     : [];
@@ -94,6 +102,7 @@ function GraphV2AnalysisPanel({ message }) {
     clarifyingQuestions.length === 0 &&
     reasoning.length === 0 &&
     missing.length === 0 &&
+    provisionalFindings.length === 0 &&
     candidateArticles.length === 0 &&
     citations.length === 0 &&
     warnings.length === 0
@@ -194,6 +203,33 @@ function GraphV2AnalysisPanel({ message }) {
               <li key={`mf-${idx}`}>{formatMissingFact(fact)}</li>
             ))}
           </ul>
+        </div>
+      )}
+
+      {provisionalFindings.length > 0 && (
+        <div className="message-section">
+          <div className="message-section-title">Nhận định tạm thời</div>
+          <div className="graph-reasoning-list">
+            {provisionalFindings.map((finding, idx) => (
+              <article key={`finding-${idx}`} className="graph-reasoning-card">
+                <div className="graph-reasoning-header">
+                  <span className="graph-reasoning-tag">
+                    {formatClassificationLabel(finding.status)}
+                  </span>
+                  {typeof finding.confidence === "number" && (
+                    <span className="graph-reasoning-article">
+                      {Math.round(finding.confidence * 100)}%
+                    </span>
+                  )}
+                </div>
+                {finding.text && (
+                  <div className="graph-reasoning-why">
+                    <BotAnswerContent variant="inline" text={finding.text} />
+                  </div>
+                )}
+              </article>
+            ))}
+          </div>
         </div>
       )}
 

@@ -1,10 +1,14 @@
 import { API_BASE } from "./apiBase.js";
 import { parseResponseJson } from "./parseResponseJson.js";
+import { sanitizeLegalChatAnswers } from "../utils/clarificationAnswers.js";
 
 /** @param {unknown} detail */
 function formatApiError(detail) {
   if (detail == null) return "Có lỗi xảy ra khi gọi API";
   if (typeof detail === "string") return detail;
+  if (detail && typeof detail === "object" && typeof detail.message === "string") {
+    return detail.message;
+  }
   try {
     return JSON.stringify(detail);
   } catch {
@@ -15,6 +19,7 @@ function formatApiError(detail) {
 function throwApiError(res, detail) {
   const err = new Error(formatApiError(detail));
   err.status = res.status;
+  err.detail = detail;
   throw err;
 }
 
@@ -71,7 +76,7 @@ export async function sendChatQuery(question, queryMode = "fast", opts = {}) {
 /**
  * Gửi tin nhắn tới BLHS Graph legal chatbot nhiều lượt.
  * @param {string} message
- * @param {{ caseId?: string|null, topK?: number, includeDebug?: boolean, answerStyle?: "auto"|"balanced"|"conversational"|"brief"|"educational"|"structured", mode?: "auto"|"fast"|"thinking"|"agentic" }} [opts]
+ * @param {{ caseId?: string|null, caseVersion?: number|null, answers?: object[], topK?: number, includeDebug?: boolean, answerStyle?: "auto"|"balanced"|"conversational"|"brief"|"educational"|"structured", mode?: "auto"|"fast"|"thinking"|"agentic" }} [opts]
  * @returns {Promise<import("../schemas/chatSchemas.js").LegalChatResponse>}
  */
 export async function sendLegalChatMessage(message, opts = {}) {
@@ -84,6 +89,8 @@ export async function sendLegalChatMessage(message, opts = {}) {
   const body = {
     message,
     case_id: opts.caseId || null,
+    case_version: Number.isInteger(opts.caseVersion) ? opts.caseVersion : null,
+    answers: sanitizeLegalChatAnswers(opts.answers),
     top_k: Number.isFinite(opts.topK) ? opts.topK : 8,
     include_debug: opts.includeDebug === true,
     answer_style: opts.answerStyle || "auto",

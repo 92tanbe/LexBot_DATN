@@ -4,13 +4,22 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Any, Literal
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 QueryModeType = Literal["fast", "thinking"]
 ChatModeType = Literal["tra_cuu_pdf", "phan_tich"]
 ChatbotProviderType = Literal["rag_v1", "graph_v2"]
 AnswerStyleType = Literal["auto", "balanced", "conversational", "brief", "educational", "structured"]
 AgenticModeType = Literal["auto", "fast", "thinking", "agentic"]
+ClarificationInputType = Literal[
+    "single_choice",
+    "multi_choice",
+    "number",
+    "text",
+    "date",
+    "boolean",
+    "actor_matrix",
+]
 CaseStatusType = Literal[
     "collecting_facts",
     "ready_to_answer",
@@ -84,24 +93,86 @@ class MissingFactItem(BaseModel):
     question: str | None = None
 
 
-class LegalChatRequest(BaseModel):
-    """Body POST /chat/legal: proxy tới Agentic Graph RAG nhiều lượt."""
+class ClarificationAnswer(BaseModel):
+    """Một câu trả lời form làm rõ gửi sang AI backend.
 
-    message: str = Field(..., min_length=1, max_length=8000)
+    Chỉ cho phép các field trong contract; không nhận fact_path/fact patch từ client.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    question_id: str = Field(..., min_length=1, max_length=256)
+    selected_option_ids: list[str] = Field(default_factory=list)
+    value: Any | None = None
+    free_text: str | None = Field(default=None, max_length=2000)
+
+
+class ClarificationOption(BaseModel):
+    id: str = ""
+    label: str = ""
+    requires_value: bool = False
+    value_type: Literal["text", "number", "date"] | None = None
+    placeholder: str | None = None
+
+
+class ClarificationQuestion(BaseModel):
+    id: str = ""
+    fact_path: str = ""
+    group: str = ""
+    text: str = ""
+    input_type: ClarificationInputType = "text"
+    options: list[ClarificationOption | dict[str, Any]] = Field(default_factory=list)
+    required: bool = False
+    critical: bool = False
+    allow_free_text: bool = False
+    unit: str | None = None
+    min_value: float | None = None
+    max_value: float | None = None
+    reason: str = ""
+    affected_articles: list[str] = Field(default_factory=list)
+    actor_id: str | None = None
+    depends_on_question_id: str | None = None
+    depends_on_option_ids: list[str] = Field(default_factory=list)
+
+
+class ClarificationForm(BaseModel):
+    type: Literal["form"] = "form"
+    question_set_id: str = ""
+    can_submit_partial: bool = True
+    questions: list[ClarificationQuestion | dict[str, Any]] = Field(default_factory=list)
+
+
+class LegalChatRequest(BaseModel):
+    """Body POST /chat/legal: proxy tới AI backend Graph RAG nhiều lượt."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    message: str = Field(default="", max_length=8000)
     case_id: str | None = Field(default=None, max_length=128)
+    case_version: int | None = Field(default=None, ge=0)
+    answers: list[ClarificationAnswer] = Field(default_factory=list)
     top_k: int = Field(default=8, ge=1, le=30)
     include_debug: bool = False
     answer_style: AnswerStyleType = "auto"
     mode: AgenticModeType = "auto"
 
+    @model_validator(mode="after")
+    def require_message_or_answers(self) -> "LegalChatRequest":
+        if not (self.message or "").strip() and not self.answers:
+            raise ValueError("message hoặc answers phải có ít nhất một giá trị")
+        return self
+
 
 class LegalChatResponse(BaseModel):
-    """Response POST /chat/legal đã normalize từ Agentic Graph RAG."""
+    """Response POST /chat/legal đã normalize từ AI backend Graph RAG."""
 
     case_id: str
+    case_version: int = 0
     status: CaseStatusType
     facts: dict[str, Any] = Field(default_factory=dict)
+    provisional_findings: list[dict[str, Any]] = Field(default_factory=list)
     missing_facts: list[MissingFactItem | dict[str, Any] | str] = Field(default_factory=list)
+    clarification: ClarificationForm | dict[str, Any] | None = None
     clarifying_questions: list[str] = Field(default_factory=list)
     candidate_articles: list[dict[str, Any]] = Field(default_factory=list)
     legal_reasoning: list[dict[str, Any]] = Field(default_factory=list)

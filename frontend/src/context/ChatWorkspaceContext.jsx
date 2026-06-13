@@ -48,6 +48,11 @@ function historyDetailToMessages(detail) {
       role: "bot",
       content: String(r.final_answer || ""),
       caseId: r.case_id || null,
+      caseVersion: Number.isInteger(r.case_version) ? r.case_version : 0,
+      questionSetId:
+        r.clarification && typeof r.clarification === "object"
+          ? r.clarification.question_set_id || null
+          : null,
       caseStatus: r.status || null,
       confidence: typeof r.confidence === "number" ? r.confidence : null,
       explanation: r.explanation,
@@ -59,6 +64,11 @@ function historyDetailToMessages(detail) {
       clarifyingQuestions: Array.isArray(r.clarifying_questions) ? r.clarifying_questions : [],
       legalReasoning: Array.isArray(r.legal_reasoning) ? r.legal_reasoning : [],
       missingFacts: Array.isArray(r.missing_facts) ? r.missing_facts : [],
+      provisionalFindings: Array.isArray(r.provisional_findings) ? r.provisional_findings : [],
+      clarification:
+        r.clarification && typeof r.clarification === "object"
+          ? r.clarification
+          : null,
       candidateArticles: Array.isArray(r.candidate_articles) ? r.candidate_articles : [],
       citations: Array.isArray(r.citations) ? r.citations : [],
       warnings: Array.isArray(r.warnings) ? r.warnings : [],
@@ -82,6 +92,8 @@ export function ChatWorkspaceProvider({ children }) {
   const [historyError, setHistoryError] = useState(null);
   const [selectedHistoryId, setSelectedHistoryId] = useState(null);
   const [caseId, setCaseId] = useState(null);
+  const [caseVersion, setCaseVersion] = useState(null);
+  const [questionSetId, setQuestionSetId] = useState(null);
 
   const refreshHistoryList = useCallback(async () => {
     if (!token || !user) {
@@ -118,6 +130,8 @@ export function ChatWorkspaceProvider({ children }) {
     setMessages([]);
     setSelectedHistoryId(null);
     setCaseId(null);
+    setCaseVersion(null);
+    setQuestionSetId(null);
   }, [answerMode, chatbotProvider]);
 
   useEffect(() => {
@@ -137,6 +151,8 @@ export function ChatWorkspaceProvider({ children }) {
       setSelectedHistoryId(null);
       setHistoryError(null);
       setCaseId(null);
+      setCaseVersion(null);
+      setQuestionSetId(null);
     }
   }, [user, token]);
 
@@ -144,6 +160,8 @@ export function ChatWorkspaceProvider({ children }) {
     setMessages([]);
     setSelectedHistoryId(null);
     setCaseId(null);
+    setCaseVersion(null);
+    setQuestionSetId(null);
   }, []);
 
   const loadHistoryEntry = useCallback(
@@ -157,6 +175,10 @@ export function ChatWorkspaceProvider({ children }) {
         const msgs = historyDetailToMessages(detail);
         setMessages(msgs);
         setCaseId(msgs[1]?.caseId || null);
+        setCaseVersion(
+          Number.isInteger(msgs[1]?.caseVersion) ? msgs[1].caseVersion : null
+        );
+        setQuestionSetId(msgs[1]?.questionSetId || null);
         const first = msgs[0];
         if (first && first.answerMode) {
           setAnswerMode(first.answerMode);
@@ -206,6 +228,10 @@ export function ChatWorkspaceProvider({ children }) {
       startNewChat,
       caseId,
       setCaseId,
+      caseVersion,
+      setCaseVersion,
+      questionSetId,
+      setQuestionSetId,
     }),
     [
       messages,
@@ -222,6 +248,8 @@ export function ChatWorkspaceProvider({ children }) {
       startNewChat,
       setChatbotProvider,
       caseId,
+      caseVersion,
+      questionSetId,
     ]
   );
 

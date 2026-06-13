@@ -39,7 +39,9 @@ CORS_ORIGINS=https://lex-bot-datn.vercel.app
 
 The frontend should call the LexBot backend, not the BLHS Graph service
 directly. LexBot backend exposes `/chat/legal` and proxies to
-`${CHATBOT_GRAPH_V2_URL}/api/agentic-rag/query`.
+`${CHATBOT_GRAPH_V2_URL}/chat/legal`. The legal chat flow keeps `case_id`,
+`case_version`, and renders `clarification.questions` when the AI backend asks
+for structured follow-up facts.
 ## Development
 
 ```bash

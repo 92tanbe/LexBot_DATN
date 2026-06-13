@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useChatWorkspace } from '../context/ChatWorkspaceContext';
 import { sendChatQuery, sendLegalChatMessage } from '../services/chatService';
 import BotAnswerContent from './BotAnswerContent';
+import ClarificationForm from './ClarificationForm';
 import ServerSelector from './ServerSelector';
 import GraphV2AnalysisPanel from './GraphV2AnalysisPanel';
 import { providerShortLabel } from '../utils/chatbotProvider';
@@ -55,6 +56,50 @@ function shouldRenderFinalAnswer(msg) {
   return Boolean(String(msg.content || '').trim());
 }
 
+function getQuestionSetId(clarification) {
+  if (!clarification || typeof clarification !== 'object') return null;
+  return clarification.question_set_id || null;
+}
+
+function buildBotMessageFromResponse(response, {
+  answerMode,
+  chatbotProvider,
+  isGraphV2,
+  modeUsed,
+}) {
+  const clarification =
+    response.clarification && typeof response.clarification === 'object'
+      ? response.clarification
+      : null;
+  return {
+    role: 'bot',
+    content: response.final_answer,
+    caseId: response.case_id || null,
+    caseVersion: Number.isInteger(response.case_version) ? response.case_version : 0,
+    questionSetId: getQuestionSetId(clarification),
+    caseStatus: response.status || null,
+    confidence: typeof response.confidence === 'number' ? response.confidence : null,
+    explanation: response.explanation,
+    hints: response.hints,
+    rows: response.rows || [],
+    people: response.people || [],
+    caseAnalysis: response.case_analysis || null,
+    exhibits: Array.isArray(response.facts?.exhibits) ? response.facts.exhibits : [],
+    clarifyingQuestions: response.clarifying_questions || [],
+    legalReasoning: response.legal_reasoning || [],
+    missingFacts: response.missing_facts || [],
+    provisionalFindings: response.provisional_findings || [],
+    clarification,
+    candidateArticles: response.candidate_articles || [],
+    citations: response.citations || [],
+    warnings: response.warnings || [],
+    responseMode: modeUsed,
+    answerMode,
+    chatbotProvider: isGraphV2 ? 'graph_v2' : response.chatbot_provider || chatbotProvider,
+    graphMode: isGraphV2 ? response.graph_mode || 'legal_chat' : response.graph_mode || null,
+  };
+}
+
 function formatRoleLabel(role) {
   const labels = {
     chu_muu: 'Chủ mưu',
@@ -105,6 +150,10 @@ function MainContent() {
     startNewChat,
     caseId,
     setCaseId,
+    caseVersion,
+    setCaseVersion,
+    questionSetId,
+    setQuestionSetId,
   } = useChatWorkspace();
   const isGraphV2 = chatbotProvider === 'graph_v2';
   const [inputValue, setInputValue] = useState('');
@@ -143,6 +192,7 @@ function MainContent() {
       const response = isGraphV2
         ? await sendLegalChatMessage(question, {
             caseId,
+            caseVersion,
             topK: 8,
             includeDebug: answerMode === 'thinking',
             answerStyle: 'auto',
@@ -152,34 +202,21 @@ function MainContent() {
             ...chatModeOpt,
             chatbotProvider,
           });
-      if (isGraphV2 && response.case_id) {
-        setCaseId(response.case_id);
+      if (isGraphV2) {
+        if (response.case_id) setCaseId(response.case_id);
+        if (Number.isInteger(response.case_version)) {
+          setCaseVersion(response.case_version);
+        }
+        setQuestionSetId(getQuestionSetId(response.clarification));
       }
       setMessages((prev) => [
         ...prev,
-        {
-          role: 'bot',
-          content: response.final_answer,
-          caseId: response.case_id || null,
-          caseStatus: response.status || null,
-          confidence: typeof response.confidence === 'number' ? response.confidence : null,
-          explanation: response.explanation,
-          hints: response.hints,
-          rows: response.rows || [],
-          people: response.people || [],
-          caseAnalysis: response.case_analysis || null,
-          exhibits: Array.isArray(response.facts?.exhibits) ? response.facts.exhibits : [],
-          clarifyingQuestions: response.clarifying_questions || [],
-          legalReasoning: response.legal_reasoning || [],
-          missingFacts: response.missing_facts || [],
-          candidateArticles: response.candidate_articles || [],
-          citations: response.citations || [],
-          warnings: response.warnings || [],
-          responseMode: modeUsed,
+        buildBotMessageFromResponse(response, {
           answerMode,
-          chatbotProvider: isGraphV2 ? 'graph_v2' : response.chatbot_provider || chatbotProvider,
-          graphMode: isGraphV2 ? response.graph_mode || 'agentic' : response.graph_mode || null,
-        },
+          chatbotProvider,
+          isGraphV2,
+          modeUsed,
+        }),
       ]);
       void refreshHistoryList();
     } catch (error) {
@@ -193,6 +230,65 @@ function MainContent() {
           answerMode,
           chatbotProvider,
           graphMode: isGraphV2 ? 'agentic' : null,
+        },
+      ]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleClarificationSubmit = async (answers) => {
+    if (!isGraphV2 || !caseId || !Number.isInteger(caseVersion)) return;
+
+    const modeUsed = answerMode === 'thinking' ? 'thinking' : 'fast';
+    setSelectedHistoryId(null);
+    setMessages((prev) => [
+      ...prev,
+      {
+        role: 'user',
+        content: `Đã bổ sung ${answers.length} câu trả lời.`,
+        answerMode,
+        chatbotProvider,
+      },
+    ]);
+    setIsLoading(true);
+
+    try {
+      const response = await sendLegalChatMessage('', {
+        caseId,
+        caseVersion,
+        answers,
+        topK: 8,
+        includeDebug: answerMode === 'thinking',
+        answerStyle: 'auto',
+        mode: answerMode === 'thinking' ? 'agentic' : 'auto',
+      });
+      if (response.case_id) setCaseId(response.case_id);
+      if (Number.isInteger(response.case_version)) {
+        setCaseVersion(response.case_version);
+      }
+      setQuestionSetId(getQuestionSetId(response.clarification));
+      setMessages((prev) => [
+        ...prev,
+        buildBotMessageFromResponse(response, {
+          answerMode,
+          chatbotProvider,
+          isGraphV2,
+          modeUsed,
+        }),
+      ]);
+      void refreshHistoryList();
+    } catch (error) {
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: 'bot',
+          content: `Lỗi: ${error.message}`,
+          isError: true,
+          responseMode: modeUsed,
+          answerMode,
+          chatbotProvider,
+          graphMode: 'legal_chat',
         },
       ]);
     } finally {
@@ -291,6 +387,7 @@ function MainContent() {
                         <div className={`legal-status-note legal-status-note--${msg.caseStatus}`}>
                           {getLegalStatusText(msg.caseStatus)}
                           {msg.caseId ? <span> Mã vụ việc: {msg.caseId}</span> : null}
+                          {Number.isInteger(msg.caseVersion) ? <span> · v{msg.caseVersion}</span> : null}
                         </div>
                       )}
                       {shouldRenderFinalAnswer(msg) && (
@@ -400,6 +497,19 @@ function MainContent() {
                       <GraphV2AnalysisPanel message={msg} />
                     )}
 
+                    {msg.chatbotProvider === 'graph_v2' &&
+                      idx === messages.length - 1 &&
+                      msg.clarification &&
+                      Array.isArray(msg.clarification.questions) &&
+                      msg.clarification.questions.length > 0 && (
+                        <ClarificationForm
+                          key={msg.questionSetId || msg.caseVersion || idx}
+                          clarification={msg.clarification}
+                          disabled={isLoading}
+                          onSubmit={handleClarificationSubmit}
+                        />
+                      )}
+
                     {msg.explanation && (
                       <div className="message-explanation">
                         <strong>Lưu ý:</strong>{' '}
@@ -434,7 +544,11 @@ function MainContent() {
               Vụ việc mới
             </button>
             {caseId && (
-              <span className="case-id-chip">case_id: {caseId}</span>
+              <span className="case-id-chip">
+                case_id: {caseId}
+                {Number.isInteger(caseVersion) ? ` · v${caseVersion}` : ''}
+                {questionSetId ? ` · ${questionSetId}` : ''}
+              </span>
             )}
           </div>
         )}
