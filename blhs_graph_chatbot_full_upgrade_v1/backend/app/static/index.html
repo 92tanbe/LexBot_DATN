@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BLHS Graph Chatbot</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #64748b;
+      --primary: #40a9ff;
+      --primary-dark: #1677c8;
+      --rose: #ff8fab;
+      --green: #95de64;
+      --border: #e5e7eb;
+      --shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(186, 231, 255, 0.8), transparent 34rem),
+        radial-gradient(circle at bottom right, rgba(255, 194, 209, 0.6), transparent 30rem),
+        var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .page {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 32px 0;
+    }
+
+    .hero {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: flex-start;
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(28px, 4vw, 44px);
+      letter-spacing: -0.04em;
+    }
+
+    .subtitle {
+      max-width: 760px;
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      padding: 8px 14px;
+      background: rgba(255, 255, 255, 0.75);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      gap: 20px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid rgba(229, 231, 235, 0.85);
+      border-radius: 26px;
+      box-shadow: var(--shadow);
+      padding: 22px;
+      backdrop-filter: blur(12px);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #334155;
+      font-weight: 700;
+    }
+
+    textarea,
+    select,
+    input {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 14px 16px;
+      background: #fff;
+      color: var(--text);
+      font: inherit;
+      outline: none;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    textarea {
+      min-height: 220px;
+      resize: vertical;
+      line-height: 1.55;
+    }
+
+    textarea:focus,
+    select:focus,
+    input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(64, 169, 255, 0.16);
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 120px;
+      gap: 12px;
+      margin: 16px 0;
+    }
+
+    button {
+      width: 100%;
+      border: 0;
+      border-radius: 18px;
+      padding: 14px 18px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 12px 24px rgba(64, 169, 255, 0.25);
+    }
+
+    button:disabled {
+      cursor: wait;
+      opacity: 0.65;
+    }
+
+    .hint {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .section {
+      margin-top: 18px;
+    }
+
+    .section:first-child {
+      margin-top: 0;
+    }
+
+    .section h2 {
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+
+    .answer {
+      min-height: 260px;
+      white-space: pre-wrap;
+      line-height: 1.65;
+      color: #243041;
+    }
+
+    .empty {
+      color: var(--muted);
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      border-radius: 999px;
+      padding: 8px 12px;
+      background: #f1f5f9;
+      color: #334155;
+      font-size: 14px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .chip.question {
+      background: #fff7cd;
+      border-color: #ffe999;
+    }
+
+    .chip.article {
+      background: #e6f7ff;
+      border-color: #bae7ff;
+    }
+
+    .error {
+      margin-top: 14px;
+      border-radius: 16px;
+      padding: 12px 14px;
+      color: #9f1239;
+      background: #ffe4ec;
+      border: 1px solid #ffb3c6;
+      display: none;
+    }
+
+    @media (max-width: 860px) {
+      .hero,
+      .grid {
+        grid-template-columns: 1fr;
+        display: block;
+      }
+
+      .card + .card {
+        margin-top: 18px;
+      }
+
+      .badge {
+        margin-top: 16px;
+      }
+
+      .row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <div>
+        <h1>BLHS Graph Chatbot</h1>
+        <p class="subtitle">
+          Nhập tình huống hình sự, backend sẽ truy vấn Neo4j Aura, dùng OpenAI nếu có cấu hình,
+          rồi hiển thị câu trả lời cuối cùng kèm các câu cần hỏi thêm khi thiếu dữ kiện.
+        </p>
+      </div>
+      <div class="badge">API: <strong>/analyze-scenario</strong></div>
+    </header>
+
+    <section class="grid">
+      <form class="card" id="analysis-form">
+        <label for="scenario">Tình huống</label>
+        <textarea id="scenario" name="scenario" required>A rủ B đi bay phòng, có ketamin trong phòng karaoke</textarea>
+
+        <div class="row">
+          <div>
+            <label for="answer-style">Văn phong</label>
+            <select id="answer-style" name="answer_style">
+              <option value="auto">Auto</option>
+              <option value="conversational">Tự nhiên</option>
+              <option value="balanced">Cân bằng</option>
+              <option value="brief">Ngắn gọn</option>
+              <option value="educational">Giải thích dễ hiểu</option>
+              <option value="structured">Có cấu trúc</option>
+            </select>
+          </div>
+          <div>
+            <label for="top-k">Top K</label>
+            <input id="top-k" name="top_k" type="number" min="1" max="30" value="8" />
+          </div>
+        </div>
+
+        <button id="submit-btn" type="submit">Phân tích</button>
+        <p class="hint">
+          UI này gọi trực tiếp backend đang chạy cùng host. Cấu hình Neo4j Aura và OpenAI lấy từ <code>backend/.env</code> khi chạy Docker.
+        </p>
+        <div class="error" id="error-box"></div>
+      </form>
+
+      <article class="card">
+        <div class="section">
+          <h2>Final answer</h2>
+          <div class="answer empty" id="final-answer">Kết quả phân tích sẽ hiển thị ở đây.</div>
+        </div>
+
+        <div class="section">
+          <h2>Câu hỏi cần bổ sung</h2>
+          <div class="chips" id="questions"></div>
+        </div>
+
+        <div class="section">
+          <h2>Dữ kiện còn thiếu</h2>
+          <div class="chips" id="missing"></div>
+        </div>
+
+        <div class="section">
+          <h2>Điều luật ứng viên</h2>
+          <div class="chips" id="articles"></div>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <script>
+    const form = document.getElementById("analysis-form");
+    const submitBtn = document.getElementById("submit-btn");
+    const errorBox = document.getElementById("error-box");
+    const finalAnswer = document.getElementById("final-answer");
+    const questions = document.getElementById("questions");
+    const missing = document.getElementById("missing");
+    const articles = document.getElementById("articles");
+
+    function setChips(container, items, className, emptyText) {
+      container.innerHTML = "";
+      if (!items || items.length === 0) {
+        const span = document.createElement("span");
+        span.className = "chip";
+        span.textContent = emptyText;
+        container.appendChild(span);
+        return;
+      }
+
+      for (const item of items) {
+        const span = document.createElement("span");
+        span.className = `chip ${className || ""}`;
+        span.textContent = item;
+        container.appendChild(span);
+      }
+    }
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      errorBox.style.display = "none";
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Đang phân tích...";
+      finalAnswer.classList.remove("empty");
+      finalAnswer.textContent = "Đang gọi backend...";
+
+      const payload = {
+        scenario: document.getElementById("scenario").value.trim(),
+        answer_style: document.getElementById("answer-style").value,
+        top_k: Number(document.getElementById("top-k").value || 8),
+        include_debug: false
+      };
+
+      try {
+        const response = await fetch("/analyze-scenario", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+          const text = await response.text();
+          throw new Error(text || `HTTP ${response.status}`);
+        }
+
+        const data = await response.json();
+        finalAnswer.textContent = data.final_answer || "Không có final_answer.";
+        setChips(questions, data.clarifying_questions, "question", "Chưa có câu hỏi bổ sung.");
+        setChips(missing, data.missing_facts, "", "Chưa phát hiện dữ kiện thiếu trọng yếu.");
+        setChips(
+          articles,
+          (data.candidate_articles || []).slice(0, 8).map((item) => `Điều ${item.article_code}: ${item.title}`),
+          "article",
+          "Chưa có điều luật ứng viên."
+        );
+      } catch (error) {
+        finalAnswer.classList.add("empty");
+        finalAnswer.textContent = "Không thể phân tích.";
+        errorBox.textContent = error.message;
+        errorBox.style.display = "block";
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Phân tích";
+      }
+    });
+  </script>
+</body>
+</html>

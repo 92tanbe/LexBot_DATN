@@ -1,0 +1,42 @@
+{
+  "source": {
+    "file": "P1 VB-Hop-nhat-BLHS-2025.pdf",
+    "pages": 308,
+    "note": "Generated from PDF text extraction; verify legally sensitive content before production."
+  },
+  "counts": {
+    "laws": 1,
+    "parts": 3,
+    "chapters": 26,
+    "sections": 16,
+    "articles": 427,
+    "clauses": 1419,
+    "points": 2872,
+    "conditions": 4290,
+    "penalty_frames": 1493,
+    "references": 565,
+    "crimes": 318,
+    "rules": 4291,
+    "penalties": 1493,
+    "legal_concepts": 123,
+    "aggravating_factors": 15,
+    "mitigating_factors": 22,
+    "subject_requirements": 443,
+    "object_requirements": 318,
+    "act_requirements": 318,
+    "consequence_requirements": 580,
+    "quantity_thresholds": 5688,
+    "exceptions": 170,
+    "slang_terms": 12,
+    "action_aliases": 13,
+    "substances": 4,
+    "substance_aliases": 6,
+    "legal_signals": 8,
+    "judicial_measures": 4
+  },
+  "notes": [
+    "Dữ liệu được nâng cấp từ bộ blhs_from_pdf_normalized.json sinh từ PDF trong file RAR/starter kit.",
+    "Các node requirement/threshold/exception được sinh bằng rule-based extractor nên cần review thủ công nếu dùng trong nghiệp vụ pháp lý thật.",
+    "ScenarioFact và MatchedCondition là node runtime cho chatbot, không import sẵn dữ liệu tĩnh."
+  ]
+}

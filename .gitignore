@@ -3,4 +3,5 @@ __pycache__/
 node_modules/
 venv/
 __init__.py
-blhs_graph_chatbot_full_upgrade_v1/
+chatbot/
+~$*

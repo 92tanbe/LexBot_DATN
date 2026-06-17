@@ -1,0 +1,17 @@
+.git
+.pytest_cache
+**/__pycache__
+**/*.pyc
+**/*.pyo
+**/*.log
+**/.env
+**/venv
+neo4j_data
+neo4j_logs
+source_pdf
+data
+docs
+lexbot-main
+.lexbot_old
+PBL7 (2).docx
+response_1779476773779.json
