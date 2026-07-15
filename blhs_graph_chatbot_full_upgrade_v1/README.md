@@ -2,6 +2,30 @@
 
 Bản này nâng cấp bộ `blhs_neo4j_from_pdf` trong file RAR lên schema graph đầy đủ hơn cho chatbot pháp lý. Nguồn dữ liệu đầu vào là `data/blhs_from_pdf_normalized.base.json`, tức dữ liệu đã parse từ PDF BLHS trong bộ RAR/starter kit. Không dùng `deepseek_merged.json` cũ.
 
+## 📦 Link Dataset
+
+- **Kaggle Dataset Chatbot**: [https://www.kaggle.com/datasets/thncnhttn/dataset-chatbot](https://www.kaggle.com/datasets/thncnhttn/dataset-chatbot)
+
+## 🚀 Hướng dẫn cài đặt Source Code (Tổng quan)
+
+Để hệ thống hoạt động đầy đủ, cần thực hiện cài đặt các thành phần theo thứ tự:
+
+**1. Tải Dataset:**
+- Tải dataset từ link Kaggle ở trên và giải nén vào thư mục tương ứng theo yêu cầu.
+
+**2. Khởi tạo Neo4j (Database):**
+- Chạy Neo4j và import dữ liệu (như hướng dẫn phần [Chạy Neo4j + import trên Windows](#chạy-neo4j--import-trên-windows) bên dưới).
+
+**3. Cài đặt Chatbot RAG Service (`lexbot-main`):**
+- Là AI service xử lý Embedding, NER, Cypher Generator và gọi LLM (chạy port 8001).
+- Mở terminal, chuyển vào thư mục `lexbot-main`, cài đặt requirements và chạy server theo hướng dẫn chi tiết trong file `lexbot-main/README.md`.
+
+**4. Cài đặt Backend API (`backend`):**
+- Là server kết nối với frontend và forward requests sang chatbot service (chạy port 8000).
+- Mở terminal, chuyển vào thư mục `backend`, cài đặt requirements và chạy server theo hướng dẫn chi tiết trong file `backend/README.md`.
+
+---
+
 ## Schema chính
 
 ```text
